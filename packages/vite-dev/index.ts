@@ -7,13 +7,14 @@ export class ViteDev {
     env: ImportMetaEnv
   }) {}
 
-  async init() {
+  async init(): Promise<this> {
     if (this.depends.env.DEV) {
       this.vite = await createServer({
         server: { middlewareMode: true },
         appType: 'custom',
       });
     }
+    return this;
   }
 
   isEnabled(): boolean {

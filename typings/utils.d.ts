@@ -15,7 +15,7 @@ type PartialDeep<T> =
 
 type Operations = '$set' | '$unset' | '$leave';
 
-type PatchOperation<T> = T & {
+type PatchOperation<T> = T | {
   // Переустановить значения без слияния с текущим
   $set?: T,
   // Удалить свойства
@@ -30,7 +30,7 @@ type PatchOperation<T> = T & {
 type Patch<T> = PatchOperation<
   T extends (infer U)[]
     ? U[]
-    : T extends object
+    : T extends { [key: string | number | symbol]: any }
       ? { [K in keyof T]?: Patch<T[K]> }
       : T
 >;

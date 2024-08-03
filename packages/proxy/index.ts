@@ -5,8 +5,8 @@ import * as http from 'node:http';
 import type { ProxyOptions } from './types';
 
 export class Proxy {
-  private config: ProxyOptions;
-  private proxyServer: Server<http.IncomingMessage, http.ServerResponse>;
+  protected config: ProxyOptions;
+  protected proxyServer: Server<http.IncomingMessage, http.ServerResponse>;
 
   constructor(protected depends: {
     config: Patch<ProxyOptions>

@@ -1,13 +1,27 @@
-import React from "react";
-import {HelmetProvider, HelmetServerState} from "react-helmet-async";
+import mc from 'merge-change';
+import React from 'react';
+import { HelmetProvider, HelmetServerState } from 'react-helmet-async';
 import RouterProvider from '@src/services/router/provider';
 import Services from '@src/services';
 import App from '@src/app';
 import ServicesProvider from '@src/services/provider';
 import clientConfig from '@src/config';
+import { Container } from '../packages/container';
+import { ContainerProvider } from '../packages/container/provider.tsx';
+import { envClient } from '../packages/env/client.ts';
+import { httpClient } from '../packages/http-client/inject.ts';
+import configs from './config-di.ts';
 
-export default async function root(envPartial: Partial<ImportMetaEnv> = {}): Promise<RootFabricResult> {
-  const env: ImportMetaEnv = {...import.meta.env, ...envPartial};
+export default async function root(envPatch: Patch<ImportMetaEnv> = {}): Promise<RootFabricResult> {
+
+  const container = new Container()
+    // Переменные окружения для фронта
+    .set(envClient(envPatch))
+    // Настройки для всех сервисов
+    .set(configs)
+    .set(httpClient);
+
+  const env: ImportMetaEnv = mc.merge(import.meta.env, envPatch);
   // Менеджер сервисов
   const servicesManager = new Services(env);
   // Через services получаем доступ к store, api, i18n и всем другим сервисам
@@ -16,13 +30,15 @@ export default async function root(envPartial: Partial<ImportMetaEnv> = {}): Pro
   const helmetCtx = {} as { helmet: HelmetServerState };
 
   const Root = () => (
-    <ServicesProvider services={services}>
-      <RouterProvider router={services.router}>
-        <HelmetProvider context={helmetCtx}>
-          <App/>
-        </HelmetProvider>
-      </RouterProvider>
-    </ServicesProvider>
+    <ContainerProvider container={container}>
+      <ServicesProvider services={services}>
+        <RouterProvider router={services.router}>
+          <HelmetProvider context={helmetCtx}>
+            <App/>
+          </HelmetProvider>
+        </RouterProvider>
+      </ServicesProvider>
+    </ContainerProvider>
   );
 
   const injections: ServerSideRenderInjections = {
@@ -40,5 +56,5 @@ export default async function root(envPartial: Partial<ImportMetaEnv> = {}): Pro
     httpStatus: () => servicesManager.get('router').getHttpStatus()
   };
 
-  return {Root, servicesManager, injections};
+  return { Root, servicesManager, injections };
 }

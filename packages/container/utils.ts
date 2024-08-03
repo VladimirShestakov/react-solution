@@ -1,14 +1,14 @@
 import type { FunctionWithDepends, InjectClass, InjectFabric, InjectValue } from './types.ts';
 
-export function injectClass<Type, Deps, ExtType extends Type>(
-  inject: InjectClass<Type, Deps, ExtType>
-): InjectClass<Type, Deps, ExtType> {
+export function injectClass<Type, ExtType extends Type, Deps>(
+  inject: InjectClass<Type, ExtType, Deps>
+): InjectClass<Type, ExtType, Deps> {
   return inject;
 }
 
-export function injectFabric<Type, Deps, ExtType extends Type>(
-  inject: InjectFabric<Type, Deps, ExtType>
-): InjectFabric<Type, Deps, ExtType> {
+export function injectFabric<Type, ExtType extends Type, Deps>(
+  inject: InjectFabric<Type, ExtType, Deps>
+): InjectFabric<Type, ExtType, Deps> {
   return inject;
 }
 
@@ -18,42 +18,42 @@ export function injectValue<Type, ExtType extends Type>(
   return inject;
 }
 
-export function isInjectClass<Type, Deps, ExtType extends Type = Type>(
-  value: InjectClass<Type, Deps, ExtType> | unknown
-): value is InjectClass<Type, Deps, ExtType> {
-  return Boolean(value
-    && typeof value === 'object'
-    && 'token' in value
-    && 'depends' in value
-    && 'constructor' in value
+export function isInjectClass<Type, ExtType extends Type, Deps>(
+  inject: InjectClass<Type, ExtType, Deps> | unknown
+): inject is InjectClass<Type, ExtType, Deps> {
+  return Boolean(inject
+    && typeof inject === 'object'
+    && 'token' in inject
+    && 'depends' in inject
+    && 'constructor' in inject
   );
 }
 
-export function isInjectFabric<Type, Deps, ExtType extends Type = Type>(
-  value: InjectFabric<Type, Deps, ExtType> | unknown
-): value is InjectFabric<Type, Deps, ExtType> {
-  return Boolean(value
-    && typeof value === 'object'
-    && 'token' in value
-    && 'depends' in value
-    && 'fabric' in value
-    && typeof value.fabric === 'function'
+export function isInjectFabric<Type, ExtType extends Type, Deps>(
+  inject: InjectFabric<Type, ExtType, Deps> | unknown
+): inject is InjectFabric<Type, ExtType, Deps> {
+  return Boolean(inject
+    && typeof inject === 'object'
+    && 'token' in inject
+    && 'depends' in inject
+    && 'fabric' in inject
+    && typeof inject.fabric === 'function'
   );
 }
 
 export function isInjectValue<Type, ExtType extends Type = Type>(
-  value: InjectValue<Type, ExtType> | unknown
-): value is InjectValue<Type, ExtType> {
-  return Boolean(value
-    && typeof value === 'object'
-    && 'token' in value
-    && 'value' in value
+  inject: InjectValue<Type, ExtType> | unknown
+): inject is InjectValue<Type, ExtType> {
+  return Boolean(inject
+    && typeof inject === 'object'
+    && 'token' in inject
+    && 'value' in inject
   );
 }
 
-export function isInject<Type, Deps, ExtType extends Type>(
-  value: InjectClass<Type, Deps, ExtType> | InjectFabric<Type, Deps, ExtType> | unknown
-): value is InjectFabric<Type, Deps, ExtType> | InjectClass<Type, Deps, ExtType> {
+export function isInject<Type, ExtType extends Type, Deps>(
+  value: InjectClass<Type, ExtType, Deps> | InjectFabric<Type, ExtType, Deps> | unknown
+): value is InjectFabric<Type, ExtType, Deps> | InjectClass<Type, ExtType, Deps> {
   return isInjectClass(value) || isInjectFabric(value) || isInjectValue(value);
 }
 

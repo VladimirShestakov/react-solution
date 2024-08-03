@@ -19,8 +19,8 @@ export class Ssr {
   protected ETagSPA: string;
   protected renderQueue: RenderQueue | undefined;
   protected config: SsrOptions;
-  private clientApp: any;
-  private template: string;
+  protected clientApp: any;
+  protected template: string;
 
   constructor(protected depends: {
     cacheStore: ICacheStore,
@@ -63,12 +63,13 @@ export class Ssr {
     );
   }
 
-  async init() {
+  async init(): Promise<this> {
     // React приложение для ренедра в режиме разработки (компилируется исходники через Vite)
     // В прод режиме приложение будет загружено из воркера
     this.clientApp = this.depends.vite.isEnabled()
       ? await this.depends.vite.ssrLoadModule(this.config.clientAppFile.dev)
       : undefined;
+    return this;
   }
 
   private relativeFilePath(rootFilePath: string): string {

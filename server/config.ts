@@ -14,6 +14,7 @@ export default [
   config(PROXY_CFG, ({ env }) => ({
     enabled: true,//env.PROD, //В dev режиме работает прокси Vite(в режиме middleware), но у него ошибка на POST запросы, поэтому включен свой прокси
     routes: proxyConfig(env)
+
   })),
 
   config(CACHE_STORE_CFG, ({ env }) => ({
@@ -28,6 +29,7 @@ export default [
     compress: true,
     // Директория для файлов кэша
     dir: './cache'
+
   })),
 
   config(SSR_CGF, ({ env }) => ({

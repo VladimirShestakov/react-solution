@@ -1,4 +1,4 @@
-import type { ExtractTokensTypes, Token } from '../token/types';
+import type { ExtractTokensTypes, TokenInterface } from '../token/types';
 
 /**
  * Реэкспорт типа на контейнер
@@ -9,10 +9,14 @@ export type { Container } from './index.ts';
  * Инъекция класса.
  * Указывается токен, конструктор и токены зависимости, которые будут переданы в первый аргумент конструктора
  */
-export interface InjectClass<Type, Deps, ExtType extends Type> {
-  token: Token<Type>,
-  depends: Deps,
+export interface InjectClass<Type, ExtType extends Type, Deps> {
+  token: TokenInterface<Type>,
   constructor: ConstructorWithDepends<ExtType, ExtractTokensTypes<Deps>>,
+  depends: Deps,
+  // Названия опциональных depends
+  // optional?: keyof Deps,
+  // Колбэк при удалении экземпляра из контейнера
+  onFree?: (value: ExtType) => void | Promise<void>
 }
 
 /**
@@ -20,27 +24,35 @@ export interface InjectClass<Type, Deps, ExtType extends Type> {
  * Указывается токен, функция и токены зависимости, которые будут переданы в первый аргумент функции
  * Функция может быть асинхронной.
  */
-export interface InjectFabric<Type, Deps, ExtType extends Type> {
-  token: Token<Type>,
-  depends: Deps,
+export interface InjectFabric<Type, ExtType extends Type, Deps> {
+  token: TokenInterface<Type>,
   fabric: FunctionWithDepends<ExtType, ExtractTokensTypes<Deps>>,
+  depends: Deps,
+  // Названия опциональных depends
+  // optional?: keyof Deps,
+  // Колбэк при удалении созданного фабрикой значения из контейнера
+  onFree?: (value: ExtType) => void | Promise<void>
 }
 
 /**
  * Инъекция значения сопоставимого с типом токена.
  */
 export interface InjectValue<Type, ExtType extends Type> {
-  token: Token<Type>,
+  token: TokenInterface<Type>,
   value: ExtType,
+  // Колбэк при удалении созданного фабрикой значения из контейнера
+  onFree?: (value: ExtType) => void | Promise<void>
 }
 
-export type Inject<Type = any, Deps = any, ExtType extends Type = any> = (
-  | InjectClass<Type, Deps, ExtType>
-  | InjectFabric<Type, Deps, ExtType>
+export type Inject<Type = any, ExtType extends Type = any, Deps = any> = (
+  | InjectClass<Type, ExtType, Deps>
+  | InjectFabric<Type, ExtType, Deps>
   | InjectValue<Type, ExtType>
-);
+  );
 
-export type Injected<Type = any, Deps = any, ExtType extends Type = any> = Inject<Type, Deps, ExtType> & {
+export type Injected<Type = any, Deps = any, ExtType extends Type = any> =
+  Inject<Type, ExtType, Deps>
+  & {
   value?: ExtType;
 };
 

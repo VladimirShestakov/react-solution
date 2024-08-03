@@ -1,6 +1,6 @@
 import { injectFabric, injectValue, isFabric } from '../container/utils.ts';
 import { ENV } from '../env/token.ts';
-import type { ExtractTokensTypes, Token } from '../token/types.ts';
+import type { ExtractTokensTypes, TokenInterface } from '../token/types.ts';
 import type { FunctionWithDepends, InjectFabric, InjectValue } from '../container/types.ts';
 
 /**
@@ -9,7 +9,7 @@ import type { FunctionWithDepends, InjectFabric, InjectValue } from '../containe
  * @param token Токен
  * @param value Значение сопоставимое с типом токена
  */
-export function config<T, ExtT extends T>(token: Token<T>, value: ExtT): InjectValue<T, ExtT>
+export function config<T, ExtT extends T>(token: TokenInterface<T>, value: ExtT): InjectValue<T, ExtT>
 
 /**
  * Создание пары {Токен/Функция} для инъекции в DI вычисляемых настроек.
@@ -18,14 +18,14 @@ export function config<T, ExtT extends T>(token: Token<T>, value: ExtT): InjectV
  * @param fabric Функция, возвращающая значение сопоставимое с типом токена в опциональном варианте
  */
 export function config<T, ExtT extends T, Deps = { env: typeof ENV }>(
-  token: Token<T>,
+  token: TokenInterface<T>,
   fabric: FunctionWithDepends<ExtT, ExtractTokensTypes<Deps>>,
-): InjectFabric<T, Deps, ExtT>
+): InjectFabric<T, ExtT, Deps>
 
 export function config<T, ExtT extends T, Deps = { env: typeof ENV }>(
-  token: Token<T>,
+  token: TokenInterface<T>,
   value: FunctionWithDepends<ExtT, ExtractTokensTypes<Deps>> | ExtT,
-): InjectFabric<T, Deps, ExtT> | InjectValue<T, ExtT> {
+): InjectFabric<T, ExtT, Deps> | InjectValue<T, ExtT> {
   if (isFabric<ExtT, ExtractTokensTypes<Deps>>(value)) {
     return injectFabric({ token, fabric: value, depends: { env: ENV } as Deps });
   } else {

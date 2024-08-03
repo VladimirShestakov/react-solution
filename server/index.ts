@@ -26,7 +26,7 @@ try {
     .set(viteDev)
     // Сервис рендера (SSR)
     .set(ssr)
-    // Приложение, определяющее основной алгоритм работы
+    // Приложение, определяющее основной ход работ
     .set(app);
 
   const appInstance = await services.get(APP);

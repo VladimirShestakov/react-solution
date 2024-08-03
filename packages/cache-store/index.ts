@@ -46,8 +46,6 @@ export class CacheStore implements ICacheStore {
     };
   }
 
-  async init() {}
-
   /**
    * Создание ключа на основе массива параметров
    * Ключ в формате пути на файл
