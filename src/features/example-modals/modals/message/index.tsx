@@ -1,8 +1,8 @@
-import {memo, ReactNode} from 'react';
-import ModalLayout from "@src/ui/layout/modal-layout";
-import {ModalClose} from "@src/services/modals/types";
-import SideLayout from "@src/ui/layout/side-layout";
-import {useTranslate} from "@src/services/i18n/use-i18n";
+import { memo, ReactNode } from 'react';
+import ModalLayout from '@src/ui/layout/modal-layout';
+import { ModalClose } from '@src/services/modals/types';
+import SideLayout from '@src/ui/layout/side-layout';
+import { useTranslate } from '@packages/i18n/use-i18n.ts';
 
 interface PropsMessageModal extends ModalClose<void> {
   title: string;

@@ -1,5 +1,5 @@
-import React, {memo, useEffect, useRef} from "react";
-import {cn as bem} from '@bem-react/classname';
+import React, { memo, useEffect, useRef } from 'react';
+import { cn as bem } from '@bem-react/classname';
 import './style.less';
 
 interface Props {
@@ -66,9 +66,9 @@ function ModalLayout(props: Props) {
     <div
       ref={overlay}
       onClick={callbacks.onCloseOverlay}
-      className={cn({transparent: overlayTransparent})}>
-      <div className={cn('frame', {size})} ref={frame}>
-        <div className={cn('content', {padding})}>
+      className={cn({ transparent: overlayTransparent })}>
+      <div className={cn('frame', { size })} ref={frame}>
+        <div className={cn('content', { padding })}>
           {buttonClose && <button className={cn('close')} onClick={callbacks.onClose}></button>}
           {props.children}
         </div>
@@ -76,6 +76,5 @@ function ModalLayout(props: Props) {
     </div>
   );
 }
-
 
 export default memo(ModalLayout);

@@ -1,10 +1,10 @@
-import {memo, useCallback} from 'react';
-import Head from "@src/ui/layout/head";
-import MainMenu from "@src/features/navigation/components/main-menu";
-import PageLayout from "@src/ui/layout/page-layout";
-import useServices from "@src/services/use-services";
-import LocaleSelect from "@src/features/example-i18n/components/locale-select";
-import {useTranslate} from "@src/services/i18n/use-i18n";
+import { memo, useCallback } from 'react';
+import Head from '@src/ui/layout/head';
+import MainMenu from '@src/features/navigation/components/main-menu';
+import PageLayout from '@src/ui/layout/page-layout';
+import useServices from '@src/services/use-services';
+import LocaleSelect from '@src/features/example-i18n/components/locale-select';
+import { useTranslate } from '@packages/i18n/use-i18n.ts';
 
 interface IProps {
   close?: () => void;
@@ -41,7 +41,7 @@ function ModalsExamplePage(props: IProps) {
     openCascade: useCallback(async () => {
       const result = await modals.open('cascade', {
         title: t('example-modals.cascade.title'),
-        message: `${t('example-modals.cascade.messageCount', {plural: 1})} ${t('example-modals.cascade.message')}`
+        message: `${t('example-modals.cascade.messageCount', { plural: 1 })} ${t('example-modals.cascade.message')}`
       });
       console.log('cascade', result);
     }, []),

@@ -1,5 +1,5 @@
-import React, {memo} from 'react';
-import {cn as bem} from '@bem-react/classname';
+import React, { memo } from 'react';
+import { cn as bem } from '@bem-react/classname';
 import './style.less';
 
 interface Props {
@@ -53,12 +53,12 @@ function Pagination(props: Props) {
     <ul className={cn()}>
       {items.map((number, index) => (
         <li key={index}
-          className={cn('item', {active: number === props.page, split: !number})}
-          onClick={onClickHandler(number)}>
+            className={cn('item', { active: number === props.page, split: !number })}
+            onClick={onClickHandler(number)}>
           {number
             ? (props.makeLink
-              ? <a href={props.makeLink(number)}>{number}</a>
-              : number
+                ? <a href={props.makeLink(number)}>{number}</a>
+                : number
             )
             : '...'
           }

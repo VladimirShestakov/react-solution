@@ -1,4 +1,9 @@
-import type { FunctionWithDepends, InjectClass, InjectFabric, InjectValue } from './types.ts';
+import type {
+  FunctionWithDepends,
+  InjectClass,
+  InjectFabric,
+  InjectValue,
+} from './types.ts';
 
 export function injectClass<Type, ExtType extends Type, Deps>(
   inject: InjectClass<Type, ExtType, Deps>
@@ -52,9 +57,9 @@ export function isInjectValue<Type, ExtType extends Type = Type>(
 }
 
 export function isInject<Type, ExtType extends Type, Deps>(
-  value: InjectClass<Type, ExtType, Deps> | InjectFabric<Type, ExtType, Deps> | unknown
-): value is InjectFabric<Type, ExtType, Deps> | InjectClass<Type, ExtType, Deps> {
-  return isInjectClass(value) || isInjectFabric(value) || isInjectValue(value);
+  inject: InjectClass<Type, ExtType, Deps> | InjectFabric<Type, ExtType, Deps> | unknown
+): inject is InjectFabric<Type, ExtType, Deps> | InjectClass<Type, ExtType, Deps> {
+  return isInjectClass(inject) || isInjectFabric(inject) || isInjectValue(inject);
 }
 
 export function isFabric<Type, Deps>(value: FunctionWithDepends<Type, Deps> | unknown): value is FunctionWithDepends<Type, Deps> {

@@ -1,6 +1,6 @@
-import {memo} from "react";
-import {cn as bem} from '@bem-react/classname';
-import {TTranslateFn} from "@src/services/i18n/types";
+import type { I18nTranslateFn } from '@packages/i18n/types.ts';
+import { memo } from 'react';
+import { cn as bem } from '@bem-react/classname';
 import './style.less';
 
 interface Props {
@@ -11,10 +11,10 @@ interface Props {
       phone?: string
     }
   },
-  t: TTranslateFn
+  t: I18nTranslateFn
 }
 
-function ProfileCard({data, t}: Props) {
+function ProfileCard({ data, t }: Props) {
   const cn = bem('ProfileCard');
   return (
     <div className={cn()}>

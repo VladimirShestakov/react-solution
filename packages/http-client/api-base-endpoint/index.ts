@@ -12,9 +12,9 @@ abstract class ApiBaseEndpoint<Config extends AxiosRequestConfig = AxiosRequestC
 
   constructor(protected depends: {
     httpClient: HttpClient,
-    config: Patch<Config>
+    config?: Patch<Config>
   }) {
-    this.config = mc.merge(this.defaultConfig(), depends.config);
+    this.config = mc.merge(this.defaultConfig(), depends.config ?? {});
   }
 
   /**

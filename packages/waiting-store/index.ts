@@ -1,11 +1,11 @@
-import isPromise from '../utils/is-promise.ts';
+import isPromise from '@packages/utils/is-promise.ts';
 import { TWaitKey, TWaitRecord, TWaitState } from './types';
 
 /**
  * Хранилище ожиданий.
  */
-export class WaitingStore {
-  private state: TWaitState = new Map();
+export class WaitingStore<Type = any> {
+  private state: TWaitState<Type> = new Map();
 
   /**
    * Наличие ожидание по ключу
@@ -20,13 +20,18 @@ export class WaitingStore {
    * @param key
    * @param promise Обещания, выполнение которого будет ожидаться
    */
-  add<P extends Promise<unknown>>(key: TWaitKey, promise: P) {
+  add<P extends Promise<Type>>(key: TWaitKey, promise: P) {
     const _isPromise = isPromise(promise);
     this.state.set(key, {
       waiting: _isPromise,
       // При завершении промиса будет сброс признака waiting
       promise: _isPromise
-        ? promise.then((result) => this.complete(key, {result})).catch(error => this.complete(key, {error}))
+        ? promise
+          .then((result) => this.complete(key, {result}))
+          .catch(error => {
+            this.complete(key, {error});
+            throw error;
+          })
         : undefined,
     });
   }
@@ -38,7 +43,7 @@ export class WaitingStore {
    * @param result Результат обещания
    * @param error Ошибка обещания
    */
-  complete<R>(key: TWaitKey, {result, error}: {result?: R, error?: Error}): void {
+  complete(key: TWaitKey, {result, error}: {result?: Type, error?: Error}): Type | undefined {
     if (this.has(key)) {
       // Мутируем
       const item = this.state.get(key) as TWaitRecord;
@@ -48,6 +53,7 @@ export class WaitingStore {
     } else {
       this.state.set(key, {waiting: false, result, error});
     }
+    return result;
   }
 
   /**
@@ -82,14 +88,22 @@ export class WaitingStore {
    * @param key
    */
   isError(key: TWaitKey) {
-    return Boolean(this.state.get(key)?.error);
+    return !this.isWaiting(key) && Boolean(this.state.get(key)?.error);
+  }
+
+  /**
+   * Признак успешного выполнения обещания
+   * @param key
+   */
+  isSuccess(key: TWaitKey) {
+    return this.has(key) && !this.isWaiting(key) && !this.isError(key);
   }
 
   /**
    * Результат обещания
    * @param key
    */
-  getResult<R>(key: TWaitKey): R {
+  getResult(key: TWaitKey): Type | undefined {
     return this.state.get(key)?.result;
   }
 

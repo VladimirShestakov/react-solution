@@ -1,5 +1,5 @@
-import React, {memo, useCallback, useLayoutEffect, useState} from 'react';
-import {cn as bem} from '@bem-react/classname';
+import React, { memo, useCallback, useLayoutEffect, useState } from 'react';
+import { cn as bem } from '@bem-react/classname';
 import debounce from 'lodash.debounce';
 import './style.less';
 
@@ -24,7 +24,7 @@ function Input(props: Props) {
   );
 
   // Обработчик изменений в поле
-  const onChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
     onChangeDebounce(e.target.value);
   };
@@ -37,7 +37,7 @@ function Input(props: Props) {
   const cn = bem('Input');
   return (
     <input
-      className={cn({size: props.size})}
+      className={cn({ size: props.size })}
       value={value}
       type={props.type || 'text'}
       placeholder={props.placeholder}

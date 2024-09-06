@@ -1,4 +1,4 @@
-import { newToken } from '../token/utils.ts';
+import { newToken } from '@packages/token/utils.ts';
 import type { Ssr } from './index';
 import type { SsrOptions } from './types.ts';
 

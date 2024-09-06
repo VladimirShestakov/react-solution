@@ -13,5 +13,5 @@ export interface IObservable<State> {
   /**
    * Выборка текучего состояния
    */
-  getState(): State
+  getState(): State;
 }

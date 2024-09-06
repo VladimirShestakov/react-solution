@@ -1,4 +1,4 @@
-import { newToken } from '../../packages/token/utils.ts';
+import { newToken } from '@packages/token/utils.ts';
 import type { App } from './index.ts';
 import type { AppConfig } from './types.ts';
 

@@ -1,5 +1,6 @@
 import mc from 'merge-change';
 import exclude from "@src/utils/exclude";
+import { z } from 'zod';
 import {
   DefaultConfig,
   DefaultParams,
@@ -64,6 +65,12 @@ abstract class DataParamsState<
    * Схема валидации сохраняемых (экспортируемых) параметров
    */
   paramsSchema(): JSONSchemaType<PartialDeep<Params>> {
+    const schema = z.object({
+      limit: z.number().gt(0),
+      page: z.number().gt(0),
+      sort: z.string()
+    });
+
     return {
       type: 'object',
       properties: {
@@ -74,6 +81,8 @@ abstract class DataParamsState<
       required: [],
       additionalProperties: false
     } as JSONSchemaType<Params>;
+
+
   }
 
   /**

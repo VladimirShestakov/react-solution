@@ -1,9 +1,9 @@
 import proxyConfig from '../proxy.config';
-import { PROXY_CFG } from '../packages/proxy/token.ts';
-import { CACHE_STORE_CFG } from '../packages/cache-store/token.ts';
+import { PROXY_CFG } from '@packages/proxy/token.ts';
+import { CACHE_STORE_CFG } from '@packages/cache-store/token.ts';
 import { APP_CFG } from './app/token.ts';
-import { SSR_CGF } from '../packages/ssr/token.ts';
-import { config } from '../packages/configs/utils.ts';
+import { SSR_CGF } from '@packages/ssr/token.ts';
+import { config } from '@packages/configs/utils.ts';
 
 export default [
   config(APP_CFG, ({ env }) => ({

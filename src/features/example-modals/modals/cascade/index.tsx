@@ -1,9 +1,9 @@
-import {memo, ReactNode, useCallback} from 'react';
-import ModalLayout from "@src/ui/layout/modal-layout";
-import {ModalClose} from "@src/services/modals/types";
-import SideLayout from "@src/ui/layout/side-layout";
-import useServices from "@src/services/use-services";
-import {useTranslate} from "@src/services/i18n/use-i18n";
+import { memo, ReactNode, useCallback } from 'react';
+import ModalLayout from '@src/ui/layout/modal-layout';
+import { ModalClose } from '@src/services/modals/types';
+import SideLayout from '@src/ui/layout/side-layout';
+import useServices from '@src/services/use-services';
+import { useTranslate } from '@packages/i18n/use-i18n.ts';
 
 interface PropsCascadeModal extends ModalClose<void> {
   title: string;
@@ -13,13 +13,13 @@ interface PropsCascadeModal extends ModalClose<void> {
 
 function CascadeModal(props: PropsCascadeModal): ReactNode {
   const t = useTranslate();
-  const {level = 1} = props;
+  const { level = 1 } = props;
   const modals = useServices().modals;
   const openCascade = useCallback(() => {
     modals.open('cascade', {
       title: t('example-modals.cascade.title'),
-      message: `${t('example-modals.cascade.messageCount', {plural: level+1})} ${t('example-modals.cascade.message')}`,
-      level: level+1
+      message: `${t('example-modals.cascade.messageCount', { plural: level + 1 })} ${t('example-modals.cascade.message')}`,
+      level: level + 1
     });
   }, [level, t]);
 

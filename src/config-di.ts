@@ -1,3 +1,5 @@
+import { I18N_CFG } from '@packages/i18n/token.ts';
+import { SESSION_STORE_CFG } from '@src/features/auth/session-store/token.ts';
 import { config } from '../packages/configs/utils.ts';
 import { HTTP_CLIENT_CFG } from '../packages/http-client/token.ts';
 
@@ -8,5 +10,17 @@ export default [
     baseURL: env.SSR ? env.API_URL : '',
     //headers: {},
     //auth:{} base auth
-  }))
+  })),
+
+  config(I18N_CFG, {
+    log: true,
+    locale: 'ru-RU', // локаль по умолчанию если не будет определена автоматически
+    auto: true,
+    remember: true,
+  }),
+
+  config(SESSION_STORE_CFG, {
+    log: true,
+    tokenHeader: 'X-Token'
+  })
 ];

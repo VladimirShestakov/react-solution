@@ -1,13 +1,13 @@
-import React, {memo} from "react";
+import React, { memo } from 'react';
 import './style.less';
 
 interface Props {
   children?: React.ReactNode;
 }
 
-function Content({children}: Props){
+function Content({ children }: Props) {
   return (
-    <div className='Content'>
+    <div className="Content">
       {children}
     </div>
   );

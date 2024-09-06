@@ -1,9 +1,9 @@
-import React, {memo} from "react";
-import {cn as bem} from '@bem-react/classname';
+import React, { memo } from 'react';
+import { cn as bem } from '@bem-react/classname';
 import './style.less';
 
 interface Props {
-  label?:React.ReactNode,
+  label?: React.ReactNode,
   error?: React.ReactNode,
   children?: React.ReactNode,
 }

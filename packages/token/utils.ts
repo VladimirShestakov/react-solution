@@ -1,5 +1,5 @@
 import { Token } from './index.ts';
-import { OptionalToken } from './optional.ts';
+import { TokenDecorator } from './decorator.ts';
 import type { TokenInterface } from './types.ts';
 
 /**
@@ -18,8 +18,12 @@ export function newToken<Type>(name: string): Token<Type> {
  * Декорирование токена в опциональный
  * @param token
  */
-export function optionalToken<Type>(token:Token<Type>): OptionalToken<Type | undefined> {
-  return new OptionalToken(token);
+export function optionalToken<Type>(token: TokenInterface<Type>): TokenDecorator<Type | undefined> {
+  return new TokenDecorator(token, { optional: true });
+}
+
+export function arrayToken<Type>(token: TokenInterface<Type>): TokenDecorator<Type[]> {
+  return new TokenDecorator(token as TokenInterface<Type[]>, { array: true });
 }
 
 /**
@@ -36,13 +40,8 @@ export function isToken<Type>(
   );
 }
 
-/**
- * Проверка принадлежности к типу OptionalToken
- * @param value
- */
-export function isOptionalToken<Type>(
-  value: OptionalToken<Type> | unknown
-): value is OptionalToken<Type> {
-  return isToken(value) && Boolean('isOptional' in value && value.isOptional);
+export function isTokenDecorator<Type>(
+  value: TokenDecorator<Type> | unknown
+): value is TokenDecorator<Type> {
+  return value instanceof TokenDecorator;
 }
-

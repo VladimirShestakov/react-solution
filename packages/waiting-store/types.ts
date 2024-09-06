@@ -12,7 +12,7 @@ export type TWaitRecord<R = any> = {
    */
   waiting: boolean,
   /**
-   * Промис, завершение которого ожидается
+   * Обещание, выполнение которого ожидается
    */
   promise?: Promise<unknown>,
   /**
@@ -20,11 +20,11 @@ export type TWaitRecord<R = any> = {
    */
   timeout?: ReturnType<typeof setTimeout>
   /**
-   * Результат промиса
+   * Результат выполнения обещания
    */
   result?: R
   /**
-   * Ошибка в ожидании
+   * Ошибка в обещании
    */
   error?: Error
 }
@@ -32,4 +32,4 @@ export type TWaitRecord<R = any> = {
 /**
  * Состояние всех ожиданий
  */
-export type TWaitState = Map<TWaitKey, TWaitRecord>
+export type TWaitState<Type = any> = Map<TWaitKey, TWaitRecord<Type>>

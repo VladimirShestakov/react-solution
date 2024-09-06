@@ -1,5 +1,5 @@
-import React, {memo} from "react";
-import {cn as bem} from '@bem-react/classname';
+import React, { memo } from 'react';
+import { cn as bem } from '@bem-react/classname';
 import './style.less';
 
 interface Props {
@@ -7,14 +7,20 @@ interface Props {
   side?: 'start' | 'end' | 'between';
   align?: 'top' | 'middle' | 'baseline' | 'bottom';
   padding?: 'small' | 'medium' | 'none';
-  wrap?: boolean
+  wrap?: boolean;
 }
 
-function SideLayout({children, side = 'start', padding = 'none', align = 'middle', wrap=true}: Props) {
+function SideLayout({
+  children,
+  side = 'start',
+  padding = 'none',
+  align = 'middle',
+  wrap = true
+}: Props) {
   const cn = bem('SideLayout');
   if (wrap) {
     return (
-      <div className={cn({side, padding, align})}>
+      <div className={cn({ side, padding, align })}>
         {React.Children.map(children, (child, index) => {
           const key = isChildWithKey(child) ? child.key : index;
           return <div key={key} className={cn('item')}>{child}</div>;
@@ -23,7 +29,7 @@ function SideLayout({children, side = 'start', padding = 'none', align = 'middle
     );
   } else {
     return (
-      <div className={cn({side, padding, align})}>
+      <div className={cn({ side, padding, align })}>
         {children}
       </div>
     );

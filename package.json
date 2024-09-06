@@ -14,7 +14,8 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest",
     "test:eslint": "./node_modules/.bin/eslint ./",
     "lint:ts": "eslint \"**/*.{ts,tsx}\"",
-    "lint:ts:fix": "eslint \"**/*.{ts,tsx}\" --fix"
+    "lint:ts:fix": "eslint \"**/*.{ts,tsx}\" --fix",
+    "check:types": "tsc --noEmit"
   },
   "type": "module",
   "author": "Vladimir Shestakov boolive@yandex.ru",
@@ -51,7 +52,8 @@
     "type-fest": "^4.8.3",
     "uniqid": "^5.4.0",
     "urlpattern-polyfill": "^10.0.0",
-    "zipson": "^0.2.12"
+    "zipson": "^0.2.12",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/accept-language-parser": "^1.5.6",

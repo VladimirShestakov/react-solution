@@ -1,4 +1,4 @@
-import { newToken } from '../token/utils.ts';
+import { newToken } from '@packages/token/utils.ts';
 import type { Proxy } from './index';
 import type { ProxyOptions } from './types.ts';
 

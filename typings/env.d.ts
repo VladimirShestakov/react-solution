@@ -5,6 +5,7 @@
  */
 interface Env {
   [key: string]: any,
+
   // Базовый URL приложения, обычно /
   BASE_URL: string,
   // Хост адрес сервера.
@@ -19,11 +20,11 @@ interface Env {
 /**
  * Переменные окружения, расширенные приложением и сборщиком Vite
  */
-interface ImportMetaEnv extends Env{
+interface ImportMetaEnv extends Env {
   //
   SSR: boolean, // Запуск в Node.js
   PROD: boolean, // MODE==production
-  DEV: boolean, // MODE!=production
+  DEV: boolean, // MODE!=production @todo Убрать, оставив признаки для которых false по умолчанию
   MODE: string, // production, development and others
   // Информация о запросе при SSR (добавит сервер)
   req?: {

@@ -1,23 +1,22 @@
-import {memo, useCallback, useMemo} from "react";
-import Select from "@src/ui/elements/select";
-import useI18n from "@src/services/i18n/use-i18n.js";
-import {TLocale, TLocaleReal} from "@src/services/i18n/types";
+import { memo, useCallback, useMemo } from 'react';
+import useI18n from '@packages/i18n/use-i18n.ts';
+import Select from '@src/ui/elements/select';
 
 function LocaleSelect() {
 
-  const {locale, locales, setLocale, t} = useI18n();
+  const { locale, locales, setLocale, t } = useI18n();
 
   const options = useMemo(
-    () => locales.map(locale => ({value: locale, title: t(`example-i18n.locales.${locale}`)})),
+    () => locales.map(locale => ({ value: locale, title: t(`example-i18n.locales.${locale}`) })),
     [locale, t]
   );
 
-  const onChange = useCallback((locale: string | number) => {
-    setLocale(locale as TLocaleReal);
+  const onChange = useCallback((locale: string) => {
+    setLocale(locale);
   }, [setLocale]);
 
   return (
-    <Select onChange={onChange} value={locale as TLocale} options={options}/>
+    <Select onChange={onChange} value={locale} options={options}/>
   );
 }
 

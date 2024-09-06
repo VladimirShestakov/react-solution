@@ -1,4 +1,4 @@
-import { injectClass } from '../container/utils.ts';
+import { injectClass } from '@packages/container/utils.ts';
 import { CacheStore } from './index.ts';
 import { CACHE_STORE, CACHE_STORE_CFG } from './token.ts';
 

@@ -1,7 +1,7 @@
 import { type AxiosRequestConfig } from 'axios';
 import ApiBaseEndpoint from '../api-base-endpoint';
 import params from '../query-params';
-import { DataQuery, FindQuery, GetQuery } from '@src/services/api/crud/types';
+import { DataQuery, FindQuery, GetQuery } from './types';
 
 abstract class ApiCrudEndpoint<Config extends AxiosRequestConfig = AxiosRequestConfig> extends ApiBaseEndpoint<Config> {
   /**

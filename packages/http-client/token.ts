@@ -1,4 +1,4 @@
-import { newToken } from '../token/utils.ts';
+import { newToken } from '@packages/token/utils.ts';
 import { HttpClientOptions, HttpClient } from './types.ts';
 
 export const HTTP_CLIENT = newToken<HttpClient>('@react-skeleton/http-client');

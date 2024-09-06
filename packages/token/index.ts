@@ -19,4 +19,8 @@ export class Token<Type = any> implements TokenInterface<Type> {
   isEqual(token: TokenInterface): boolean {
     return this.key === token.key;
   }
+
+  is(): boolean {
+    return false;
+  }
 }

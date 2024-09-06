@@ -16,9 +16,9 @@ export default (env : ImportMetaEnv): TServicesConfigPatches => ({
     log: false,
     // Настройки для конкретных модулей состояния по их названиям
     modules: {
-      session: {
-        tokenHeader: 'X-Token',
-      },
+      // session: {
+      //   tokenHeader: 'X-Token',
+      // },
     }
   },
 });

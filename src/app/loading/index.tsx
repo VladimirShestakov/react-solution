@@ -1,6 +1,6 @@
-import {memo} from 'react';
-import Head from "@src/ui/layout/head";
-import PageLayout from "@src/ui/layout/page-layout";
+import { memo } from 'react';
+import Head from '@src/ui/layout/head';
+import PageLayout from '@src/ui/layout/page-layout';
 
 /**
  * Страница в режиме ожидания загрузки

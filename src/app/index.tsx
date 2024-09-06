@@ -1,10 +1,10 @@
-import {lazy, memo, Suspense} from 'react';
-import {Route, Routes} from 'react-router-dom';
-import {Helmet} from 'react-helmet-async';
+import React, { lazy, memo, Suspense } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import Modals from '@src/services/modals/container';
 import Loading from '@src/app/loading';
-import Protected from "@src/features/auth/components/protected";
-import ExampleCanvasPage from "@src/features/example-canvas/page";
+import Protected from '@src/features/auth/components/protected';
+import ExampleCanvasPage from '@src/features/example-canvas/page';
 
 // Синхронный импорт
 // import Main from '@src/features/main/page';
@@ -39,7 +39,7 @@ function App() {
           <Route path="/catalog/:categoryId" element={<Catalog/>}/>
           <Route path="/login" element={<Login/>}/>
           <Route path="/profile" element={<Protected redirect="/login"><Profile/></Protected>}/>
-          <Route path="*" element={<NotFound/>} />
+          <Route path="*" element={<NotFound/>}/>
         </Routes>
       </Suspense>
       <Modals/>

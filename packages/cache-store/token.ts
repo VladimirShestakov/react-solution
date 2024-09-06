@@ -1,4 +1,4 @@
-import { newToken } from '../token/utils.ts';
+import { newToken } from '@packages/token/utils.ts';
 import type { ICacheStore, TCacheConfig } from './types';
 
 export const CACHE_STORE = newToken<ICacheStore>('@react-skeleton/cache-store');

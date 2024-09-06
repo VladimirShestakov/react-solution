@@ -1,5 +1,5 @@
-import React, {memo} from "react";
-import {cn as bem} from '@bem-react/classname';
+import React, { memo } from 'react';
+import { cn as bem } from '@bem-react/classname';
 import './html.less';
 import './style.less';
 
@@ -13,7 +13,7 @@ interface Props {
  * Для создания области шапки и футера используются отдельные компоненты.
  * Для создания боковых областей используются вложенная разметка отдельным компонентом.
  */
-function PageLayout({children}: Props) {
+function PageLayout({ children }: Props) {
   const cn = bem('PageLayout');
   return (
     <div className={cn()}>

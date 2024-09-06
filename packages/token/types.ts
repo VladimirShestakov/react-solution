@@ -1,3 +1,5 @@
+import { Token } from './index.ts';
+
 export type TokenKey<Type = any> = symbol & { _: Type };
 
 /**
@@ -8,6 +10,7 @@ export interface TokenInterface<Type = any> {
    * Ключ токена, связанный с типом
    */
   readonly key: TokenKey<Type>;
+
   /**
    * Уникальное значение в строковом формате
    */
@@ -17,7 +20,13 @@ export interface TokenInterface<Type = any> {
    * Сравнение токенов
    * @param token
    */
-  isEqual(token: TokenInterface): boolean
+  isEqual(token: TokenInterface): boolean;
+
+  /**
+   * Проверка наличия атрибута
+   * @param attribute Название атрибута
+   */
+  is(attribute: string): boolean;
 }
 
 /**
@@ -28,6 +37,13 @@ export type ExtractTokenType<T> = T extends TokenInterface<infer Type> ? Type : 
 /**
  * Map типов из map токенов
  */
-export type ExtractTokensTypes<T> = {
+export type TypesFromTokens<T> = {
   [P in keyof T]: T[P] extends TokenInterface<infer Type> ? Type : undefined;
+};
+
+/**
+ * Map токенов из map типов
+ */
+export type TokensFromTypes<T> = {
+  [P in keyof T]: Token<P>;
 };

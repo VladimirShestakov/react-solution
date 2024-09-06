@@ -1,12 +1,21 @@
+import { i18n } from '@packages/i18n/inject.ts';
+import { router } from '@packages/router/inject.ts';
+import { ROUTER } from '@packages/router/token.ts';
+import { authFeature } from '@src/features/auth/injections.ts';
+import { catalogFeature } from '@src/features/catalog/injections.ts';
+import { exampleI18nFeature } from '@src/features/example-i18n/injections.ts';
+import { exampleModalsFeature } from '@src/features/example-modals/injections.ts';
+import { mainFeature } from '@src/features/main/injections.ts';
+import { navigationFeature } from '@src/features/navigation/injections.ts';
 import mc from 'merge-change';
 import React from 'react';
 import { HelmetProvider, HelmetServerState } from 'react-helmet-async';
-import RouterProvider from '@src/services/router/provider';
+import RouterProvider from '@packages/router/provider';
 import Services from '@src/services';
 import App from '@src/app';
 import ServicesProvider from '@src/services/provider';
 import clientConfig from '@src/config';
-import { Container } from '../packages/container';
+import { Container } from '@packages/container';
 import { ContainerProvider } from '../packages/container/provider.tsx';
 import { envClient } from '../packages/env/client.ts';
 import { httpClient } from '../packages/http-client/inject.ts';
@@ -19,7 +28,19 @@ export default async function root(envPatch: Patch<ImportMetaEnv> = {}): Promise
     .set(envClient(envPatch))
     // Настройки для всех сервисов
     .set(configs)
-    .set(httpClient);
+    // Общие сервисы
+    .set(httpClient)
+    .set(i18n)
+    .set(router)
+    // Функции проекта
+    .set(authFeature)
+    .set(exampleI18nFeature)
+    .set(exampleModalsFeature)
+    .set(catalogFeature)
+    .set(mainFeature)
+    .set(navigationFeature);
+
+  const routerService = await container.get(ROUTER);
 
   const env: ImportMetaEnv = mc.merge(import.meta.env, envPatch);
   // Менеджер сервисов
@@ -32,7 +53,7 @@ export default async function root(envPatch: Patch<ImportMetaEnv> = {}): Promise
   const Root = () => (
     <ContainerProvider container={container}>
       <ServicesProvider services={services}>
-        <RouterProvider router={services.router}>
+        <RouterProvider router={routerService}>
           <HelmetProvider context={helmetCtx}>
             <App/>
           </HelmetProvider>
@@ -53,7 +74,7 @@ export default async function root(envPatch: Patch<ImportMetaEnv> = {}): Promise
         helmetCtx.helmet.style.toString();
     },
     dump: () => servicesManager.collectDump(),
-    httpStatus: () => servicesManager.get('router').getHttpStatus()
+    httpStatus: () => routerService.getHttpStatus()
   };
 
   return { Root, servicesManager, injections };

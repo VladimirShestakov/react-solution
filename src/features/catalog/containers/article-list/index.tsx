@@ -1,37 +1,39 @@
-import {memo, useCallback} from 'react';
-import useStoreState from "@src/services/store/use-store-state";
-import Pagination from "@src/ui/navigation/pagination";
-import useServices from "@src/services/use-services";
-import Spinner from "@src/ui/elements/spinner";
+import { memo, useCallback, useSyncExternalStore } from 'react';
+import useService from '@packages/container/use-service.ts';
+import { ROUTER } from '@packages/router/token.ts';
+import Pagination from '@src/ui/navigation/pagination';
+import Spinner from '@src/ui/elements/spinner';
+import { ARTICLES_STORE } from '../../articles-store/token.ts';
 
 function ArticleList() {
 
-  const store = useServices().store;
-  const router = useServices().router;
-  const articles = useStoreState('articles');
+  const articles = useService(ARTICLES_STORE);
+  const articlesState = useSyncExternalStore(articles.state.subscribe, articles.state.get, articles.state.get);
+  const router = useService(ROUTER);
 
   const callbacks = {
     // Пагинация
     onPaginate: useCallback((page: number) => {
-      store.modules.articles.setParams({page});
-    }, [store]),
+      articles.setParams({ page });
+    }, [articles]),
     // генератор ссылки для пагинатора
     makePaginatorLink: useCallback((page: number) => {
-      return router.makeHref(store.modules.articles.exportParams({page}));
+      return router.makeHref(articles.exportParams({ page }));
     }, [])
   };
 
   return (
-    <Spinner active={articles.wait}>
+    <Spinner active={articlesState.wait}>
       <ul>
-        {articles.data.items.map((item: any) => (
+        {articlesState.data.items.map((item: any) => (
           <li key={item._id}>
             {item.title} | {item.madeIn.title} | {item.category.title} | {item.price} руб
           </li>
         ))}
       </ul>
       <Pagination
-        count={articles.data.count} page={articles.params.page} limit={articles.params.limit}
+        count={articlesState.data.count} page={articlesState.params.page}
+        limit={articlesState.params.limit}
         onChange={callbacks.onPaginate} makeLink={callbacks.makePaginatorLink}
       />
     </Spinner>

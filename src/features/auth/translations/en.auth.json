@@ -1,0 +1,17 @@
+{
+  "signIn": "Sign In",
+  "signOut": "Sign Out",
+  "loginForm": {
+    "title": "Sign In",
+    "login": "Login",
+    "password": "Password",
+    "signIn": "Sign in"
+  },
+  "profile": {
+    "title": "Profile",
+    "name": "Name",
+    "phone": "Phone",
+    "email": "Email"
+  },
+  "custom": "Custom!"
+}

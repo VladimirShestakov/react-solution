@@ -1,6 +1,6 @@
-import { CONTAINER } from '../container/token.ts';
-import { injectClass } from '../container/utils.ts';
-import { ENV } from '../env/token.ts';
+import { CONTAINER } from '@packages/container/token.ts';
+import { injectClass } from '@packages/container/utils.ts';
+import { ENV } from '@packages/env/token.ts';
 import { Configs } from './index.ts';
 import { CONFIGS } from './token.ts';
 

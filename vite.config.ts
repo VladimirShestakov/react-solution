@@ -1,9 +1,9 @@
-import {defineConfig, loadEnv} from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import reactPlugin from '@vitejs/plugin-react';
 import checker from 'vite-plugin-checker';
-import path from "path";
+import path from 'path';
 import typedVariables from 'dotenv-parse-variables';
-import proxyConfig from "./proxy.config";
+import proxyConfig from './proxy.config';
 
 export default defineConfig(params => {
   const env = typedVariables(loadEnv(params.mode, process.cwd(), '')) as ImportMetaEnv;
@@ -24,6 +24,7 @@ export default defineConfig(params => {
     resolve: {
       alias: {
         '@src': path.resolve(__dirname, './src'),
+        '@packages': path.resolve(__dirname, './packages')
       }
     },
     plugins: [

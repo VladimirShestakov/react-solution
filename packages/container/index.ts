@@ -1,12 +1,14 @@
-import { isOptionalToken } from '../token/utils.ts';
-import { WaitingStore } from '../waiting-store';
+import { WaitingStore } from '@packages/waiting-store';
+import mc from 'merge-change';
 import { CONTAINER } from './token.ts';
 import { isInjectClass, isInjectFabric, isInjectValue } from './utils.ts';
-import type { Inject, Injected } from './types';
-import type { TokenInterface, ExtractTokensTypes, TokenKey } from '../token/types.ts';
+import type { Inject } from './types';
+import type { TokenInterface, TypesFromTokens, TokenKey } from '@packages/token/types.ts';
 
 export class Container {
-  protected injects: Map<TokenKey, Injected> = new Map();
+  // Инъекции с информацией как создавать экземпляры сервисов (значения)
+  protected injects: Map<TokenKey, Inject[]> = new Map();
+  // Ожидания на выборку (создание) сервисов. В ожиданиях хранятся и сами экземпляры (значения)
   protected waiting: WaitingStore = new WaitingStore();
 
   constructor() {
@@ -20,7 +22,13 @@ export class Container {
    */
   set<Type, ExtType extends Type, Deps>(inject: Inject<Type, ExtType, Deps> | Inject[]): this {
     if (!Array.isArray(inject)) inject = [inject];
-    inject.forEach(item => this.injects.set(item.token.key, { ...item }));
+    inject.forEach(item => {
+      if (this.injects.has(item.token.key)) {
+        this.injects.get(item.token.key)?.push({ ...item });
+      } else {
+        this.injects.set(item.token.key, [{ ...item }]);
+      }
+    });
 
     return this;
   }
@@ -49,32 +57,38 @@ export class Container {
    * @protected
    */
   protected async createValue<Type>(token: TokenInterface<Type>): Promise<Type> {
-    const injected = this.injects.get(token.key);
-    if (!injected) {
-      if (isOptionalToken(token)) {
+    const injects = this.injects.get(token.key);
+    if (!injects || injects.length === 0) {
+      if (token.is('optional')) {
         return undefined as Type;
       } else {
         throw Error(`Injection by token "${token}" not found`);
       }
     }
 
+    let value = undefined;
     // Создание экземпляра
-    const inject = injected;
-    switch (true) {
-      case isInjectValue(inject): {
-        return injected.value;
+    for (const inject of injects) {
+      let nextValue;
+      switch (true) {
+        case isInjectValue(inject): {
+          nextValue = inject.value;
+          break;
+        }
+        case isInjectFabric(inject): {
+          nextValue = await inject.fabric(await this.getMapped(inject.depends));
+          break;
+        }
+        case isInjectClass(inject): {
+          nextValue = new inject.constructor(await this.getMapped(inject.depends));
+          break;
+        }
+        default:
+          throw Error(`Injection by token "${token}" is wrong`);
       }
-      case isInjectFabric(inject): {
-        injected.value = (await inject.fabric(await this.getMapped(inject.depends)));
-        return injected.value;
-      }
-      case isInjectClass(inject): {
-        injected.value = new inject.constructor(await this.getMapped(inject.depends));
-        return injected.value;
-      }
-      default:
-        throw Error(`Injection by token "${token}" is wrong`);
+      value = inject.merge ? mc.update(value, nextValue) : nextValue;
     }
+    return value;
   }
 
   /**
@@ -82,15 +96,20 @@ export class Container {
    * Сервисы будут возвращены под теми же ключами, под которыми указаны токены в depends.
    * @param depends Карта токенов.
    */
-  async getMapped<Deps extends Record<string, TokenInterface>>(depends: Deps): Promise<ExtractTokensTypes<Deps>> {
+  async getMapped<Deps extends Record<string, TokenInterface>>(depends: Deps): Promise<TypesFromTokens<Deps>> {
     // Выбор зависимостей из контейнера
     const result: Record<string, any> = {};
     const keys = Object.keys(depends);
+    const promises = [];
     for (const key of keys) {
-      result[key] = await this.get(depends[key]);
+      promises.push(this.get(depends[key]).then(value => {
+        result[key] = value;
+        return value;
+      }));
     }
+    await Promise.all(promises);
 
-    return result as ExtractTokensTypes<Deps>;
+    return result as TypesFromTokens<Deps>;
   }
 
   /**
@@ -109,8 +128,8 @@ export class Container {
     if (this.waiting.isWaiting(token.key)) throw this.waiting.getPromise(token.key);
     // Кидаем ошибку, если что-то пошло не так
     if (this.waiting.isError(token.key)) throw this.waiting.getError(token.key);
-    // Если исключения не выкинуты, значит ожидание выполнено
-    return this.waiting.getResult<Type>(token.key);
+    // Если исключения не выкинуты, значит обещание выполнено, возвращаем его результат
+    return this.waiting.getResult(token.key);
   }
 
   /**
@@ -120,7 +139,7 @@ export class Container {
    * В исключение кидается последние невыполненное обещание, чтобы попытаться все сервисы выбрать за раз.
    * @param depends Карта токенов.
    */
-  getMappedWithSuspense<Deps extends Record<string, TokenInterface>>(depends: Deps): ExtractTokensTypes<Deps> {
+  getMappedWithSuspense<Deps extends Record<string, TokenInterface>>(depends: Deps): TypesFromTokens<Deps> {
     let exception;
     // Выбор зависимостей из контейнера
     const result: Record<string, any> = {};
@@ -134,20 +153,24 @@ export class Container {
     }
     if (exception) throw exception;
 
-    return result as ExtractTokensTypes<Deps>;
+    return result as TypesFromTokens<Deps>;
   }
 
   /**
-   * Удаление ранее созданного экземпляра сервиса
+   * Удаление ранее созданного экземпляра сервиса.
+   * Удаляется обещание создания сервиса, где и хранится результат создания
    * @param token
    */
   async free<Type>(token: TokenInterface<Type>): Promise<void> {
-    const injected = this.injects.get(token.key);
-    if (injected && 'value' in injected) {
-      const entity = injected.value;
-      delete injected.value;
-      const onFree = injected.onFree;
-      if (onFree) await onFree(entity);
+    const injects = this.injects.get(token.key);
+    if (injects) {
+      // const onFree = inject.onFree;
+      // const isSuccess = this.waiting.isSuccess(token.key);
+      // const value = this.waiting.getResult(token.key);
+      // this.waiting.delete(token.key);
+      // // Асинхронный колбэк выполняем уже после удаления значения из хранилища ожиданий.
+      // // Чтобы не получилось выборки удаляемого значения.
+      // if (isSuccess && onFree) await onFree(value);
     }
   }
 

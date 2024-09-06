@@ -1,24 +1,28 @@
-import {memo} from 'react';
-import {useParams} from 'react-router-dom';
-import useI18n from "@src/services/i18n/use-i18n";
+import useService from '@packages/container/use-service.ts';
+import { memo } from 'react';
+import { useParams } from 'react-router-dom';
 import useInit from '@src/services/use-init';
-import useServices from '@src/services/use-services';
-import useRefreshKey from "@src/services/router/use-refresh-key";
-import Head from "@src/ui/layout/head";
-import MainMenu from "@src/features/navigation/components/main-menu";
-import PageLayout from "@src/ui/layout/page-layout";
-import LocaleSelect from "@src/features/example-i18n/components/locale-select";
-import ArticleList from '@src/features/catalog/containers/article-list';
-import CategoryTree from '@src/features/catalog/containers/category-tree';
-import SideLayout from "@src/ui/layout/side-layout";
-import Sider from "@src/ui/layout/sider";
-import Content from "@src/ui/layout/content";
-import CatalogFilter from "@src/features/catalog/containers/catalog-filter";
+import useRefreshKey from '@packages/router/use-refresh-key';
+import useI18n from '@packages/i18n/use-i18n.ts';
+import Head from '@src/ui/layout/head';
+import MainMenu from '@src/features/navigation/components/main-menu';
+import PageLayout from '@src/ui/layout/page-layout';
+import SideLayout from '@src/ui/layout/side-layout';
+import Sider from '@src/ui/layout/sider';
+import Content from '@src/ui/layout/content';
+import LocaleSelect from '@src/features/example-i18n/components/locale-select';
+import ArticleList from '../containers/article-list';
+import CategoryTree from '../containers/category-tree';
+import CatalogFilter from '../containers/catalog-filter';
+import { ARTICLES_STORE } from '../articles-store/token.ts';
+import { CATEGORIES_STORE } from '../categories-store/token.ts';
 
 function CatalogPage() {
-  const {store} = useServices();
-  const {locale, t} = useI18n();
-  const {categoryId} = useParams<{ categoryId: string }>();
+  const categories = useService(CATEGORIES_STORE);
+  const articles = useService(ARTICLES_STORE);
+
+  const { locale, t } = useI18n();
+  const { categoryId } = useParams<{ categoryId: string }>();
 
   // Если при навигации через location.state передан признак refreshArticles=true,
   // то получим новый ключ и сможем перезагрузить список
@@ -26,13 +30,13 @@ function CatalogPage() {
 
   useInit(async () => {
     // Инициализация параметров каталога
-    await store.modules.articles.initParams({category: categoryId});
-  }, [categoryId, locale, refreshKey], {ssr: 'articles.init'});
+    await articles.initParams({ category: categoryId });
+  }, [categoryId, locale, refreshKey], { ssr: 'articles.init' });
 
   useInit(async () => {
     // Загрузка списка категорий
-    await store.modules.categories.load({fields: '*', limit: 1000});
-  }, [locale], {ssr: 'categories.load'});
+    await categories.load({ fields: '*', limit: 1000 });
+  }, [locale], { ssr: 'categories.load' });
 
   return (
     <PageLayout>

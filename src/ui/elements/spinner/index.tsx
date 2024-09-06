@@ -1,4 +1,4 @@
-import {memo} from "react";
+import { memo } from 'react';
 import './style.less';
 
 interface Props {
@@ -6,7 +6,7 @@ interface Props {
   children?: React.ReactNode;
 }
 
-function Spinner({active = false, children}: Props) {
+function Spinner({ active = false, children }: Props) {
   if (active) {
     return <div className="Spinner">{children}</div>;
   } else {

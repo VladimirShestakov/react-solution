@@ -1,3 +1,16 @@
+type Primitive =
+  | bigint
+  | boolean
+  | null
+  | number
+  | string
+  | symbol
+  | undefined;
+
+interface ObjectPrimitive {
+  [key: string]: Primitive | ObjectPrimitive;
+}
+
 /**
  * Partial в глубину для свойств объекта
  */
@@ -41,11 +54,11 @@ type Patch<T> = PatchOperation<
  */
 type NestedKeyOf<Obj extends object> = {
   [Name in keyof Obj & string]: // Перебираем ключи объекта
-  Obj[Name] extends unknown[]
-    ? Name // Массивы не обрабатываются в глубину - берем название массива
-    : (
-      Obj[Name] extends object
-        ? Name | `${Name}.${NestedKeyOf<Obj[Name]>}` // Объект смотрим в глубину. Берем название объекта и "пути" на все его свойства
-        : Name // Для остальных типов берем их название
-      )
+  // Свойство является объектом?
+  Obj[Name] extends ObjectPrimitive
+    // Если свойство объект, то рекурсия на вложенные свойства. Получится шаблон спутями на все вложенные свойства
+    ? Name | `${Name}.${NestedKeyOf<Obj[Name]>}`
+    // Для остальных типов берем их название
+    : `${Name}`
+
 }[keyof Obj & string]; // Вытаскиваем типы всех свойств - это строковые литералы (пути на свойства)
