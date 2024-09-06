@@ -1,15 +1,15 @@
 import { memo, ReactNode, useCallback, useState } from 'react';
 import ModalLayout from '@src/ui/layout/modal-layout';
-import { ModalClose } from '@src/services/modals/types';
 import SideLayout from '@src/ui/layout/side-layout';
 import { useTranslate } from '@packages/i18n/use-i18n.ts';
+import type { ModalWithClose } from '@packages/modals/types.ts';
 
-interface PropsConfirmModal extends ModalClose<string | null> {
+export interface PromptModalProps extends ModalWithClose<string | null> {
   title: string;
   message: string;
 }
 
-function PromptModal(props: PropsConfirmModal): ReactNode {
+function PromptModal(props: PromptModalProps): ReactNode {
   const t = useTranslate();
   const [value, setValue] = useState('');
   const callbacks = {

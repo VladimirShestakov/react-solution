@@ -1,7 +1,7 @@
 import React, { lazy, memo, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import Modals from '@src/services/modals/container';
+import Modals from '@packages/modals/container';
 import Loading from '@src/app/loading';
 import Protected from '@src/features/auth/components/protected';
 import ExampleCanvasPage from '@src/features/example-canvas/page';
@@ -41,8 +41,8 @@ function App() {
           <Route path="/profile" element={<Protected redirect="/login"><Profile/></Protected>}/>
           <Route path="*" element={<NotFound/>}/>
         </Routes>
+        <Modals/>
       </Suspense>
-      <Modals/>
     </>
   );
 }

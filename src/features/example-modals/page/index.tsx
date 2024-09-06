@@ -1,29 +1,35 @@
 import { memo, useCallback } from 'react';
+import { useTranslate } from '@packages/i18n/use-i18n.ts';
+import useService from '@packages/container/use-service.ts';
+import { MODALS } from '@packages/modals/token.ts';
 import Head from '@src/ui/layout/head';
 import MainMenu from '@src/features/navigation/components/main-menu';
 import PageLayout from '@src/ui/layout/page-layout';
-import useServices from '@src/services/use-services';
 import LocaleSelect from '@src/features/example-i18n/components/locale-select';
-import { useTranslate } from '@packages/i18n/use-i18n.ts';
+import { CASCADE_MODAL } from '../modals/cascade/token.ts';
+import { CONFIRM_MODAL } from '../modals/confirm/token.ts';
+import { MESSAGE_MODAL } from '../modals/message/token.ts';
+import { PROMPT_MODAL } from '../modals/prompt/token.ts';
+import { PAGE_AS_MODAL } from './token.ts';
 
-interface IProps {
+export interface PageAsModalProps {
   close?: () => void;
 }
 
-function ModalsExamplePage(props: IProps) {
+function PageAsModal(props: PageAsModalProps) {
   const t = useTranslate();
-  const modals = useServices().modals;
+  const modals = useService(MODALS);
 
   const callbacks = {
     openMessage: useCallback(async () => {
-      modals.open('message', {
+      modals.open(MESSAGE_MODAL, {
         title: 'Сообщение',
         message: 'Простое окно с сообщением. Заголовок и текст переданы при открытии окна'
       });
     }, []),
 
     openConfirm: useCallback(async () => {
-      const result = await modals.open('confirm', {
+      const result = await modals.open(CONFIRM_MODAL, {
         title: 'Подтвердите действие!',
         message: 'Вы действительно хотите выполнить некое действие? Ваш выбор отобразится в консоле браузера.'
       });
@@ -31,7 +37,7 @@ function ModalsExamplePage(props: IProps) {
     }, []),
 
     openPrompt: useCallback(async () => {
-      const result = await modals.open('prompt', {
+      const result = await modals.open(PROMPT_MODAL, {
         title: 'Введите строку',
         message: 'Введенное значение отобразится в консоле браузера, если нажмете Ок.',
       });
@@ -39,7 +45,7 @@ function ModalsExamplePage(props: IProps) {
     }, []),
 
     openCascade: useCallback(async () => {
-      const result = await modals.open('cascade', {
+      const result = await modals.open(CASCADE_MODAL, {
         title: t('example-modals.cascade.title'),
         message: `${t('example-modals.cascade.messageCount', { plural: 1 })} ${t('example-modals.cascade.message')}`
       });
@@ -47,7 +53,7 @@ function ModalsExamplePage(props: IProps) {
     }, []),
 
     openPage: useCallback(async () => {
-      modals.open('modalsExample');
+      modals.open(PAGE_AS_MODAL);
     }, []),
 
     onClose: useCallback(() => {
@@ -102,4 +108,4 @@ function ModalsExamplePage(props: IProps) {
   );
 }
 
-export default memo(ModalsExamplePage);
+export default memo(PageAsModal);

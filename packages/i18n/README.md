@@ -1,4 +1,4 @@
-# DEPRECATED!!
+# DEPRECATED DOCS
 
 # Интернационализация (i18n)
 

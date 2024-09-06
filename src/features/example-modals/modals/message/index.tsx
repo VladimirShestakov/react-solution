@@ -1,15 +1,15 @@
-import { memo, ReactNode } from 'react';
+import { memo } from 'react';
 import ModalLayout from '@src/ui/layout/modal-layout';
-import { ModalClose } from '@src/services/modals/types';
 import SideLayout from '@src/ui/layout/side-layout';
 import { useTranslate } from '@packages/i18n/use-i18n.ts';
+import type { ModalWithClose } from '@packages/modals/types';
 
-interface PropsMessageModal extends ModalClose<void> {
+export interface MessageModalProps extends ModalWithClose<void> {
   title: string;
   message: string;
 }
 
-function MessageModal(props: PropsMessageModal): ReactNode {
+function MessageModal(props: MessageModalProps) {
   const t = useTranslate();
   return (
     <ModalLayout onClose={props.close}>

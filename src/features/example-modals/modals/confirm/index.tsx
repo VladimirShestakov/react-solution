@@ -1,15 +1,15 @@
-import { memo, ReactNode, useCallback } from 'react';
+import { memo, useCallback } from 'react';
 import ModalLayout from '@src/ui/layout/modal-layout';
-import { ModalClose } from '@src/services/modals/types';
 import SideLayout from '@src/ui/layout/side-layout';
 import { useTranslate } from '@packages/i18n/use-i18n.ts';
+import type { ModalWithClose } from '@packages/modals/types.ts';
 
-interface PropsConfirmModal extends ModalClose<boolean> {
+export interface ConfirmModalProps extends ModalWithClose<boolean> {
   title: string;
   message: string;
 }
 
-function ConfirmModal(props: PropsConfirmModal): ReactNode {
+function ConfirmModal(props: ConfirmModalProps) {
   const t = useTranslate();
   const callbacks = {
     onSuccess: useCallback(() => props.close(true), []),

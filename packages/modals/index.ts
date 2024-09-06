@@ -1,44 +1,43 @@
-import Service from "@src/services/service";
-import codeGenerator from "@src/utils/code-generator";
-import {
-  ModalClose,
-  TModalName,
-  TModalsParams, TModalsProps,
-  TModalsResult,
-  TModalsStack, TModalState,
-} from "@src/services/modals/types";
+import codeGenerator from '@packages/utils/code-generator';
+import type { Token } from '@packages/token';
+import type { ComponentProps } from 'react';
+import { ModalsStack, ModalState, ModalComponent, ModalProps, ModalResult } from './types';
 
 /**
  * Сервис модальных окон
  */
-class ModalsService extends Service {
+export class Modals {
   // Слушатели изменений стека модалок
   protected readonly listeners: Set<() => void> = new Set();
   // Генератор ключей для окон
   protected readonly keyGenerator = codeGenerator();
   // Стек открытых окон
-  protected stack: TModalsStack = [];
+  protected stack: ModalsStack = [];
+
+  constructor() {
+
+  }
 
   /**
    * Открытие модалки
-   * @param name Название модалки
+   * @param token Токен на компонент модалки
    * @param params Параметры модалки
    */
-  open = async <Name extends TModalName>(name: Name, params?: TModalsParams[Name]): Promise<TModalsResult[Name]> => {
+  open = async <Component extends ModalComponent>(token: Token<Component>, params?: ModalProps<Component>): Promise<ModalResult<Component>> => {
     return new Promise(resolve => {
       const key = this.keyGenerator();
       const state = {
         key,
-        name,
+        token,
         props: {
           ...(params || {}),
-          close: (result: TModalsResult[Name]) => {
+          close: (result: ModalResult<Component>) => {
             this.stack = this.stack.filter(stack => stack.key !== key);
             this.notify();
             resolve(result);
           },
-        } as TModalsProps[Name]
-      } as TModalState<Name>;
+        } as ComponentProps<Component>
+      } as ModalState<Component>;
       this.stack = [...this.stack, state];
       this.notify();
     });
@@ -50,22 +49,22 @@ class ModalsService extends Service {
    * @param result Результат модалки
    * @param key Ключ модалки. Если не указан, то закрывается последняя открытая.
    */
-  close = <Name extends TModalName>(key: number, result: TModalsResult[Name]) => {
+  close = <Component extends ModalComponent>(key: number, result: ModalResult<Component>) => {
     // Находим модалку в стеке и вызываем её close()
-    let modalState: TModalState<Name> | undefined;
+    let modalState: ModalState<Component> | undefined;
     if (key) {
       this.stack = this.stack.filter(stack => {
         if (stack.key === key) {
-          modalState = stack as TModalState<Name>;
+          modalState = stack as ModalState<Component>;
           return false;
         }
         return true;
       });
     } else {
-      modalState = this.stack.at(-1) as TModalState<Name>;
+      modalState = this.stack.at(-1) as ModalState<Component>;
     }
     if (modalState) {
-      const close = modalState.props.close as ModalClose<TModalsResult[Name]>['close'];
+      const close = modalState.props.close;// as ModalClose<TModalsResult[Name]>['close'];
       close(result);
     }
     this.notify();
@@ -92,5 +91,3 @@ class ModalsService extends Service {
     this.listeners.forEach(listener => listener());
   };
 }
-
-export default ModalsService;

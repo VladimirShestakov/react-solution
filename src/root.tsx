@@ -1,4 +1,5 @@
 import { i18n } from '@packages/i18n/inject.ts';
+import { modals } from '@packages/modals/inject.ts';
 import { router } from '@packages/router/inject.ts';
 import { ROUTER } from '@packages/router/token.ts';
 import { authFeature } from '@src/features/auth/injections.ts';
@@ -32,6 +33,7 @@ export default async function root(envPatch: Patch<ImportMetaEnv> = {}): Promise
     .set(httpClient)
     .set(i18n)
     .set(router)
+    .set(modals)
     // Функции проекта
     .set(authFeature)
     .set(exampleI18nFeature)
