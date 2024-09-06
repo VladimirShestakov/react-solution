@@ -13,7 +13,7 @@ export class CategoriesStore {
 
   constructor(protected depends: {
     categoriesApi: CategoriesApi,
-    config?: CategoriesStoreConfig
+    config?: Patch<CategoriesStoreConfig>
   }) {
     this.config = mc.merge(this.defaultConfig(), depends.config ?? {});
     this.state = new State<CategoriesStoreData>(this.defaultState(), {

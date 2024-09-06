@@ -12,7 +12,7 @@ export class ProfileStore {
 
   constructor(protected depends: {
     usersApi: UsersApi,
-    config?: ProfileStoreConfig
+    config?: Patch<ProfileStoreConfig>
   }) {
     this.config = mc.merge(this.defaultConfig(), depends.config ?? {});
     this.state = new State<ProfileStoreData>(this.defaultState(), {

@@ -1,5 +1,5 @@
 import ApiBaseEndpoint from '@packages/http-client/api-base-endpoint';
-import params from '@src/services/api/query-params';
+import params from '@packages/http-client/query-params';
 import type { UsersApiConfig, SignInBody } from './types.ts';
 
 export class UsersApi extends ApiBaseEndpoint<UsersApiConfig> {

@@ -1,3 +1,5 @@
+# DEPRECATED!!
+
 # Интернационализация (i18n)
 
 ## `imports.ts`
