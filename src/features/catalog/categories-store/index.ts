@@ -67,4 +67,12 @@ export class CategoriesStore {
       }
     }
   }
+
+  getDump() {
+    return this.state.get();
+  }
+
+  setDump(dump: CategoriesStoreData){
+    this.state.set(dump);
+  }
 }

@@ -1,4 +1,4 @@
-import useService from '@packages/container/use-service.ts';
+import { useService } from '@packages/container/use-service.ts';
 import { memo } from 'react';
 import { useParams } from 'react-router-dom';
 import useInit from '@src/services/use-init';

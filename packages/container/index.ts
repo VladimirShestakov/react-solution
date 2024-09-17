@@ -1,11 +1,15 @@
+import { Events } from '@packages/events';
 import { WaitingStore } from '@packages/waiting-store';
+import { TWaitKey } from '@packages/waiting-store/types.ts';
+import { WaitStatus } from '@packages/waiting-store/constants.ts';
 import mc from 'merge-change';
 import { CONTAINER } from './token.ts';
 import { isInjectClass, isInjectFabric, isInjectValue } from './utils.ts';
-import type { Inject } from './types';
+import type { ContainerEvents, Inject } from './types';
 import type { TokenInterface, TypesFromTokens, TokenKey } from '@packages/token/types.ts';
 
 export class Container {
+  readonly events: Events<ContainerEvents> = new Events();
   // Инъекции с информацией как создавать экземпляры сервисов (значения)
   protected injects: Map<TokenKey, Inject[]> = new Map();
   // Ожидания на выборку (создание) сервисов. В ожиданиях хранятся и сами экземпляры (значения)
@@ -46,9 +50,16 @@ export class Container {
       // Запоминаем promise создания экземпляра
       this.waiting.add(token.key, this.createValue(token));
     }
-
     // Возвращаем promise создания экземпляра
     return this.waiting.getPromise(token.key);
+  }
+
+  /**
+   * Статус сервиса
+   * @param token
+   */
+  getStatus<Type>(token: TokenInterface<Type>): WaitStatus {
+    return this.waiting.getStatus(token.key);
   }
 
   /**
@@ -88,6 +99,9 @@ export class Container {
       }
       value = inject.merge ? mc.update(value, nextValue) : nextValue;
     }
+
+    await this.events.emit('onCreate', { token, value });
+
     return value;
   }
 
@@ -111,6 +125,8 @@ export class Container {
 
     return result as TypesFromTokens<Deps>;
   }
+
+
 
   /**
    * Выбор сервиса с логикой ожидания для <Suspense> (с приостановкой через выброс исключения)
@@ -160,21 +176,42 @@ export class Container {
    * Удаление ранее созданного экземпляра сервиса.
    * Удаляется обещание создания сервиса, где и хранится результат создания
    * @param token
+   * @todo Проработать кейсы применения.
    */
-  async free<Type>(token: TokenInterface<Type>): Promise<void> {
-    const injects = this.injects.get(token.key);
-    if (injects) {
-      // const onFree = inject.onFree;
-      // const isSuccess = this.waiting.isSuccess(token.key);
-      // const value = this.waiting.getResult(token.key);
-      // this.waiting.delete(token.key);
-      // // Асинхронный колбэк выполняем уже после удаления значения из хранилища ожиданий.
-      // // Чтобы не получилось выборки удаляемого значения.
-      // if (isSuccess && onFree) await onFree(value);
+  async deleteValue<Type>(token: TokenInterface<Type>): Promise<void> {
+    const injects = this.injects.get(token.key) ?? [];
+    for (const inject of injects) {
+      const onDelete = inject.onDelete;
+      const isSuccess = this.waiting.isSuccess(token.key);
+      const value = this.waiting.getResult(token.key);
+      this.waiting.delete(token.key);
+      // Асинхронный колбэк выполняем уже после удаления значения из хранилища ожиданий.
+      // Чтобы не получилось выборки удаляемого значения.
+      if (isSuccess && onDelete) await onDelete(value);
+      if (isSuccess) await this.events.emit('onDelete', { token });
     }
   }
 
-  entries() {
-    return this.injects.entries();
+  getInstances() {
+    const instances: Array<[TWaitKey, any]> = [];
+    for (const [key, wait] of this.waiting.entries()) {
+      if (!wait.waiting && !wait.error) {
+        instances.push([key, wait.result]);
+      }
+    }
+    return instances;
   }
+
+  // async ready() {
+  //   await this.events.emit('onReady');
+  //   return this;
+  // }
+  //
+  // async finish() {
+  //   for (const token of this.injects.keys()) {
+  //     await this.deleteValue(token);
+  //   }
+  //   await this.events.emit('onFinish');
+  //   return this;
+  // }
 }

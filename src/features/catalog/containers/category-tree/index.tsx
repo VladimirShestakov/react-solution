@@ -1,6 +1,6 @@
 import { memo, useMemo, useSyncExternalStore } from 'react';
 import { Link } from 'react-router-dom';
-import useService from '@packages/container/use-service.ts';
+import { useService } from '@packages/container/use-service.ts';
 import { ROUTER } from '@packages/router/token.ts';
 import Tree from '@src/ui/elements/tree';
 import Spinner from '@src/ui/elements/spinner';

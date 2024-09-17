@@ -1,4 +1,4 @@
-import useService from '@packages/container/use-service.ts';
+import { useService } from '@packages/container/use-service.ts';
 import { ROUTER } from '@packages/router/token.ts';
 import { memo } from 'react';
 import { Link } from 'react-router-dom';

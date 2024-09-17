@@ -36,7 +36,7 @@ export function isToken<Type>(
   return Boolean(value
     && typeof value === 'object'
     && 'key' in value
-    && typeof value.key === 'symbol'
+    && typeof value.key === 'string'
   );
 }
 

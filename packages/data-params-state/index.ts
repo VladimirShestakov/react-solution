@@ -198,4 +198,12 @@ export abstract class DataParamsState<
   protected async loadData(apiParams: any): Promise<Data> {
     return {} as Data;
   }
+
+  getDump() {
+    return this.state.get();
+  }
+
+  setDump(dump: TDataParamsState<Data, Params>) {
+    this.state.set(dump);
+  }
 }

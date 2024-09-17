@@ -1,3 +1,5 @@
+import { dump } from '@packages/dump/inject.ts';
+import { DUMP } from '@packages/dump/token.ts';
 import { i18n } from '@packages/i18n/inject.ts';
 import { modals } from '@packages/modals/inject.ts';
 import { router } from '@packages/router/inject.ts';
@@ -34,6 +36,7 @@ export default async function root(envPatch: Patch<ImportMetaEnv> = {}): Promise
     .set(i18n)
     .set(router)
     .set(modals)
+    .set(dump)
     // Функции проекта
     .set(authFeature)
     .set(exampleI18nFeature)
@@ -41,6 +44,8 @@ export default async function root(envPatch: Patch<ImportMetaEnv> = {}): Promise
     .set(catalogFeature)
     .set(mainFeature)
     .set(navigationFeature);
+
+  await container.get(DUMP);
 
   const routerService = await container.get(ROUTER);
 

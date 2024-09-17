@@ -1,11 +1,12 @@
 import { useSyncExternalStore } from 'react';
-import useService from '@packages/container/use-service.ts';
+import { useService } from '@packages/container/use-service.ts';
 import { I18N } from './token.ts';
 import type { I18nPath, I18nTranslateOptions, useI18nReturn } from './types.ts';
 
 /**
  * Хук возвращает функцию для локализации текстов, текущую локаль, доступные локали и функцию смены локали.
  * Отслеживает изменения локали или загрузки словаря для перерендера компонента
+ * @throws
  */
 export default function useI18n(): useI18nReturn {
   const i18n = useService(I18N);
@@ -26,6 +27,10 @@ export default function useI18n(): useI18nReturn {
   };
 }
 
+/**
+ * Возвращает функцию для перевода
+ * @throws
+ */
 export function useTranslate() {
   return useI18n().t;
 }

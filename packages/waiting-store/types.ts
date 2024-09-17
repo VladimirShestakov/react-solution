@@ -1,12 +1,12 @@
 /**
  * Ключ ожидания
  */
-export type TWaitKey = string | number | symbol
+export type TWaitKey = string
 
 /**
  * Данные про ожидание
  */
-export type TWaitRecord<R = any> = {
+export type TWaitRecord<ResultType = any> = {
   /**
    * Признак ожидания
    */
@@ -22,7 +22,7 @@ export type TWaitRecord<R = any> = {
   /**
    * Результат выполнения обещания
    */
-  result?: R
+  result?: ResultType
   /**
    * Ошибка в обещании
    */
@@ -32,4 +32,12 @@ export type TWaitRecord<R = any> = {
 /**
  * Состояние всех ожиданий
  */
-export type TWaitState<Type = any> = Map<TWaitKey, TWaitRecord<Type>>
+export type TWaitState<ResultType = any> = Map<TWaitKey, TWaitRecord<ResultType>>
+
+/**
+ * Дамп состояния
+ */
+export type TWaitDump<ResultType = any> = Record<TWaitKey, {
+  error?: string,
+  result?: ResultType
+}>

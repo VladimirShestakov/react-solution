@@ -1,5 +1,5 @@
 import { memo, ReactNode, useCallback } from 'react';
-import useService from '@packages/container/use-service.ts';
+import { useService } from '@packages/container/use-service.ts';
 import { useTranslate } from '@packages/i18n/use-i18n.ts';
 import { MODALS } from '@packages/modals/token.ts';
 import ModalLayout from '@src/ui/layout/modal-layout';

@@ -1,4 +1,4 @@
-import useService from '@packages/container/use-service.ts';
+import { useService } from '@packages/container/use-service.ts';
 import { PROFILE_STORE } from '../../profile-store/token.ts';
 import { memo, useSyncExternalStore } from 'react';
 import useInit from '@src/services/use-init';

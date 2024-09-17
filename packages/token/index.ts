@@ -9,11 +9,11 @@ export class Token<Type = any> implements TokenInterface<Type> {
    * @param name Уникальное название токена, например в формате URI
    */
   constructor(name: string) {
-    this.key = Symbol.for(name) as TokenKey<Type>;
+    this.key = name as TokenKey<Type>;
   }
 
   toString(): string {
-    return this.key.description!;
+    return this.key;
   }
 
   isEqual(token: TokenInterface): boolean {

@@ -1,16 +1,17 @@
 import type { Token } from '@packages/token';
-import useContainer from './use-container.ts';
+import { useContainer } from './use-container.ts';
 
 /**
  * Хук для выборки сервиса из DI контейнера по токену.
- * В React приложении должен использоваться <Suspense>
- * так как при ожидании выборки сервиса выбрасывается исключения с promise
- *
+ * В приложении должен использовать компонент <Suspense> так как хук выкидывает исключения на ожидания.
+ * Если сервис не выбран, то компонент прекратит свою работу.
+ * @throws
  * @example
  * ```ts
  *  const i18n = useService(I18N_TOKEN)
  * ```
+ *
  */
-export default function useService<Type>(token: Token<Type>): Type {
+export function useService<Type>(token: Token<Type>): Type {
   return useContainer().getWithSuspense(token);
 }

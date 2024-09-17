@@ -1,4 +1,4 @@
-import useService from '@packages/container/use-service.ts';
+import { useService } from '@packages/container/use-service.ts';
 import { SESSION_STORE } from '../../session-store/token.ts';
 import { FormEvent, memo, useCallback, useState, useSyncExternalStore } from 'react';
 import { useTranslate } from '@packages/i18n/use-i18n.ts';

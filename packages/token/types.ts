@@ -1,6 +1,6 @@
 import { Token } from './index.ts';
 
-export type TokenKey<Type = any> = symbol & { _: Type };
+export type TokenKey<Type = any> = string & { _: Type };
 
 /**
  * Интерфейс токена

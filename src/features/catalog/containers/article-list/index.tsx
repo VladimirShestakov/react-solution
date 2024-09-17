@@ -1,5 +1,6 @@
+import { DUMP } from '@packages/dump/token.ts';
 import { memo, useCallback, useSyncExternalStore } from 'react';
-import useService from '@packages/container/use-service.ts';
+import { useService } from '@packages/container/use-service.ts';
 import { ROUTER } from '@packages/router/token.ts';
 import Pagination from '@src/ui/navigation/pagination';
 import Spinner from '@src/ui/elements/spinner';
@@ -10,6 +11,10 @@ function ArticleList() {
   const articles = useService(ARTICLES_STORE);
   const articlesState = useSyncExternalStore(articles.state.subscribe, articles.state.get, articles.state.get);
   const router = useService(ROUTER);
+
+  //тест
+  const dumpService = useService(DUMP);
+  console.log('dumpService', dumpService.collect());
 
   const callbacks = {
     // Пагинация

@@ -1,8 +1,8 @@
 import { State } from '@packages/state';
 import { WaitingStore } from '@packages/waiting-store';
-import {
+import type {
   I18nDictionary, I18nState, I18nConfig, I18nDictionaryInner, I18nPath,
-  I18nTranslateOptions, I18nNumberOptions, I18nTranslation,
+  I18nTranslateOptions, I18nNumberOptions, I18nTranslation, I18nDump,
 } from './types';
 import mc from 'merge-change';
 import flat from '@src/utils/flat';
@@ -32,7 +32,7 @@ export class I18n {
     initState?: I18nState
   }) {
     this.config = mc.merge(this.config, depends.config || {});
-    this.state = new State({
+    this.state = new State(depends.initState ?? {
       // Доступные локали определяются по переданному словарю.
       allowedLocales: Object.keys(depends.dictionary),
       // Определение текущей локали с учётом доступных
@@ -278,5 +278,24 @@ export class I18n {
 
   setDependencies(locale: string) {
     //this.services.api.setHeader('X-Lang', locale);
+  }
+
+  /**
+   * Установка дампа
+   * @param dump
+   */
+  setDump(dump: I18nDump){
+    this.state.set(dump.state);
+    this.waiting.setDump(dump.waiting);
+  }
+
+  /**
+   * Экспорт дампа
+   */
+  getDump(): I18nDump {
+    return {
+      state: this.state.get(),
+      waiting: this.waiting.getDump()
+    };
   }
 }

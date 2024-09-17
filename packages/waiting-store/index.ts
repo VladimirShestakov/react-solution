@@ -1,5 +1,6 @@
 import isPromise from '@packages/utils/is-promise.ts';
-import { TWaitKey, TWaitRecord, TWaitState } from './types';
+import type { TWaitDump, TWaitKey, TWaitRecord, TWaitState } from './types';
+import { WaitStatus } from '@packages/waiting-store/constants.ts';
 
 /**
  * Хранилище ожиданий.
@@ -27,9 +28,9 @@ export class WaitingStore<Type = any> {
       // При завершении промиса будет сброс признака waiting
       promise: _isPromise
         ? promise
-          .then((result) => this.complete(key, {result}))
+          .then((result) => this.complete(key, { result }))
           .catch(error => {
-            this.complete(key, {error});
+            this.complete(key, { error });
             throw error;
           })
         : undefined,
@@ -43,7 +44,7 @@ export class WaitingStore<Type = any> {
    * @param result Результат обещания
    * @param error Ошибка обещания
    */
-  complete(key: TWaitKey, {result, error}: {result?: Type, error?: Error}): Type | undefined {
+  complete(key: TWaitKey, { result, error }: { result?: Type, error?: Error }): Type | undefined {
     if (this.has(key)) {
       // Мутируем
       const item = this.state.get(key) as TWaitRecord;
@@ -51,7 +52,7 @@ export class WaitingStore<Type = any> {
       item.result = result;
       item.error = error;
     } else {
-      this.state.set(key, {waiting: false, result, error});
+      this.state.set(key, { waiting: false, result, error });
     }
     return result;
   }
@@ -99,6 +100,16 @@ export class WaitingStore<Type = any> {
     return this.has(key) && !this.isWaiting(key) && !this.isError(key);
   }
 
+  getStatus(key: TWaitKey): WaitStatus {
+    const item = this.state.get(key);
+    if (item) {
+      if (item.result) return WaitStatus.Success;
+      if (item.waiting) return WaitStatus.Waiting;
+      if (item.error) return WaitStatus.Error;
+    }
+    return WaitStatus.Absent;
+  }
+
   /**
    * Результат обещания
    * @param key
@@ -121,5 +132,40 @@ export class WaitingStore<Type = any> {
    */
   getPromise<T>(key: TWaitKey): Promise<T> {
     return this.state.get(key)?.promise as Promise<T>;
+  }
+
+  entries() {
+    return this.state.entries();
+  }
+
+  /**
+   * Экспорт дампа
+   */
+  getDump(): TWaitDump<Type> {
+    const dump: TWaitDump<Type> = {};
+    this.state.forEach((item, key) => {
+      if (!item.waiting) {
+        dump[key] = {};
+        if (item.error) dump[key].error = item.error.message;
+        if ('result' in item) dump[key].result = item.result;
+      }
+    });
+    return dump;
+  }
+
+  /**
+   * Установка дампа
+   * @param dump
+   */
+  setDump(dump: TWaitDump<Type>): void {
+    const state: TWaitState<Type> = new Map();
+    Object.entries(dump).forEach(([key, item]) => {
+      state.set(key, {
+        waiting: false,
+        promise: item.error ? Promise.reject(item.error) : Promise.resolve(item.result),
+        error: item.error ? new Error(item.error) : undefined,
+        result: item.result
+      });
+    });
   }
 }

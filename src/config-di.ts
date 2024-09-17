@@ -13,14 +13,14 @@ export default [
   })),
 
   config(I18N_CFG, {
-    log: true,
+    log: false,
     locale: 'ru-RU', // локаль по умолчанию если не будет определена автоматически
     auto: true,
     remember: true,
   }),
 
   config(SESSION_STORE_CFG, {
-    log: true,
+    log: false,
     tokenHeader: 'X-Token'
   })
 ];

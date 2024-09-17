@@ -7,9 +7,9 @@ export class HttpClient {
   protected axios: AxiosInstance;
 
   constructor(protected depends: {
-    config: Patch<HttpClientOptions>
+    config?: Patch<HttpClientOptions>
   }) {
-    this.config = mc.merge(this.defaultConfig(), depends.config);
+    this.config = mc.merge(this.defaultConfig(), depends.config ?? {});
     this.axios = axios.create(this.config);
   }
 

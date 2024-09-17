@@ -1,3 +1,4 @@
+import { Token } from '@packages/token';
 import type { TypesFromTokens, TokenInterface } from '@packages/token/types';
 
 /**
@@ -5,11 +6,14 @@ import type { TypesFromTokens, TokenInterface } from '@packages/token/types';
  */
 export type { Container } from './index.ts';
 
-interface InjectBase<Type, ExtType extends Type,> {
+interface InjectBase<Type, ExtType extends Type, > {
   token: TokenInterface<Type>,
-  merge?: boolean,
-  onFree?: (value: ExtType) => void | Promise<void>
+  merge?: boolean, // @todo Возможно нужно только для InjectValue
+  // @todo Нужны ли в инъекции?
+  onCreate?: (value: ExtType) => void | Promise<void>
+  onDelete?: (value: ExtType) => void | Promise<void>
 }
+
 /**
  * Инъекция класса.
  * Указывается токен, конструктор и токены зависимости, которые будут переданы в первый аргумент конструктора
@@ -36,10 +40,6 @@ export interface InjectValue<Type, ExtType extends Type> extends InjectBase<Type
   value: ExtType,
 }
 
-export interface InjectValuePatch<Type, ExtType extends Type> extends InjectBase<Type, ExtType> {
-  patch: Patch<ExtType>,
-}
-
 export type Inject<Type = any, ExtType extends Type = any, Deps = any> = (
   | InjectClass<Type, ExtType, Deps>
   | InjectFabric<Type, ExtType, Deps>
@@ -56,3 +56,13 @@ export type ConstructorWithDepends<Type, Deps> = new (depends: Deps) => Type
  * Должна вернуть Type. Может быть асинхронной.
  */
 export type FunctionWithDepends<Type, Deps> = (depends: Deps) => Type | Promise<Type>
+
+export type ContainerEvents = {
+  onCreate: {
+    token: Token<any>
+    value: any
+  },
+  onDelete: {
+    token: Token<any>
+  }
+}

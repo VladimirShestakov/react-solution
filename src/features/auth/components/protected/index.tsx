@@ -1,4 +1,4 @@
-import useService from '@packages/container/use-service.ts';
+import { useService } from '@packages/container/use-service.ts';
 import { SESSION_STORE } from '../../session-store/token.ts';
 import { memo, ReactNode, useEffect, useSyncExternalStore } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';

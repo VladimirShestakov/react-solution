@@ -6,6 +6,6 @@ import type { Container } from './types';
  * Хук для доступа к DI контейнеру.
  * Для использования React приложение должно быть обернуто в <ContainerProvider>
  */
-export default function useContainer(): Container {
+export function useContainer(): Container {
   return useContext(ContainerContext);
 }

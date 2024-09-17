@@ -1,3 +1,5 @@
+import type { TWaitDump } from '@packages/waiting-store/types.ts';
+
 /**
  * Расширяемое пространство словарей.
  * Во внешних модулях можно добавить тип подключаемого словаря:
@@ -169,3 +171,7 @@ export type useI18nReturn = {
   n: I18nNumberFormatFn,
 }
 
+export type I18nDump = {
+  state: I18nState,
+  waiting: TWaitDump,
+}
