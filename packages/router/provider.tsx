@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Router as ReactRouter } from 'react-router-dom';
-import { Router } from './index';
+import { Router } from 'react-router-dom';
+import type { RouterService } from './index';
 
 /**
  * Провайдер для роутера вместо <BrowserRouter> <MemoryRouter>
@@ -9,7 +9,7 @@ import { Router } from './index';
  * @return {JSX.Element}
  */
 function RouterProvider({ router, children }: {
-  router: Router,
+  router: RouterService,
   children: React.ReactNode
 }) {
   const [state, setState] = useState({
@@ -25,14 +25,14 @@ function RouterProvider({ router, children }: {
   }, []);
 
   return (
-    <ReactRouter
+    <Router
       navigationType={state.action}
       location={state.location}
       basename={router.basename}
       navigator={router.history}
     >
       {children}
-    </ReactRouter>
+    </Router>
   );
 }
 

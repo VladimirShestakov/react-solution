@@ -1,4 +1,4 @@
-import type { I18nTranslateFn } from '@packages/i18n/types.ts';
+import type { I18nTranslateFn } from '../../../../../packages/i18n/types.ts';
 import { memo } from 'react';
 import { cn as bem } from '@bem-react/classname';
 import './style.less';

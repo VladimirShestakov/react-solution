@@ -1,6 +1,6 @@
 import { memo, useCallback, useMemo, useSyncExternalStore } from 'react';
-import { useTranslate } from '@packages/i18n/use-i18n.ts';
-import { useService } from '@packages/container/use-service.ts';
+import { useTranslate } from '../../../../../packages/i18n/use-i18n.ts';
+import { useService } from '../../../../../packages/container';
 import SideLayout from '@src/ui/layout/side-layout';
 import Select from '@src/ui/elements/select';
 import Input from '@src/ui/elements/input';

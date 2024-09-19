@@ -1,4 +1,4 @@
-import { injectValue } from '@packages/container/utils.ts';
+import { injectValue } from '../../../../../packages/container';
 import PromptModal from './index.tsx';
 import { PROMPT_MODAL } from './token.ts';
 

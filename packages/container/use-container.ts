@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { ContainerContext } from './provider.tsx';
-import type { Container } from './types';
+import { type Container } from './container.ts';
 
 /**
  * Хук для доступа к DI контейнеру.

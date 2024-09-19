@@ -4,7 +4,7 @@ import {MenuItem} from "@src/ui/navigation/menu/types";
 import SideLayout from "@src/ui/layout/side-layout";
 import Menu from "@src/ui/navigation/menu";
 import detectActive from "@src/features/navigation/detect-active";
-import { useTranslate } from '@packages/i18n/use-i18n.ts';
+import { useTranslate } from '../../../../../packages/i18n/use-i18n.ts';
 
 function MainMenu() {
   const t = useTranslate();

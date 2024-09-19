@@ -14,7 +14,7 @@ export type TWaitRecord<ResultType = any> = {
   /**
    * Обещание, выполнение которого ожидается
    */
-  promise?: Promise<unknown>,
+  promise: Promise<ResultType>,
   /**
    * Таймаут для автоматического удаления ожидания
    */

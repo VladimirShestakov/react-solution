@@ -1,5 +1,5 @@
 import { memo, useCallback, useMemo } from 'react';
-import useI18n from '@packages/i18n/use-i18n.ts';
+import useI18n from '../../../../../packages/i18n/use-i18n.ts';
 import Select from '@src/ui/elements/select';
 
 function LocaleSelect() {

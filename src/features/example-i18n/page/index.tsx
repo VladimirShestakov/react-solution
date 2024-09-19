@@ -1,4 +1,4 @@
-import useI18n from '@packages/i18n/use-i18n.ts';
+import useI18n from '../../../../packages/i18n/use-i18n.ts';
 import { memo } from 'react';
 import Head from '@src/ui/layout/head';
 import MainMenu from '@src/features/navigation/components/main-menu';

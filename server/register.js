@@ -5,3 +5,4 @@ import { setUncaughtExceptionCaptureCallback } from "node:process";
 setUncaughtExceptionCaptureCallback(console.log);
 
 register('ts-node/esm', pathToFileURL('./'));
+

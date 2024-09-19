@@ -40,21 +40,21 @@ export default async function render(
   React.useLayoutEffect = React.useEffect;
 
   // Получаем React приложение для рендера
-  const { Root, injections } = (await clientApp({
+  const renderService = (await clientApp({
     ...params.env,
     req: {
       url: params.url,
       headers: params.headers,
       cookies: params.cookies,
     },
-  })) as RootFabricResult;
+  }));
 
   const appHtml = await new Promise<string>((resolve, reject) => {
     console.log('- render start', params.url);
 
     let renderError: Error;
     const stream = new BufferedStream();
-    const { pipe, abort } = renderToPipeableStream(React.createElement(Root), {
+    const { pipe, abort } = renderToPipeableStream(renderService.getReactElement(), {
       onAllReady: () => {
         pipe(stream);
       },
@@ -80,14 +80,18 @@ export default async function render(
     });
   });
 
+  const injections = renderService.getServerValues();
+  const dump = renderService.getRenderDump();
+  const dumpStr = stringify(dump);
+
   // Итоговый рендер HTML со всеми инъекциями в шаблон
   const html = params.template
     .replace(/<html([^>]*)>/iu, (match, attr) => {
-      const newAttr = injections?.htmlAttr ? injections.htmlAttr(attr) : attr;
+      const newAttr = injections?.htmlAttributes ? injections.htmlAttributes(attr) : attr;
       return newAttr ? `<html ${newAttr}>` : `<html>`;
     })
     .replace(/<body[^>]*>/iu, (match, attr) => {
-      const newAttr = injections?.bodyAttr ? injections.bodyAttr(attr) : attr;
+      const newAttr = injections?.bodyAttributes ? injections.bodyAttributes(attr) : attr;
       return newAttr ? `<body ${newAttr}>` : `<body>`;
     })
     .replace(/<title[^>]*>([^<]*)<\/title>/iu, (match, value) => {
@@ -107,9 +111,7 @@ export default async function render(
     .replace('<head>', (match) => {
       return (
         match +
-        `<script type="module">window.initialData=${JSON.stringify(
-          stringify(injections?.dump ? injections.dump() : {}),
-        )}</script>`
+        `<script type="module">window.initialData="${dumpStr}"</script>`
       );
     });
 

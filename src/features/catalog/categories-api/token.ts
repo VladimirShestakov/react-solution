@@ -1,4 +1,4 @@
-import { newToken } from '@packages/token/utils.ts';
+import { newToken } from '../../../../packages/token';
 import type { CategoriesApi } from './index.ts';
 import type { CategoriesApiConfig } from './types.ts';
 

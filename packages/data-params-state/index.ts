@@ -1,8 +1,8 @@
-import type { Router } from '@packages/router';
+import type { RouterService } from '../../packages/router';
 import { z } from 'zod';
 import mc from 'merge-change';
-import exclude from '@packages/utils/exclude';
-import { State } from '@packages/state';
+import exclude from '../../packages/utils/exclude';
+import { State } from '../../packages/state';
 import type { DefaultConfig, DefaultParams, SetParamsOptions, TDataParamsState } from './types.ts';
 
 export abstract class DataParamsState<
@@ -17,7 +17,7 @@ export abstract class DataParamsState<
   protected constructor(protected depends: {
     env: ImportMetaEnv,
     config?: Patch<Config>,
-    router: Router
+    router: RouterService
   }) {
     this.config = mc.merge(this.defaultConfig(), depends.config ?? {});
     this.state = new State<TDataParamsState<Data, Params>>(this.defaultState(), {

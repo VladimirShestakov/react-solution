@@ -1,4 +1,4 @@
-import useService from '@packages/container/use-service.ts';
+import { useService } from '../../packages/container';
 import { HTTP_CLIENT } from './token.ts';
 import type { HttpClient } from './types.ts';
 

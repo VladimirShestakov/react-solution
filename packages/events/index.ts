@@ -1,4 +1,4 @@
-import { EventsMap, Listener } from '@packages/events/types.ts';
+import { EventsMap, Listener } from '../../packages/events/types.ts';
 
 /**
  * Эмиттер событий.

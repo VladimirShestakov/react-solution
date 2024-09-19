@@ -1,11 +1,11 @@
 import { memo, ReactNode, useCallback } from 'react';
-import { useService } from '@packages/container/use-service.ts';
-import { useTranslate } from '@packages/i18n/use-i18n.ts';
-import { MODALS } from '@packages/modals/token.ts';
+import { useService } from '../../../../../packages/container';
+import { useTranslate } from '../../../../../packages/i18n/use-i18n.ts';
+import { MODALS } from '../../../../../packages/modals/token.ts';
 import ModalLayout from '@src/ui/layout/modal-layout';
 import SideLayout from '@src/ui/layout/side-layout';
 import { CASCADE_MODAL } from './token.ts';
-import type { ModalWithClose } from '@packages/modals/types.ts';
+import type { ModalWithClose } from '../../../../../packages/modals/types.ts';
 
 export interface CascadeModalProps extends ModalWithClose<void> {
   title: string;

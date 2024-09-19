@@ -1,6 +1,6 @@
-import { HttpClient } from '@packages/http-client';
-import { ApiError } from '@packages/http-client/types.ts';
-import { State } from '@packages/state';
+import { HttpClient } from '../../../../packages/http-client';
+import { ApiError } from '../../../../packages/http-client/types.ts';
+import { State } from '../../../../packages/state';
 import mc from 'merge-change';
 import type { SignInBody } from '../users-api/types.ts';
 import type { UsersApi } from '../users-api';

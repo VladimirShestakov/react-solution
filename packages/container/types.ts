@@ -1,10 +1,9 @@
-import { Token } from '@packages/token';
-import type { TypesFromTokens, TokenInterface } from '@packages/token/types';
+import { Token, type TypesFromTokens, type TokenInterface } from '../../packages/token';
 
 /**
  * Реэкспорт типа на контейнер
  */
-export type { Container } from './index.ts';
+export type { Container as ContainerType  } from './index.ts';
 
 interface InjectBase<Type, ExtType extends Type, > {
   token: TokenInterface<Type>,

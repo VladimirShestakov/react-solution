@@ -1,5 +1,4 @@
-import type { Token } from '@packages/token';
-import type { TypesFromTokens } from '@packages/token/types.ts';
+import { type Token, type TypesFromTokens } from '../../packages/token';
 import { useContainer } from './use-container.ts';
 
 /**
@@ -12,6 +11,6 @@ import { useContainer } from './use-container.ts';
  *  const { i18n, store } = useServicesMap({i18n: I18N_TOKEN, store: STORE_TOKEN})
  * ```
  */
-export default function useServicesMap<Deps extends Record<string, Token>>(depends: Deps): TypesFromTokens<Deps> {
+export function useServicesMap<Deps extends Record<string, Token>>(depends: Deps): TypesFromTokens<Deps> {
   return useContainer().getMappedWithSuspense(depends);
 }

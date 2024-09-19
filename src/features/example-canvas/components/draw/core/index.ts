@@ -1,6 +1,10 @@
-import {Action, ScrollParams, ZoomParams} from "@src/features/example-canvas/components/draw/core/types";
-import Figure from "@src/features/example-canvas/components/draw/core/elements/figure";
-import Leaf from "@src/features/example-canvas/components/draw/core/elements/leaf";
+import {
+  Action,
+  ScrollParams,
+  ZoomParams
+} from '@src/features/example-canvas/components/draw/core/types';
+import Figure from '@src/features/example-canvas/components/draw/core/elements/figure';
+import Leaf from '@src/features/example-canvas/components/draw/core/elements/leaf';
 
 class Core {
   // DOM элемент, в котором будет создана канва
@@ -26,7 +30,7 @@ class Core {
   action: Action | null = null;
 
   constructor() {
-    for (let i=0; i <70; i++){
+    for (let i = 0; i < 70; i++) {
       this.elements.push(new Leaf());
     }
   }
@@ -50,7 +54,7 @@ class Core {
     window.addEventListener('mouseup', this.onMouseUp);
     this.canvas.addEventListener('wheel', this.onMouseWheel);
 
-    this.ctx = this.canvas.getContext('2d', {alpha: false});
+    this.ctx = this.canvas.getContext('2d', { alpha: false });
     if (this.ctx) {
       this.ctx.imageSmoothingEnabled = false;
       // Актуализация размеров канвы
@@ -109,7 +113,7 @@ class Core {
    * @param dx Добавить смещение по горизонтали
    * @param dy Добавить смещение по вертикали
    */
-  scroll({x, y, dx, dy}: ScrollParams) {
+  scroll({ x, y, dx, dy }: ScrollParams) {
     if (typeof x != 'undefined') this.metrics.scrollX = x;
     if (typeof y != 'undefined') this.metrics.scrollY = y;
     if (typeof dx != 'undefined') this.metrics.scrollX += dx;
@@ -122,7 +126,7 @@ class Core {
    * @param delta Изменение текущего масштаба на коэффициент, например -0.1
    * @param center Центр масштабирования (точка, которая визуально не сместится)
    */
-  zoom({zoom, delta, center}: ZoomParams) {
+  zoom({ zoom, delta, center }: ZoomParams) {
     // Центр масштабирования с учётом текущего смещения и масштабирования
     const centerReal = {
       x: (center.x + this.metrics.scrollX) / this.metrics.zoom,
@@ -151,14 +155,14 @@ class Core {
    * @param x
    * @param y
    */
-  findElementByPont({x, y}: {x: number, y: number}){
-    const sorted = this.elements.sort((a,b)=>{
+  findElementByPont({ x, y }: { x: number, y: number }) {
+    const sorted = this.elements.sort((a, b) => {
       if (a.zIndex < b.zIndex) return 1;
       if (a.zIndex > b.zIndex) return -1;
       return 0;
     });
-    for (const element of sorted){
-      if (element.isIntersectRect({x1: x-1, y1: y-1, x2: x+1, y2: y+2})){
+    for (const element of sorted) {
+      if (element.isIntersectRect({ x1: x - 1, y1: y - 1, x2: x + 1, y2: y + 2 })) {
         return element;
       }
     }
@@ -174,7 +178,7 @@ class Core {
     // Поиск фигуры по точке
     const element = this.findElementByPont(point);
 
-    if (element){
+    if (element) {
       // Перемещение фигуры (drag&drop)
       this.action = {
         name: 'drag',
@@ -240,10 +244,10 @@ class Core {
     const delta = e.deltaY > 0 ? 0.1 : -0.1;
     if (e.ctrlKey) {
       // Масштабирование
-      this.zoom({delta, center: {x: e.offsetX, y: e.offsetY}});
+      this.zoom({ delta, center: { x: e.offsetX, y: e.offsetY } });
     } else {
       // Прокрутка по вертикали
-      this.scroll({dy: delta * 300});
+      this.scroll({ dy: delta * 300 });
     }
   };
 
@@ -272,7 +276,7 @@ class Core {
       // Метка времени, чтобы все элементы рассчитали анимацию относительно неё
       const time = performance.now();
       // Сортировка для рендера в порядке zIndex (todo нужно заранее готовить что рендерить и в каком порядке)
-      const sorted = this.elements.sort((a,b)=>{
+      const sorted = this.elements.sort((a, b) => {
         if (a.zIndex > b.zIndex) return 1;
         if (a.zIndex < b.zIndex) return -1;
         return 0;

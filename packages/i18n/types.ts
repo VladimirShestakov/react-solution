@@ -1,4 +1,4 @@
-import type { TWaitDump } from '@packages/waiting-store/types.ts';
+import { type TWaitDump } from '../../packages/waiting-store';
 
 /**
  * Расширяемое пространство словарей.

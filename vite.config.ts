@@ -24,7 +24,6 @@ export default defineConfig(params => {
     resolve: {
       alias: {
         '@src': path.resolve(__dirname, './src'),
-        '@packages': path.resolve(__dirname, './packages')
       }
     },
     plugins: [

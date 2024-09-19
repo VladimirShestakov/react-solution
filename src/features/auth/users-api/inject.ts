@@ -1,6 +1,6 @@
-import { HTTP_CLIENT } from '@packages/http-client/token.ts';
-import { injectClass } from '@packages/container/utils.ts';
-import { optionalToken } from '@packages/token/utils.ts';
+import { HTTP_CLIENT } from '../../../../packages/http-client/token.ts';
+import { injectClass } from '../../../../packages/container';
+import { optionalToken } from '../../../../packages/token';
 import { UsersApi } from './index.ts';
 import { USERS_API, USERS_API_CFG } from './token.ts';
 

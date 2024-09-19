@@ -1,13 +1,14 @@
-import { injectClass } from '@packages/container/utils.ts';
-import { CONTAINER } from '@packages/container/token.ts';
-import { optionalToken } from '@packages/token/utils.ts';
-import { Dump } from './index.ts';
-import { DUMP, DUMP_CFG } from './token.ts';
+import { CONTAINER, injectClass } from '../../packages/container';
+import { optionalToken } from '../../packages/token';
+import { ENV } from '../env/token.ts';
+import { DumpService } from './service.ts';
+import { DUMP_SERVICE, DUMP_CFG } from './token.ts';
 
-export const dump = injectClass({
-  token: DUMP,
-  constructor: Dump,
+export const dumpService = injectClass({
+  token: DUMP_SERVICE,
+  constructor: DumpService,
   depends: {
+    env: ENV,
     container: CONTAINER,
     config: optionalToken(DUMP_CFG)
   }

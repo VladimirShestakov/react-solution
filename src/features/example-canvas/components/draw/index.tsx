@@ -1,5 +1,5 @@
-import React, {useEffect, useMemo, useRef} from 'react';
-import Core from "./core";
+import React, { useEffect, useMemo, useRef } from 'react';
+import Core from './core';
 import './style.css';
 
 function Draw() {

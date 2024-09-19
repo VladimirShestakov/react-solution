@@ -1,20 +1,21 @@
-import { DUMP } from '@packages/dump/token.ts';
+import { useServicesMap } from '../../../../../packages/container';
+import { DUMP_SERVICE } from '../../../../../packages/dump';
 import { memo, useCallback, useSyncExternalStore } from 'react';
-import { useService } from '@packages/container/use-service.ts';
-import { ROUTER } from '@packages/router/token.ts';
+import { ROUTER_SERVICE } from '../../../../../packages/router';
 import Pagination from '@src/ui/navigation/pagination';
 import Spinner from '@src/ui/elements/spinner';
 import { ARTICLES_STORE } from '../../articles-store/token.ts';
 
 function ArticleList() {
 
-  const articles = useService(ARTICLES_STORE);
-  const articlesState = useSyncExternalStore(articles.state.subscribe, articles.state.get, articles.state.get);
-  const router = useService(ROUTER);
+  const { articles, router, dumpService } = useServicesMap({
+    articles: ARTICLES_STORE,
+    router: ROUTER_SERVICE,
+    dumpService: DUMP_SERVICE
+  });
 
   //тест
-  const dumpService = useService(DUMP);
-  console.log('dumpService', dumpService.collect());
+  const articlesState = useSyncExternalStore(articles.state.subscribe, articles.state.get, articles.state.get);
 
   const callbacks = {
     // Пагинация

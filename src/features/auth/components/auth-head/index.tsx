@@ -1,8 +1,8 @@
-import { useService } from '@packages/container/use-service.ts';
+import { useService } from '../../../../../packages/container';
+import { useTranslate } from '../../../../../packages/i18n/use-i18n.ts';
 import { SESSION_STORE } from '../../session-store/token.ts';
 import { memo, useCallback, useSyncExternalStore } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useTranslate } from '@packages/i18n/use-i18n.ts';
 import SideLayout from '@src/ui/layout/side-layout';
 
 function AuthHead() {

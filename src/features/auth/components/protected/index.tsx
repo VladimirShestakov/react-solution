@@ -1,8 +1,8 @@
-import { useService } from '@packages/container/use-service.ts';
+import { useService } from '../../../../../packages/container';
 import { SESSION_STORE } from '../../session-store/token.ts';
 import { memo, ReactNode, useEffect, useSyncExternalStore } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import useInit from '@src/services/use-init';
+import { useInit } from '../../../../../packages/render';
 
 interface Props {
   children: ReactNode,

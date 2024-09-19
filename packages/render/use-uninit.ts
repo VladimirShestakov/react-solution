@@ -6,7 +6,7 @@ import {useEffect} from 'react';
  * @param fn Асинхронная пользовательская функция
  * @param deps Значения, при смене которых fn снова исполнится.
  */
-export default function useUninit(
+export function useUninit(
   fn: TUnitFunction,
   deps: unknown[] = [],
 ) {

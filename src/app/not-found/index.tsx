@@ -1,16 +1,15 @@
-import { useService } from '@packages/container/use-service.ts';
-import { ROUTER } from '@packages/router/token.ts';
+import { useService } from '../../../packages/container';
+import { ROUTER_SERVICE } from '../../../packages/router';
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import Head from '@src/ui/layout/head';
 import MainMenu from '@src/features/navigation/components/main-menu';
 import PageLayout from '@src/ui/layout/page-layout';
-import useInit from '@src/services/use-init';
-import useUninit from '@src/services/use-uninit';
+import { useInit, useUninit } from '../../../packages/render';
 
 function NotFound() {
 
-  const routerService = useService(ROUTER);
+  const routerService = useService(ROUTER_SERVICE);
   // Установка HTTP статуса для корректного рендера на сервере
   useInit(() => routerService.setHttpStatus(404), [], { ssr: 'Not found page' });
   // При переходе к другим страницам сбросить http status

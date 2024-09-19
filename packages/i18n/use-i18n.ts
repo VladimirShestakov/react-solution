@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from 'react';
-import { useService } from '@packages/container/use-service.ts';
+import { useService } from '../../packages/container';
 import { I18N } from './token.ts';
 import type { I18nPath, I18nTranslateOptions, useI18nReturn } from './types.ts';
 

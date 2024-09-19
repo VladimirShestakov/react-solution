@@ -1,4 +1,4 @@
-import Figure from "@src/features/example-canvas/components/draw/core/elements/figure";
+import Figure from '@src/features/example-canvas/components/draw/core/elements/figure';
 
 export type ScrollParams = {
   x?: number,

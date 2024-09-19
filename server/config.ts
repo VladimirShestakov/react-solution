@@ -1,9 +1,9 @@
 import proxyConfig from '../proxy.config';
-import { PROXY_CFG } from '@packages/proxy/token.ts';
-import { CACHE_STORE_CFG } from '@packages/cache-store/token.ts';
+import { PROXY_CFG } from '../packages/proxy/token.ts';
+import { CACHE_STORE_CFG } from '../packages/cache-store/token.ts';
 import { APP_CFG } from './app/token.ts';
-import { SSR_CGF } from '@packages/ssr/token.ts';
-import { config } from '@packages/configs/utils.ts';
+import { SSR_CGF } from '../packages/ssr/token.ts';
+import { config } from '../packages/configs/utils.ts';
 
 export default [
   config(APP_CFG, ({ env }) => ({
@@ -20,7 +20,7 @@ export default [
   config(CACHE_STORE_CFG, ({ env }) => ({
     // Подпись для валидации кэша после обновления приложения или запуска в разном режиме
     // При деплое подставляется хэш комита
-    signature: `${env.CACHE_SIGNATURE || 'some2'}${env.PROD ? 'P' : 'D'}`,
+    signature: `${env.CACHE_SIGNATURE || 'some3'}${env.PROD ? 'P' : 'D'}`,
     // Максимальное количество страниц (кэшей) в оперативной памяти
     // Если кэша нет в пяти, то подгружается в память с диска
     // При достижении лимита первые (старые) записи освобождаются из памяти.
@@ -28,8 +28,7 @@ export default [
     // Сжимать кэш в gzip.
     compress: true,
     // Директория для файлов кэша
-    dir: './cache'
-
+    dir: './cache',
   })),
 
   config(SSR_CGF, ({ env }) => ({

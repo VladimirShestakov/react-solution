@@ -1,4 +1,4 @@
-import { Token } from '@packages/token';
+import { Token } from '../../packages/token';
 import type { ComponentType, MemoExoticComponent, ComponentProps } from 'react';
 
 /**

@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Container } from './types';
+import { type Container } from './container';
 
 /**
  * Контекст для DI контейнера

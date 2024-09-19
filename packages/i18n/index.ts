@@ -1,11 +1,11 @@
-import { State } from '@packages/state';
-import { WaitingStore } from '@packages/waiting-store';
+import { State } from '../../packages/state';
+import { WaitingStore } from '../../packages/waiting-store';
 import type {
   I18nDictionary, I18nState, I18nConfig, I18nDictionaryInner, I18nPath,
   I18nTranslateOptions, I18nNumberOptions, I18nTranslation, I18nDump,
 } from './types';
 import mc from 'merge-change';
-import flat from '@src/utils/flat';
+import flat from '../../packages/utils/flat';
 import acceptLang from 'accept-language-parser';
 import cookie from 'js-cookie';
 

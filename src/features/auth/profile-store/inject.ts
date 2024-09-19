@@ -1,5 +1,5 @@
-import { injectClass } from '@packages/container/utils.ts';
-import { optionalToken } from '@packages/token/utils.ts';
+import { injectClass } from '../../../../packages/container';
+import { optionalToken } from '../../../../packages/token';
 import { ProfileStore } from './index.ts';
 import { USERS_API } from '../users-api/token.ts';
 import { PROFILE_STORE, PROFILE_STORE_CFG } from './token.ts';

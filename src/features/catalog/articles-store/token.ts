@@ -1,5 +1,5 @@
-import { newToken } from '@packages/token/utils.ts';
-import type { DefaultConfig } from '@packages/data-params-state/types.ts';
+import { newToken } from '../../../../packages/token';
+import type { DefaultConfig } from '../../../../packages/data-params-state/types.ts';
 import type { ArticlesStore } from './index.ts';
 
 export const ARTICLES_STORE = newToken<ArticlesStore>('@project/catalog/articles-store');

@@ -1,4 +1,4 @@
-import { State } from '@packages/state';
+import { State } from '../../../../packages/state';
 import mc from 'merge-change';
 import type { UsersApi } from '../users-api';
 import type { ProfileStoreConfig, ProfileStoreData } from './types.ts';

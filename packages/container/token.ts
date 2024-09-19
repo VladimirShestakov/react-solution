@@ -1,8 +1,8 @@
-import { newToken } from '@packages/token/utils.ts';
-import type { Container } from './types.ts';
+import { newToken } from '../../packages/token';
+// import type { ContainerType } from './types.ts';
 
 /**
  * Токен на контейнер DI.
  * Используется в DI, чтобы сервис мог получить в зависимость весь контейнер DI
  */
-export const CONTAINER = newToken<Container>('@react-skeleton/container');
+export const CONTAINER = newToken<any>('@react-skeleton/container');

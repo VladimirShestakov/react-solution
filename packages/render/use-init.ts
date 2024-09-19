@@ -1,6 +1,7 @@
-import {useEffect} from 'react';
-import useServices from '@src/services/use-services';
-import isPromise from "@src/utils/is-promise";
+import { useServicesMap } from '../../packages/container';
+import { ENV } from '../../packages/env/token.ts';
+import { RENDER_SERVICE } from '../../packages/render';
+import { useEffect } from 'react';
 
 /**
  * Хук для асинхронной инициализации
@@ -11,59 +12,41 @@ import isPromise from "@src/utils/is-promise";
  * так как не решен полностью вопрос идентификации промисов.
  * (Для ssr хук ожидает строковый код действия, по которому идентифицируется промис)
  * @param fn Асинхронная пользовательская функция
- * @param deps Значения, при смене которых fn снова исполнится.
+ * @param deps Значения, при смене которых fn снова исполнится (если исполнялась на сервере, то нужен флаг option.force)
  * @param options Опции выполнения fn
  */
-export default function useInit(
-  fn: TInitFunction,
+export function useInit(
+  fn: () => Promise<unknown> | unknown,
   deps: unknown[] = [],
-  options: TInitOptions = {},
+  options: UseInitOptions = {},
 ) {
+  const { env, render } = useServicesMap({ env: ENV, render: RENDER_SERVICE });
 
-  // Suspense используется только на сервере для ожидания инициализации перед рендером
-  const suspense = useServices().suspense;
-  if (suspense.env.SSR && options.ssr) {
-    if (suspense.has(options.ssr)) {
-      if (suspense.waiting(options.ssr)) {
-        // Ожидание инициализации на логике Suspense (ожидание обработкой исключения)
-        suspense.throw(options.ssr);
-      }
-      if (suspense.error(options.ssr)) {
-        console.log('Ошибка при suspense');
-        throw suspense.error(options.ssr);
-      }
-    } else {
-      try {
-        // Инициализация ещё не выполнялась
-        const result = fn();
-        if (isPromise(result)) suspense.add(options.ssr, result);
-      } catch (e) {
-        throw e;
-      }
-      suspense.throw(options.ssr);
-    }
+  // Suspense используется только на сервере для ожидания инициализации перед итоговым рендером
+  if (env.SSR && options.ssr) {
+    if (render.waiting.isMissing(options.ssr)) render.waiting.add(options.ssr, fn());
+    if (render.waiting.isWaiting(options.ssr)) throw render.waiting.getPromise(options.ssr);
+    if (render.waiting.isError(options.ssr)) throw render.waiting.getError(options.ssr);
   }
 
   // Хук работает только в браузере.
   useEffect(() => {
-    // Функция выполняется, если не было инициализации на сервере или требуется перезагрузка
-    if (!options.ssr || !suspense.has(options.ssr) || options.force) {
+    // Функция выполняется, если не было ожиданий (хук ещё не выполнялся) или требуется перезагрузка
+    if (!options.ssr || !render.waiting.has(options.ssr) || options.force) {
       fn();
     } else {
       // Удаляем инициализацию от ssr, чтобы при последующих рендерах fn() работала
-      if (options.ssr) suspense.delete(options.ssr);
+      if (options.ssr) render.waiting.delete(options.ssr);
     }
   }, deps);
 }
 
-export type TInitFunction = () => Promise<unknown> | unknown;
-
-export type TInitOptions = {
+export type UseInitOptions = {
   /**
    * Ключ для выполнения fn на сервере. Если не указан, то fn не выполняется при SSR.
    * Можно указать строку, например "Load articles".
    * По ключу на клиенте определяется, выполнялась ли инициализация на сервере.
-   * Ключ также используется для логики Suspense
+   * По указанному ключу запоминается промис от fn(), чтобы его повторно не создавать при очередном рендере, а проверить его статус.
    */
   ssr?: string;
   /**

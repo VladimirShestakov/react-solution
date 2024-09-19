@@ -1,7 +1,7 @@
 import { memo, useCallback } from 'react';
-import { useTranslate } from '@packages/i18n/use-i18n.ts';
-import { useService } from '@packages/container/use-service.ts';
-import { MODALS } from '@packages/modals/token.ts';
+import { useTranslate } from '../../../../packages/i18n/use-i18n.ts';
+import { useService } from '../../../../packages/container';
+import { MODALS } from '../../../../packages/modals/token.ts';
 import Head from '@src/ui/layout/head';
 import MainMenu from '@src/features/navigation/components/main-menu';
 import PageLayout from '@src/ui/layout/page-layout';

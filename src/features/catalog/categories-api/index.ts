@@ -1,4 +1,4 @@
-import ApiCrudEndpoint from '@packages/http-client/api-crud-endpoint';
+import ApiCrudEndpoint from '../../../../packages/http-client/api-crud-endpoint';
 import type { CategoriesApiConfig } from './types.ts';
 
 export class CategoriesApi extends ApiCrudEndpoint<CategoriesApiConfig> {

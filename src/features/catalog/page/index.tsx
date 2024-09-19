@@ -1,9 +1,9 @@
-import { useService } from '@packages/container/use-service.ts';
+import { useService } from '../../../../packages/container';
 import { memo } from 'react';
 import { useParams } from 'react-router-dom';
-import useInit from '@src/services/use-init';
-import useRefreshKey from '@packages/router/use-refresh-key';
-import useI18n from '@packages/i18n/use-i18n.ts';
+import { useInit } from '../../../../packages/render';
+import useRefreshKey from '../../../../packages/router/use-refresh-key';
+import useI18n from '../../../../packages/i18n/use-i18n.ts';
 import Head from '@src/ui/layout/head';
 import MainMenu from '@src/features/navigation/components/main-menu';
 import PageLayout from '@src/ui/layout/page-layout';

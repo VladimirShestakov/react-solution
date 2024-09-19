@@ -1,14 +1,14 @@
 /**
  * HTTP server for render
  */
-import { APP } from './app/token.ts';
-import { Container } from '@packages/container';
-import { envServer } from '@packages/env/server.ts';
+import { Container } from '../packages/container';
+import { envServer } from '../packages/env/server.ts';
+import { cacheStore } from '../packages/cache-store/inject.ts';
+import { ssr } from '../packages/ssr/inject.ts';
+import { proxy } from '../packages/proxy/inject.ts';
+import { viteDev } from '../packages/vite-dev/inject.ts';
 import { app } from './app/inject.ts';
-import { cacheStore } from '@packages/cache-store/inject.ts';
-import { ssr } from '@packages/ssr/inject.ts';
-import { proxy } from '@packages/proxy/inject.ts';
-import { viteDev } from '@packages/vite-dev/inject.ts';
+import { APP } from './app/token.ts';
 import configs from './config.ts';
 
 try {

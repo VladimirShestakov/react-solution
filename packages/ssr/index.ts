@@ -9,8 +9,8 @@ import { URLPattern } from 'urlpattern-polyfill';
 import { getHeadersValues, parseAcceptEncoding, parseControls } from './parse-head.ts';
 import RenderQueue from './queue.ts';
 import render, { type RenderParams } from './render.ts';
-import type { ICacheStore, TCache } from '@packages/cache-store/types.ts';
-import type { ViteDev } from '@packages/vite-dev';
+import type { ICacheStore, TCache } from '../../packages/cache-store/types.ts';
+import type { ViteDev } from '../../packages/vite-dev';
 import type { SsrOptions, TRenderRule, TSSRResponse } from './types.ts';
 
 export class Ssr {

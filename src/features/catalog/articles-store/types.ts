@@ -1,4 +1,4 @@
-import type { DefaultParams } from '@packages/data-params-state/types';
+import type { DefaultParams } from '../../../../packages/data-params-state/types';
 
 export type TArticleItem = {
   _id: string,

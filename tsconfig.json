@@ -3,9 +3,8 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@src": ["./src/index"],
-      "@src/*": ["./src/*"],
-      "@packages/*": ["./packages/*"]
+      "@src": ["src/index"],
+      "@src/*": ["src/*"]
     },
     "lib": ["dom", "esnext"],
     "target": "es2017",

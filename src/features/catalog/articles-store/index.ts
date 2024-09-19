@@ -1,10 +1,10 @@
-import { FindQuery } from '@packages/http-client/api-crud-endpoint/types.ts';
-import exclude from '@packages/utils/exclude';
+import { FindQuery } from '../../../../packages/http-client/api-crud-endpoint/types.ts';
+import exclude from '../../../../packages/utils/exclude';
 import { z } from 'zod';
 import mc from 'merge-change';
-import { DataParamsState } from '@packages/data-params-state';
-import type { DefaultConfig } from '@packages/data-params-state/types.ts';
-import type { Router } from '@packages/router';
+import { DataParamsState } from '../../../../packages/data-params-state';
+import type { DefaultConfig } from '../../../../packages/data-params-state/types.ts';
+import type { RouterService } from '../../../../packages/router';
 import type { ArticlesApi } from '@src/features/catalog/articles-api';
 import type { TArticleData, TArticleParams } from './types.ts';
 
@@ -16,7 +16,7 @@ export class ArticlesStore extends DataParamsState<TArticleData, TArticleParams>
   constructor(protected override depends: {
     env: ImportMetaEnv,
     config?: Patch<DefaultConfig>,
-    router: Router,
+    router: RouterService,
     articlesApi: ArticlesApi,
   }) {
     super(depends);

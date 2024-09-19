@@ -1,8 +1,8 @@
-import { useService } from '@packages/container/use-service.ts';
+import { useService } from '../../../../../packages/container';
 import { PROFILE_STORE } from '../../profile-store/token.ts';
 import { memo, useSyncExternalStore } from 'react';
-import useInit from '@src/services/use-init';
-import { useTranslate } from '@packages/i18n/use-i18n.ts';
+import { useInit } from '../../../../../packages/render';
+import { useTranslate } from '../../../../../packages/i18n/use-i18n.ts';
 import LocaleSelect from '@src/features/example-i18n/components/locale-select';
 import AuthHead from '@src/features/auth/components/auth-head';
 import SideLayout from '@src/ui/layout/side-layout';

@@ -1,7 +1,13 @@
-import { injectFabric, injectValue, isFabric } from '@packages/container/utils.ts';
-import { ENV } from '@packages/env/token.ts';
-import type { TypesFromTokens, TokenInterface } from '@packages/token/types.ts';
-import type { FunctionWithDepends, InjectFabric, InjectValue } from '@packages/container/types.ts';
+import {
+  injectFabric,
+  injectValue,
+  isFabric,
+  type FunctionWithDepends,
+  type InjectFabric,
+  type InjectValue
+} from '../../packages/container';
+import { ENV } from '../../packages/env/token.ts';
+import { type TypesFromTokens, type TokenInterface } from '../../packages/token';
 
 /**
  * Создание пары {Токен, Значение} для инъекции в DI настроек

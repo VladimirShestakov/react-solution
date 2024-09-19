@@ -1,6 +1,6 @@
 import mc from 'merge-change';
-import type { Container, Inject } from '@packages/container/types.ts';
-import type { ExtractTokenType, TokenInterface } from '@packages/token/types.ts';
+import { type Container, type Inject } from '../../packages/container';
+import { type ExtractTokenType, type TokenInterface } from '../../packages/token';
 
 export class Configs {
 
