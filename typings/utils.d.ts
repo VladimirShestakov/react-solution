@@ -46,8 +46,7 @@ type Patch<T> = PatchOperation<
  * Например NestedKeyOf<typeof {a: {b: {c: 100}}, d: 1 }> => type "a.b.c" | "d"
  */
 type NestedKeyOf<Obj extends object> = {
-  [Name in keyof Obj & string]: // Свойство является объектом? // Перебираем ключи объекта
-  Obj[Name] extends ObjectPrimitive
+  [Name in keyof Obj & string]: Obj[Name] extends ObjectPrimitive // Свойство является объектом? // Перебираем ключи объекта
     ? // Если свойство объект, то рекурсия на вложенные свойства. Получится шаблон спутями на все вложенные свойства
       Name | `${Name}.${NestedKeyOf<Obj[Name]>}`
     : // Для остальных типов берем их название

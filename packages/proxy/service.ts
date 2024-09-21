@@ -17,7 +17,6 @@ export class Proxy {
     // Прокси на внешний сервер по конфигу (обычно для апи)
     this.proxyServer = httpProxy.createProxyServer({ /*timeout: 5000, */ proxyTimeout: 5000 });
     this.proxyServer.on('error', function (err, req, res) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       res.writeHead(500, { 'Content-Type': 'text/plain' });
       res.end(err.toString());

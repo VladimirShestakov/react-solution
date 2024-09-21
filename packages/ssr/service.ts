@@ -162,7 +162,7 @@ export class Ssr {
           await this.depends.cacheStore.waiting(params.key);
           const { html, status, location } = await render(this.clientApp, params);
           await this.depends.cacheStore.update(params.key, html, status, params.maxAge, location);
-        } catch (e) {
+        } catch {
           await this.depends.cacheStore.remove(params.key);
         }
       } else {

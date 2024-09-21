@@ -21,5 +21,5 @@ export default (items: any[], location: any) => {
 };
 
 function escape(s: string) {
-  return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+  return s.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
 }

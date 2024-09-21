@@ -13,7 +13,6 @@ if (parentPort) {
         case 'render': {
           const params: RenderParams = message.params;
           try {
-            // @ts-ignore
             const { html, status, location } = await render(clientApp, params);
             parentPort.postMessage({
               name: 'render-result',

@@ -163,7 +163,9 @@ export class CacheStore implements ICacheStore {
     try {
       await unlink(this.fileName(key).metaPath);
       await unlink(this.fileName(key).dataPath);
-    } catch {}
+    } catch {
+      //
+    }
     this.items.delete(key);
   }
 

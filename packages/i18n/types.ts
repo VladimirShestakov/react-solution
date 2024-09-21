@@ -62,8 +62,7 @@ export type ExtractTranslationTree<T> =
  * Например, ExtractTranslationPaths<typeof {a: {b: {c: 100}}, d: 1 }> => "a.b.c" | "d"
  */
 export type ExtractTranslationPaths<Obj extends I18nTranslation> = {
-  [Name in keyof Obj & string]: // Свойство является объектом? // Перебираем ключи объекта
-  Obj[Name] extends I18nTranslation
+  [Name in keyof Obj & string]: Obj[Name] extends I18nTranslation // Свойство является объектом? // Перебираем ключи объекта
     ? // Если свойство объект, то рекурсия на вложенные свойства. Получится шаблон спутями на все вложенные свойства
       Name | `${Name}.${ExtractTranslationPaths<Obj[Name]>}`
     : // Для остальных типов берем их название

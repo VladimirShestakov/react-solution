@@ -1,5 +1,4 @@
 import { useServicesMap } from '../../../../../packages/container';
-import { DUMP_SERVICE } from '../../../../../packages/dump';
 import { memo, useCallback, useSyncExternalStore } from 'react';
 import { ROUTER_SERVICE } from '../../../../../packages/router';
 import Pagination from '@src/ui/navigation/pagination';
@@ -7,10 +6,9 @@ import Spinner from '@src/ui/elements/spinner';
 import { ARTICLES_STORE } from '../../articles-store/token.ts';
 
 function ArticleList() {
-  const { articles, router, dumpService } = useServicesMap({
+  const { articles, router } = useServicesMap({
     articles: ARTICLES_STORE,
     router: ROUTER_SERVICE,
-    dumpService: DUMP_SERVICE,
   });
 
   //тест
