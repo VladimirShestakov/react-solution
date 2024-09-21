@@ -1,6 +1,6 @@
 import { CONTAINER, injectClass } from '../../packages/container';
 import { optionalToken } from '../../packages/token';
-import { ENV } from '../env/token.ts';
+import { ENV } from '../../packages/env';
 import { DumpService } from './service.ts';
 import { DUMP_SERVICE, DUMP_CFG } from './token.ts';
 
@@ -10,6 +10,6 @@ export const dumpService = injectClass({
   depends: {
     env: ENV,
     container: CONTAINER,
-    config: optionalToken(DUMP_CFG)
-  }
+    config: optionalToken(DUMP_CFG),
+  },
 });

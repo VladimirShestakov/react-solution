@@ -1,4 +1,4 @@
-import isPlainObject from "@src/utils/is-plain-object";
+import { isPlainObject } from './is-plain-object';
 
 /**
  * Конвертация вложенной структуры в плоскую
@@ -8,11 +8,11 @@ import isPlainObject from "@src/utils/is-plain-object";
  * @param [separator] Разделитель для названий ключей плоского объекта
  * @param [result] Результат - плоский объект. Передаётся по ссылки для рекурсии
  */
-export default function flat(
+export function flat(
   value: Record<string, any>,
   path = '',
   separator = '.',
-  result:Record<string, any> = {}
+  result: Record<string, any> = {},
 ) {
   if (isPlainObject(value)) {
     for (const [key, item] of Object.entries(value)) {

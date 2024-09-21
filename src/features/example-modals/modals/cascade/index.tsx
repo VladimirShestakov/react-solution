@@ -1,11 +1,11 @@
 import { memo, ReactNode, useCallback } from 'react';
 import { useService } from '../../../../../packages/container';
-import { useTranslate } from '../../../../../packages/i18n/use-i18n.ts';
-import { MODALS } from '../../../../../packages/modals/token.ts';
+import { useTranslate } from '../../../../../packages/i18n';
+import { MODALS } from '../../../../../packages/modals';
 import ModalLayout from '@src/ui/layout/modal-layout';
 import SideLayout from '@src/ui/layout/side-layout';
 import { CASCADE_MODAL } from './token.ts';
-import type { ModalWithClose } from '../../../../../packages/modals/types.ts';
+import type { ModalWithClose } from '../../../../../packages/modals';
 
 export interface CascadeModalProps extends ModalWithClose<void> {
   title: string;
@@ -21,7 +21,7 @@ function CascadeModal(props: CascadeModalProps): ReactNode {
     modals.open(CASCADE_MODAL, {
       title: t('example-modals.cascade.title'),
       message: `${t('example-modals.cascade.messageCount', { plural: level + 1 })} ${t('example-modals.cascade.message')}`,
-      level: level + 1
+      level: level + 1,
     });
   }, [level, t]);
 

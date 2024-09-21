@@ -4,8 +4,10 @@ import type { TokenInterface, TokenKey } from './types.ts';
  * Декоратор токена
  */
 export class TokenDecorator<Type = any> implements TokenInterface<Type> {
-
-  constructor(protected token: TokenInterface<Type>, protected attributes: Record<string, boolean>) {}
+  constructor(
+    protected token: TokenInterface<Type>,
+    protected attributes: Record<string, boolean>,
+  ) {}
 
   get key(): TokenKey<Type> {
     return this.token.key;

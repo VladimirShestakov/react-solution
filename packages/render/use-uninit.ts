@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import { useEffect } from 'react';
 
 /**
  * Хук для де инициализации при демонтировании компонента
@@ -6,10 +6,7 @@ import {useEffect} from 'react';
  * @param fn Асинхронная пользовательская функция
  * @param deps Значения, при смене которых fn снова исполнится.
  */
-export function useUninit(
-  fn: TUnitFunction,
-  deps: unknown[] = [],
-) {
+export function useUninit(fn: TUnitFunction, deps: unknown[] = []) {
   // Хук работает только в браузере.
   useEffect(() => {
     return () => {
@@ -19,4 +16,3 @@ export function useUninit(
 }
 
 export type TUnitFunction = () => unknown;
-

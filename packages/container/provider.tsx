@@ -11,9 +11,12 @@ export const ContainerContext = React.createContext<Container>({} as Container);
  * Подключает контекст к приложению для доступа к сервисам.
  * Провайдер не обрабатывает изменения в services.
  */
-export function ContainerProvider({ container, children }: {
-  container: Container,
-  children: React.ReactNode
+export function ContainerProvider({
+  container,
+  children,
+}: {
+  container: Container;
+  children: React.ReactNode;
 }) {
   return <ContainerContext.Provider value={container}>{children}</ContainerContext.Provider>;
 }

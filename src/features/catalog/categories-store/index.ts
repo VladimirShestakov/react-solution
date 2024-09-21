@@ -1,6 +1,6 @@
 import mc from 'merge-change';
 import { State } from '../../../../packages/state';
-import listToTree from '../../../../packages/utils/list-to-tree.ts';
+import { listToTree } from '../../../../packages/utils';
 import type { CategoriesApi } from '../categories-api';
 import type { CategoriesStoreConfig, CategoriesStoreData } from './types.ts';
 
@@ -11,14 +11,16 @@ export class CategoriesStore {
   readonly state: State<CategoriesStoreData>;
   protected config: CategoriesStoreConfig;
 
-  constructor(protected depends: {
-    categoriesApi: CategoriesApi,
-    config?: Patch<CategoriesStoreConfig>
-  }) {
+  constructor(
+    protected depends: {
+      categoriesApi: CategoriesApi;
+      config?: Patch<CategoriesStoreConfig>;
+    },
+  ) {
     this.config = mc.merge(this.defaultConfig(), depends.config ?? {});
     this.state = new State<CategoriesStoreData>(this.defaultState(), {
       log: this.config.log,
-      name: this.config.name
+      name: this.config.name,
     });
   }
 
@@ -37,7 +39,7 @@ export class CategoriesStore {
   defaultConfig(): CategoriesStoreConfig {
     return {
       log: true,
-      name: 'Categories state'
+      name: 'Categories state',
     };
   }
 
@@ -72,7 +74,7 @@ export class CategoriesStore {
     return this.state.get();
   }
 
-  setDump(dump: CategoriesStoreData){
+  setDump(dump: CategoriesStoreData) {
     this.state.set(dump);
   }
 }

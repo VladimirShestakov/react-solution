@@ -3,13 +3,13 @@ import { cn as bem } from '@bem-react/classname';
 import './style.less';
 
 interface Props {
-  children?: React.ReactNode,
-  onClose?: () => void,
-  overlayTransparent?: boolean,
-  overlayClose?: boolean,
-  buttonClose?: boolean,
-  padding?: boolean,
-  size?: 'small' | 'normal' | 'big'
+  children?: React.ReactNode;
+  onClose?: () => void;
+  overlayTransparent?: boolean;
+  overlayClose?: boolean;
+  buttonClose?: boolean;
+  padding?: boolean;
+  size?: 'small' | 'normal' | 'big';
 }
 
 function ModalLayout(props: Props) {
@@ -19,7 +19,7 @@ function ModalLayout(props: Props) {
     overlayClose = false,
     buttonClose = true,
     padding = true,
-    size = 'normal'
+    size = 'normal',
   } = props;
 
   // Корректировка центра, если модалка больше окна браузера.
@@ -29,12 +29,10 @@ function ModalLayout(props: Props) {
     const resizeObserver = new ResizeObserver(() => {
       if (overlay.current && frame.current) {
         // Центрирование frame или его прижатие к краю, если размеры больше чем у layout
-        overlay.current.style.alignItems = (overlay.current.clientHeight < frame.current.clientHeight)
-          ? 'flex-start'
-          : 'center';
-        overlay.current.style.justifyContent = (overlay.current.clientWidth < frame.current.clientWidth)
-          ? 'flex-start'
-          : 'center';
+        overlay.current.style.alignItems =
+          overlay.current.clientHeight < frame.current.clientHeight ? 'flex-start' : 'center';
+        overlay.current.style.justifyContent =
+          overlay.current.clientWidth < frame.current.clientWidth ? 'flex-start' : 'center';
         // Анимация
         frame.current.style.transform = 'translate(0, 0)';
       }
@@ -59,14 +57,15 @@ function ModalLayout(props: Props) {
      */
     onCloseOverlay: (e: React.SyntheticEvent<HTMLDivElement>) => {
       if (props.onClose && overlayClose && e.target === overlay.current) props.onClose();
-    }
+    },
   };
 
   return (
     <div
       ref={overlay}
       onClick={callbacks.onCloseOverlay}
-      className={cn({ transparent: overlayTransparent })}>
+      className={cn({ transparent: overlayTransparent })}
+    >
       <div className={cn('frame', { size })} ref={frame}>
         <div className={cn('content', { padding })}>
           {buttonClose && <button className={cn('close')} onClick={callbacks.onClose}></button>}

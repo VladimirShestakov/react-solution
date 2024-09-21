@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Router } from 'react-router-dom';
-import type { RouterService } from './index';
+import type { RouterService } from './service.ts';
 
 /**
  * Провайдер для роутера вместо <BrowserRouter> <MemoryRouter>
@@ -8,9 +8,12 @@ import type { RouterService } from './index';
  * @param children
  * @return {JSX.Element}
  */
-function RouterProvider({ router, children }: {
-  router: RouterService,
-  children: React.ReactNode
+function RouterProvider({
+  router,
+  children,
+}: {
+  router: RouterService;
+  children: React.ReactNode;
 }) {
   const [state, setState] = useState({
     location: router.history.location,

@@ -1,13 +1,12 @@
 import { parentPort, workerData } from 'worker_threads';
-import render, { type RenderParams } from './render';
+import { render, type RenderParams } from './render';
 
 if (parentPort) {
-
   const clientAppFile = workerData.clientAppFile;
   const clientApp = (await import(clientAppFile)).default;
 
   // Обработка команд от основного потока
-  parentPort.on('message', async (message) => {
+  parentPort.on('message', async message => {
     if (message && typeof message === 'object' && parentPort) {
       switch (message.name) {
         // Рендер

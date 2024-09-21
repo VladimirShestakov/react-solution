@@ -1,4 +1,4 @@
-import { HTTP_CLIENT } from '../../../../packages/http-client/token.ts';
+import { HTTP_CLIENT } from '../../../../packages/http-client';
 import { injectClass } from '../../../../packages/container';
 import { optionalToken } from '../../../../packages/token';
 import { UsersApi } from './index.ts';
@@ -10,5 +10,5 @@ export const usersApi = injectClass({
   depends: {
     httpClient: HTTP_CLIENT,
     config: optionalToken(USERS_API_CFG),
-  }
+  },
 });

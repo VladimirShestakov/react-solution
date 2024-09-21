@@ -4,35 +4,35 @@ declare global {
   type Services = import('@src/services').default;
 
   type HTTPStatus = {
-    status: number,
-    location?: string
-  }
+    status: number;
+    location?: string;
+  };
 
   type ServerSideRenderInjections = {
     // Замена аттрибутов тега <html>
-    htmlAttr?: (attributes: string) => string,
+    htmlAttr?: (attributes: string) => string;
     // Замена аттрибутов тега <body>
-    bodyAttr?: (attributes: string) => string,
+    bodyAttr?: (attributes: string) => string;
     // Замена тега <title>
-    title?: (text: string) => string,
+    title?: (text: string) => string;
     // Вставка тегов внутри <head>
-    head?: () => string,
+    head?: () => string;
     // Вставка тегов внутри <body> в конце
-    body?: () => string,
+    body?: () => string;
     // Данные (состояние) с которыми выполнилось приложение
-    dump?: () => object,
+    dump?: () => object;
     // HTTP status страницы
-    httpStatus?: () => HTTPStatus
-  }
+    httpStatus?: () => HTTPStatus;
+  };
 
   type RootFabricResult = {
     // React компонент приложения
-    Root: React.FunctionComponent,
+    Root: React.FunctionComponent;
     // Менеджер сервисов
-    servicesManager: Services,
+    servicesManager: Services;
     // Опция рендера на сервере
-    injections?: ServerSideRenderInjections
+    injections?: ServerSideRenderInjections;
   };
 
-  type RootFabric = (envPartial: Partial<ImportMetaEnv>) => Promise<RenderService>
+  type RootFabric = (envPartial: Partial<ImportMetaEnv>) => Promise<RenderService>;
 }

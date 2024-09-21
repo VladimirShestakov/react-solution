@@ -2,7 +2,7 @@ import { memo } from 'react';
 import './style.less';
 
 interface Props {
-  active?: boolean,
+  active?: boolean;
   children?: React.ReactNode;
 }
 

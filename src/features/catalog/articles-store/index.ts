@@ -1,9 +1,8 @@
-import { FindQuery } from '../../../../packages/http-client/api-crud-endpoint/types.ts';
-import exclude from '../../../../packages/utils/exclude';
+import { FindQuery } from '../../../../packages/http-client';
+import { exclude } from '../../../../packages/utils';
 import { z } from 'zod';
 import mc from 'merge-change';
-import { DataParamsState } from '../../../../packages/data-params-state';
-import type { DefaultConfig } from '../../../../packages/data-params-state/types.ts';
+import { DataParamsState, type DefaultConfig } from '../../../../packages/data-params-state';
 import type { RouterService } from '../../../../packages/router';
 import type { ArticlesApi } from '@src/features/catalog/articles-api';
 import type { TArticleData, TArticleParams } from './types.ts';
@@ -12,13 +11,14 @@ import type { TArticleData, TArticleParams } from './types.ts';
  * Детальная информация о пользователе
  */
 export class ArticlesStore extends DataParamsState<TArticleData, TArticleParams> {
-
-  constructor(protected override depends: {
-    env: ImportMetaEnv,
-    config?: Patch<DefaultConfig>,
-    router: RouterService,
-    articlesApi: ArticlesApi,
-  }) {
+  constructor(
+    protected override depends: {
+      env: ImportMetaEnv;
+      config?: Patch<DefaultConfig>;
+      router: RouterService;
+      articlesApi: ArticlesApi;
+    },
+  ) {
     super(depends);
   }
 
@@ -26,11 +26,11 @@ export class ArticlesStore extends DataParamsState<TArticleData, TArticleParams>
     return mc.patch(super.defaultState(), {
       data: {
         items: [],
-        count: 0
+        count: 0,
       },
       params: {
         category: '',
-        query: ''
+        query: '',
       },
     });
   }
@@ -55,15 +55,15 @@ export class ArticlesStore extends DataParamsState<TArticleData, TArticleParams>
       fields: `items(*,category(title),madeIn(title)), count`,
       filter: {
         category: params.category,
-        query: params.query
+        query: params.query,
       },
     });
 
     return exclude(apiParams, {
       skip: 0,
       filter: {
-        category: ''
-      }
+        category: '',
+      },
     });
   }
 

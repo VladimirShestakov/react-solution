@@ -1,4 +1,4 @@
-import useI18n from '../../../../packages/i18n/use-i18n.ts';
+import { useI18n } from '../../../../packages/i18n';
 import { memo } from 'react';
 import Head from '@src/ui/layout/head';
 import MainMenu from '@src/features/navigation/components/main-menu';
@@ -11,22 +11,14 @@ function I18nExamplePage() {
   return (
     <PageLayout>
       <Head title="React Skeleton">
-        <LocaleSelect/>
+        <LocaleSelect />
       </Head>
-      <MainMenu/>
+      <MainMenu />
       <h2>{t('example-i18n.title')}</h2>
-      <p>
-        {t('example-i18n.content.pLocale')}
-      </p>
-      <p>
-        {t('example-i18n.content.pDic')}
-      </p>
-      <p>
-        {t('example-i18n.content.pDetect')}
-      </p>
-      <p>
-        {t('example-i18n.content.pHook')}
-      </p>
+      <p>{t('example-i18n.content.pLocale')}</p>
+      <p>{t('example-i18n.content.pDic')}</p>
+      <p>{t('example-i18n.content.pDetect')}</p>
+      <p>{t('example-i18n.content.pHook')}</p>
     </PageLayout>
   );
 }

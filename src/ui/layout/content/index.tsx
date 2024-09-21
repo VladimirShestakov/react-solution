@@ -6,11 +6,7 @@ interface Props {
 }
 
 function Content({ children }: Props) {
-  return (
-    <div className="Content">
-      {children}
-    </div>
-  );
+  return <div className="Content">{children}</div>;
 }
 
 export default memo(Content);

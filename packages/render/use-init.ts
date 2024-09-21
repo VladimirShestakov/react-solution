@@ -1,5 +1,5 @@
 import { useServicesMap } from '../../packages/container';
-import { ENV } from '../../packages/env/token.ts';
+import { ENV } from '../../packages/env';
 import { RENDER_SERVICE } from '../../packages/render';
 import { useEffect } from 'react';
 
@@ -59,4 +59,4 @@ export type UseInitOptions = {
    * Например, когда search-парметры адреса установлены напрямую
    */
   onBackForward?: boolean;
-}
+};

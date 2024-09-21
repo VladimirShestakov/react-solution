@@ -1,7 +1,7 @@
 import React from 'react';
 import { renderToPipeableStream } from 'react-dom/server';
 import { stringify } from 'zipson';
-import BufferedStream from './buffered-stream';
+import { BufferedStream } from './buffered-stream';
 
 export type RenderParams = {
   key: string;
@@ -32,22 +32,19 @@ export type RenderError = {
 // Должен быть больше чем любые таймауты в приложении, например больше таймаутов на HTTP запросы.
 const TIMEOUT_RENDER = 600000;
 
-export default async function render(
-  clientApp: RootFabric,
-  params: RenderParams,
-): Promise<RenderResult> {
+export async function render(clientApp: RootFabric, params: RenderParams): Promise<RenderResult> {
   // Fix for react render;
   React.useLayoutEffect = React.useEffect;
 
   // Получаем React приложение для рендера
-  const renderService = (await clientApp({
+  const renderService = await clientApp({
     ...params.env,
     req: {
       url: params.url,
       headers: params.headers,
       cookies: params.cookies,
     },
-  }));
+  });
 
   const appHtml = await new Promise<string>((resolve, reject) => {
     console.log('- render start', params.url);
@@ -58,7 +55,7 @@ export default async function render(
       onAllReady: () => {
         pipe(stream);
       },
-      onError: (error) => {
+      onError: error => {
         renderError = error as Error;
       },
     });
@@ -82,7 +79,7 @@ export default async function render(
 
   const injections = renderService.getServerValues();
   const dump = renderService.getRenderDump();
-  const dumpStr = stringify(dump);
+  const dumpStr = JSON.stringify(stringify(dump));
 
   // Итоговый рендер HTML со всеми инъекциями в шаблон
   const html = params.template
@@ -104,15 +101,12 @@ export default async function render(
     })
     .replace('</head>', (injections?.head ? injections.head() : '') + '</head>')
     .replace('</body>', (injections?.body ? injections.body() : '') + '</body>')
-    .replace('<div id="root">', (match) => {
+    .replace('<div id="root">', match => {
       return match + appHtml;
     })
     // Состояние сервисов, с которым выполнился рендер
-    .replace('<head>', (match) => {
-      return (
-        match +
-        `<script type="module">window.initialData="${dumpStr}"</script>`
-      );
+    .replace('<head>', match => {
+      return match + `<script type="module">window.initialData=${dumpStr}</script>`;
     });
 
   const httpStatus = injections?.httpStatus?.() || { status: 200 };

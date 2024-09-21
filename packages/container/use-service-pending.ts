@@ -27,10 +27,10 @@ import { useContainer } from './use-container.ts';
  * ```
  */
 export function useServicePending<Type>(token: Token<Type>): {
-  service: Type | undefined,
-  isSuccess: boolean
-  isWaiting: boolean
-  isError: boolean
+  service: Type | undefined;
+  isSuccess: boolean;
+  isWaiting: boolean;
+  isError: boolean;
 } {
   const container = useContainer();
   let service: Type | undefined = undefined;
@@ -45,9 +45,11 @@ export function useServicePending<Type>(token: Token<Type>): {
 
   useEffect(() => {
     // Ждём выполнения обещания на сервис, если сервис ещё не получен
-    if (!service) container.get(token)
-      .then(() => setStatus(container.getStatus(token)))
-      .catch(() => setStatus(container.getStatus(token)));
+    if (!service)
+      container
+        .get(token)
+        .then(() => setStatus(container.getStatus(token)))
+        .catch(() => setStatus(container.getStatus(token)));
   }, []);
 
   return {

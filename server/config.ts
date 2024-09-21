@@ -1,9 +1,9 @@
 import proxyConfig from '../proxy.config';
-import { PROXY_CFG } from '../packages/proxy/token.ts';
-import { CACHE_STORE_CFG } from '../packages/cache-store/token.ts';
+import { PROXY_CFG } from '../packages/proxy';
+import { CACHE_STORE_CFG } from '../packages/cache-store';
 import { APP_CFG } from './app/token.ts';
-import { SSR_CGF } from '../packages/ssr/token.ts';
-import { config } from '../packages/configs/utils.ts';
+import { SSR_CGF } from '../packages/ssr';
+import { config } from '../packages/configs';
 
 export default [
   config(APP_CFG, ({ env }) => ({
@@ -12,15 +12,14 @@ export default [
   })),
 
   config(PROXY_CFG, ({ env }) => ({
-    enabled: true,//env.PROD, //В dev режиме работает прокси Vite(в режиме middleware), но у него ошибка на POST запросы, поэтому включен свой прокси
-    routes: proxyConfig(env)
-
+    enabled: true, //env.PROD, //В dev режиме работает прокси Vite(в режиме middleware), но у него ошибка на POST запросы, поэтому включен свой прокси
+    routes: proxyConfig(env),
   })),
 
   config(CACHE_STORE_CFG, ({ env }) => ({
     // Подпись для валидации кэша после обновления приложения или запуска в разном режиме
     // При деплое подставляется хэш комита
-    signature: `${env.CACHE_SIGNATURE || 'some3'}${env.PROD ? 'P' : 'D'}`,
+    signature: `${env.CACHE_SIGNATURE || 'some'}${env.PROD ? 'P' : 'D'}`,
     // Максимальное количество страниц (кэшей) в оперативной памяти
     // Если кэша нет в пяти, то подгружается в память с диска
     // При достижении лимита первые (старые) записи освобождаются из памяти.
@@ -39,12 +38,12 @@ export default [
     // HTML файл, куда вставить результаты рендера
     template: {
       dev: './src/index.html',
-      prod: './dist/client/index.html'
+      prod: './dist/client/index.html',
     },
     // Файл клиентского приложения, которое рендерить
     clientAppFile: {
-      dev: './src/root.tsx',
-      prod: './dist/server/root.js'
+      dev: './src/client-app.tsx',
+      prod: './dist/server/client-app.js',
     },
     // Правила рендера и кэширования страниц.
     // Используется первое правило, удовлетворяющие шаблону url
@@ -56,9 +55,9 @@ export default [
         // Ждём рендер в DEV режиме
         ssrWait: env.DEV,
         // Отправлять старый кэш вместо spa (если нет ssrWait)
-        ssrSendAged: true,
+        ssrSendAged: false, //true,
         // Срок кэша на сервере в секундах. По истечении выполняется перерендер.
-        cacheAge: 60 * 15, // 15 минут.
+        cacheAge: 0, //60 * 15, // 15 минут.
         // Из-за локали в куках используем max-age=0, чтобы браузер всегда узнавал у сервера валидность кэша.
         // Иначе при смене языка и переходе по ссылкам сайта браузер может отобразить свой кэш на старом языке.
         control: `public, max-age=${0}, s-maxage=${0}`,

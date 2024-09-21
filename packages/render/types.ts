@@ -1,6 +1,8 @@
+import type { TWaitDump } from '../waiting-store';
+
 export type RenderConfig = {
-  domId: string
-}
+  domId: string;
+};
 
 // export type RenderValues = {
 //   htmlAttributes?: string;
@@ -14,22 +16,25 @@ export type RenderConfig = {
 //   }
 // }
 
-
 export type RenderValues = {
   // Замена аттрибутов тега <html>
-  htmlAttributes?: (attributes: string) => string,
+  htmlAttributes?: (attributes: string) => string;
   // Замена аттрибутов тега <body>
-  bodyAttributes?: (attributes: string) => string,
+  bodyAttributes?: (attributes: string) => string;
   // Замена тега <title>
-  title?: (text: string) => string,
+  title?: (text: string) => string;
   // Вставка тегов внутри <head>
-  head?: () => string,
+  head?: () => string;
   // Вставка тегов внутри <body> в конце
-  body?: () => string,
+  body?: () => string;
   // HTTP status страницы
   httpStatus?: () => {
     status: number;
-    location?: string
+    location?: string;
     // куки?
-  }
-}
+  };
+};
+
+export type RenderDump = {
+  waiting: TWaitDump;
+};

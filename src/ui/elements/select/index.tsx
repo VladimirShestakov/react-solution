@@ -3,15 +3,14 @@ import './style.less';
 
 interface Props<Value extends string> {
   options: {
-    value: Value,
-    title: string,
-  }[],
-  value: Value,
-  onChange?: (value: Value) => void
+    value: Value;
+    title: string;
+  }[];
+  value: Value;
+  onChange?: (value: Value) => void;
 }
 
 function Select<Value extends string>(props: Props<Value>) {
-
   const onSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (props.onChange) props.onChange(e.target.value as Value);
   };
@@ -19,7 +18,9 @@ function Select<Value extends string>(props: Props<Value>) {
   return (
     <select className="Select" value={props.value} onChange={onSelect}>
       {props.options.map(item => (
-        <option key={item.value} value={item.value}>{item.title}</option>
+        <option key={item.value} value={item.value}>
+          {item.title}
+        </option>
       ))}
     </select>
   );

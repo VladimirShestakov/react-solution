@@ -4,5 +4,5 @@ import { PROMPT_MODAL } from './token.ts';
 
 export const promptModal = injectValue({
   token: PROMPT_MODAL,
-  value: PromptModal
+  value: PromptModal,
 });

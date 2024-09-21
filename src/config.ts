@@ -1,7 +1,7 @@
-import { I18N_CFG } from '../packages/i18n/token.ts';
+import { I18N_CFG } from '../packages/i18n';
 import { SESSION_STORE_CFG } from '@src/features/auth/session-store/token.ts';
-import { config } from '../packages/configs/utils.ts';
-import { HTTP_CLIENT_CFG } from '../packages/http-client/token.ts';
+import { config } from '../packages/configs';
+import { HTTP_CLIENT_CFG } from '../packages/http-client';
 
 export default [
   config(HTTP_CLIENT_CFG, ({ env }) => ({
@@ -21,6 +21,6 @@ export default [
 
   config(SESSION_STORE_CFG, {
     log: false,
-    tokenHeader: 'X-Token'
-  })
+    tokenHeader: 'X-Token',
+  }),
 ];

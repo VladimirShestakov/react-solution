@@ -6,14 +6,13 @@ import LocaleSelect from '@src/features/example-i18n/components/locale-select';
 import Draw from '@src/features/example-canvas/components/draw';
 
 function ExampleCanvasPage() {
-
   return (
     <PageLayout>
       <Head title="React Skeleton">
-        <LocaleSelect/>
+        <LocaleSelect />
       </Head>
-      <MainMenu/>
-      <Draw/>
+      <MainMenu />
+      <Draw />
     </PageLayout>
   );
 }

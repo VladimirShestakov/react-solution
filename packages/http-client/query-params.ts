@@ -2,7 +2,7 @@
  * Нормализация параметров под REST API
  * @param params
  */
-export default function queryParams(params: { [key: string]: any }) {
+export function queryParams(params: { [key: string]: any }) {
   const result = { ...params };
   // result.search[key] => result["search[key]"]
   if (result.search) {

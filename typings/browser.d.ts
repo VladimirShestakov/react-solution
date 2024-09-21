@@ -1,4 +1,4 @@
 interface Window {
-  initialData: string
+  initialData: string;
   dump: string;
 }

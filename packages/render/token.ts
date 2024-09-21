@@ -1,5 +1,5 @@
 import { newToken } from '../../packages/token';
-import type { RenderService } from './index.ts';
+import type { RenderService } from './service.ts';
 import type { RenderConfig } from './types.ts';
 
 export const RENDER_SERVICE = newToken<RenderService>('@react-skeleton/render/service');

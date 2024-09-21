@@ -10,7 +10,7 @@ export default (items: any[], location: any) => {
   return items.map(item => {
     const result = {
       ...item,
-      active: new RegExp(`^${escape(item.link + '/')}`).test(path + '/')
+      active: new RegExp(`^${escape(item.link + '/')}`).test(path + '/'),
     };
     if (result.active) {
       if (lastActive) lastActive.active = false;
@@ -20,6 +20,6 @@ export default (items: any[], location: any) => {
   });
 };
 
-function escape (s: string) {
+function escape(s: string) {
   return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 }

@@ -1,9 +1,7 @@
-import ApiBaseEndpoint from '../../../../packages/http-client/api-base-endpoint';
-import params from '../../../../packages/http-client/query-params';
+import { ApiBaseEndpoint, queryParams } from '../../../../packages/http-client';
 import type { UsersApiConfig, SignInBody } from './types.ts';
 
 export class UsersApi extends ApiBaseEndpoint<UsersApiConfig> {
-
   protected override defaultConfig(): UsersApiConfig {
     return {
       url: '/api/v1/users',
@@ -17,7 +15,7 @@ export class UsersApi extends ApiBaseEndpoint<UsersApiConfig> {
     return this.request({
       method: 'GET',
       url: `${this.config.url}/self`,
-      params: params({ fields, ...other }),
+      params: queryParams({ fields, ...other }),
     });
   }
 
@@ -27,12 +25,12 @@ export class UsersApi extends ApiBaseEndpoint<UsersApiConfig> {
    * @param fields
    * @param other
    */
-  async signIn({ data, fields = '*', ...other }: { data: SignInBody, fields?: string }) {
+  async signIn({ data, fields = '*', ...other }: { data: SignInBody; fields?: string }) {
     return this.request({
       method: 'POST',
       data: data,
       url: `${this.config.url}/sign`,
-      params: params({ fields, ...other }),
+      params: queryParams({ fields, ...other }),
     });
   }
 

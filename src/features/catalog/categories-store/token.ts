@@ -4,4 +4,6 @@ import type { CategoriesStoreConfig } from './types.ts';
 
 export const CATEGORIES_STORE = newToken<CategoriesStore>('@project/catalog/categories-store');
 
-export const CATEGORIES_STORE_CFG = newToken<Patch<CategoriesStoreConfig>>('@project/catalog/categories-store/config');
+export const CATEGORIES_STORE_CFG = newToken<Patch<CategoriesStoreConfig>>(
+  '@project/catalog/categories-store/config',
+);

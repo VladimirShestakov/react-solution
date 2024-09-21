@@ -11,10 +11,18 @@ function CategoryTree() {
   const router = useService(ROUTER_SERVICE);
 
   const categories = useService(CATEGORIES_STORE);
-  const categoriesState = useSyncExternalStore(categories.state.subscribe, categories.state.get, categories.state.get);
+  const categoriesState = useSyncExternalStore(
+    categories.state.subscribe,
+    categories.state.get,
+    categories.state.get,
+  );
 
   const articles = useService(ARTICLES_STORE);
-  const articlesState = useSyncExternalStore(articles.state.subscribe, articles.state.get, articles.state.get);
+  const articlesState = useSyncExternalStore(
+    articles.state.subscribe,
+    articles.state.get,
+    articles.state.get,
+  );
 
   const items = useMemo(() => {
     return [{ _id: '', title: 'Все' }, ...categoriesState.roots];
@@ -30,7 +38,8 @@ function CategoryTree() {
             state={{ refreshArticles: true }} //Чтобы товары перезагрузились на том же адресе
             to={router.makeHref(
               // Учитываем в адресе параметры фильтра, но сбрасываем номер страницы
-              articles.exportParams({ page: 1 }, true), `/catalog/${item._id}`
+              articles.exportParams({ page: 1 }, true),
+              `/catalog/${item._id}`,
             )}
           >
             {item.title}

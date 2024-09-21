@@ -6,11 +6,7 @@ interface Props {
 }
 
 function Sider({ children }: Props) {
-  return (
-    <div className="Sider">
-      {children}
-    </div>
-  );
+  return <div className="Sider">{children}</div>;
 }
 
 export default memo(Sider);

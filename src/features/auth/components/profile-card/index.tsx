@@ -1,17 +1,17 @@
-import type { I18nTranslateFn } from '../../../../../packages/i18n/types.ts';
+import type { I18nTranslateFn } from '../../../../../packages/i18n';
 import { memo } from 'react';
 import { cn as bem } from '@bem-react/classname';
 import './style.less';
 
 interface Props {
   data: {
-    email?: string,
+    email?: string;
     profile?: {
-      name?: string,
-      phone?: string
-    }
-  },
-  t: I18nTranslateFn
+      name?: string;
+      phone?: string;
+    };
+  };
+  t: I18nTranslateFn;
 }
 
 function ProfileCard({ data, t }: Props) {

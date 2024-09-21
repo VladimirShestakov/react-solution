@@ -1,4 +1,4 @@
 import { newToken } from '../../packages/token';
-import type { ViteDev } from './index';
+import type { ViteDev } from './service.ts';
 
-export const VITE_DEV = newToken<ViteDev>('@react-skeleton/vite-dev');
+export const VITE_DEV = newToken<ViteDev>('@react-skeleton/vite-dev/service');

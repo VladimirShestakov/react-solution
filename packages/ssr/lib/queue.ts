@@ -1,15 +1,15 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { Worker } from 'worker_threads';
-import type { ICacheStore } from '../../packages/cache-store/types.ts';
+import type { ICacheStore } from '../../../packages/cache-store';
 import type { RenderError, RenderParams, RenderResult } from './render';
 
-type WorkerInfo = {
+export type WorkerInfo = {
   worker: Worker;
   busy: boolean;
 };
 
-class RenderQueue {
+export class RenderQueue {
   private cacheStore: ICacheStore;
   private workers: WorkerInfo[] = [];
   private tasks: RenderParams[] = [];
@@ -22,7 +22,7 @@ class RenderQueue {
    * @param clientAppFile
    * @param workersCount Количество воркеров для распараллеливания рендера
    */
-  constructor (cacheStore: ICacheStore, clientAppFile: string, workersCount: number = 4) {
+  constructor(cacheStore: ICacheStore, clientAppFile: string, workersCount: number = 4) {
     this.cacheStore = cacheStore;
     this.clientAppFile = clientAppFile;
     this.workersCount = workersCount;
@@ -40,17 +40,17 @@ class RenderQueue {
    * Добавление воркера
    * @private
    */
-  private makeWorker () {
+  private makeWorker() {
     const w = {
       worker: new Worker(this.workerFile, {
         workerData: {
-          clientAppFile: this.clientAppFile
-        }
+          clientAppFile: this.clientAppFile,
+        },
       }),
       busy: false,
     };
     // Сообщения от главного потока
-    w.worker.on('message', (msg) => {
+    w.worker.on('message', msg => {
       if (msg && typeof msg === 'object') {
         switch (msg.name) {
           case 'render-result': {
@@ -75,10 +75,10 @@ class RenderQueue {
         this.next();
       }
     });
-    w.worker.on('error', (error) => {
+    w.worker.on('error', error => {
       console.log('- worker error', error);
     });
-    w.worker.on('exit', (code) => {
+    w.worker.on('exit', code => {
       console.log('- worker exit', code);
     });
     this.workers.push(w);
@@ -88,7 +88,7 @@ class RenderQueue {
    * Выполнение следующей задачи из очереди
    * @private
    */
-  private next () {
+  private next() {
     if (this.tasks.length > 0) {
       for (const w of this.workers) {
         if (!w.busy) {
@@ -104,10 +104,8 @@ class RenderQueue {
   /**
    * Добавление в очередь рендера
    */
-  push (params: RenderParams): void {
+  push(params: RenderParams): void {
     this.tasks.push(params);
     this.next();
   }
 }
-
-export default RenderQueue;

@@ -8,7 +8,6 @@ import PageLayout from '@src/ui/layout/page-layout';
 import { useInit, useUninit } from '../../../packages/render';
 
 function NotFound() {
-
   const routerService = useService(ROUTER_SERVICE);
   // Установка HTTP статуса для корректного рендера на сервере
   useInit(() => routerService.setHttpStatus(404), [], { ssr: 'Not found page' });
@@ -18,7 +17,7 @@ function NotFound() {
   return (
     <PageLayout>
       <Head title="React Skeleton"></Head>
-      <MainMenu/>
+      <MainMenu />
       <h2>404</h2>
       <p>Страница не найдена</p>
       <Link to="/">На главную</Link>

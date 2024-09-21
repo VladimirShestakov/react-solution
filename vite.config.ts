@@ -13,18 +13,16 @@ export default defineConfig(params => {
     build: {
       outDir: params.isSsrBuild ? '../dist/server' : '../dist/client',
       emptyOutDir: true,
-      cssCodeSplit: false
+      cssCodeSplit: false,
     },
     ssr: {
       // Названия пакетов, которые нужно добавить в сборку при SSR вместо импорта из node_modules
-      noExternal: [
-        'react-helmet-async'
-      ]
+      noExternal: ['react-helmet-async'],
     },
     resolve: {
       alias: {
         '@src': path.resolve(__dirname, './src'),
-      }
+      },
     },
     plugins: [
       reactPlugin({
@@ -33,13 +31,13 @@ export default defineConfig(params => {
       checker({
         // e.g. use TypeScript check
         typescript: true,
-        overlay: false
+        overlay: false,
       }),
     ],
     server: {
       port: env.PORT,
       proxy: proxyConfig(env),
-      hmr: true
+      hmr: true,
     },
     preview: {
       port: env.PORT,

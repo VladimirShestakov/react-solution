@@ -1,7 +1,7 @@
 import React, { lazy, memo, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import Modals from '../../packages/modals/container';
+import { ModalsContainer } from '../../packages/modals';
 import Loading from '@src/app/loading';
 import Protected from '@src/features/auth/components/protected';
 import ExampleCanvasPage from '@src/features/example-canvas/page';
@@ -25,23 +25,30 @@ function App() {
   return (
     <>
       <Helmet>
-        <html lang="en"/>
+        <html lang="en" />
         <title>React Skeleton!</title>
-        <meta name="description" content="React skeleton example"/>
+        <meta name="description" content="React skeleton example" />
       </Helmet>
-      <Suspense fallback={<Loading/>}>
+      <Suspense fallback={<Loading />}>
         <Routes>
-          <Route path="/" index element={<Main/>}/>
-          <Route path="/example-modals" index element={<ExampleModals/>}/>
-          <Route path="/example-i18n" index element={<ExampleI18n/>}/>
-          <Route path="/example-canvas" index element={<ExampleCanvasPage/>}/>
-          <Route path="/catalog" element={<Catalog/>}/>
-          <Route path="/catalog/:categoryId" element={<Catalog/>}/>
-          <Route path="/login" element={<Login/>}/>
-          <Route path="/profile" element={<Protected redirect="/login"><Profile/></Protected>}/>
-          <Route path="*" element={<NotFound/>}/>
+          <Route path="/" index element={<Main />} />
+          <Route path="/example-modals" index element={<ExampleModals />} />
+          <Route path="/example-i18n" index element={<ExampleI18n />} />
+          <Route path="/example-canvas" index element={<ExampleCanvasPage />} />
+          <Route path="/catalog" element={<Catalog />} />
+          <Route path="/catalog/:categoryId" element={<Catalog />} />
+          <Route path="/login" element={<Login />} />
+          <Route
+            path="/profile"
+            element={
+              <Protected redirect="/login">
+                <Profile />
+              </Protected>
+            }
+          />
+          <Route path="*" element={<NotFound />} />
         </Routes>
-        <Modals/>
+        <ModalsContainer />
       </Suspense>
     </>
   );

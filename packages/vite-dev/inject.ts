@@ -1,14 +1,14 @@
 import { injectFabric } from '../../packages/container';
-import { ViteDev } from './index.ts';
-import { ENV } from '../../packages/env/token.ts';
+import { ENV } from '../../packages/env';
 import { VITE_DEV } from './token.ts';
+import { ViteDev } from './service.ts';
 
 export const viteDev = injectFabric({
   token: VITE_DEV,
-  fabric: async (depends) => {
+  fabric: async depends => {
     return new ViteDev(depends).init();
   },
   depends: {
-    env: ENV
-  }
+    env: ENV,
+  },
 });

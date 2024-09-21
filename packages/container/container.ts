@@ -3,7 +3,7 @@ import { WaitingStore, type TWaitKey, WaitStatus } from '../../packages/waiting-
 import mc from 'merge-change';
 import { CONTAINER } from './token.ts';
 import { isInjectClass, isInjectFabric, isInjectValue } from './utils.ts';
-import { type ContainerEvents, type Inject } from './types';
+import { type ContainerEvents, type Inject, InjectArray } from './types';
 import { type TokenInterface, type TypesFromTokens, type TokenKey } from '../../packages/token';
 
 export class Container {
@@ -22,13 +22,16 @@ export class Container {
    * Инъекция сервиса
    * @param inject Инъекция в виде конструктора, функции или значения
    */
-  set<Type, ExtType extends Type, Deps>(inject: Inject<Type, ExtType, Deps> | Inject[]): this {
-    if (!Array.isArray(inject)) inject = [inject];
+  set(...inject: InjectArray): this {
     inject.forEach(item => {
-      if (this.injects.has(item.token.key)) {
-        this.injects.get(item.token.key)?.push({ ...item });
+      if (Array.isArray(item)) {
+        this.set(...item);
       } else {
-        this.injects.set(item.token.key, [{ ...item }]);
+        if (this.injects.has(item.token.key)) {
+          this.injects.get(item.token.key)?.push({ ...item });
+        } else {
+          this.injects.set(item.token.key, [{ ...item }]);
+        }
       }
     });
 
@@ -108,16 +111,20 @@ export class Container {
    * Сервисы будут возвращены под теми же ключами, под которыми указаны токены в depends.
    * @param depends Карта токенов.
    */
-  async getMapped<Deps extends Record<string, TokenInterface>>(depends: Deps): Promise<TypesFromTokens<Deps>> {
+  async getMapped<Deps extends Record<string, TokenInterface>>(
+    depends: Deps,
+  ): Promise<TypesFromTokens<Deps>> {
     // Выбор зависимостей из контейнера
     const result: Record<string, any> = {};
     const keys = Object.keys(depends);
     const promises = [];
     for (const key of keys) {
-      promises.push(this.get(depends[key]).then(value => {
-        result[key] = value;
-        return value;
-      }));
+      promises.push(
+        this.get(depends[key]).then(value => {
+          result[key] = value;
+          return value;
+        }),
+      );
     }
     await Promise.all(promises);
 
@@ -151,7 +158,9 @@ export class Container {
    * В исключение кидается последние невыполненное обещание, чтобы попытаться все сервисы выбрать за раз.
    * @param depends Карта токенов.
    */
-  getMappedWithSuspense<Deps extends Record<string, TokenInterface>>(depends: Deps): TypesFromTokens<Deps> {
+  getMappedWithSuspense<Deps extends Record<string, TokenInterface>>(
+    depends: Deps,
+  ): TypesFromTokens<Deps> {
     let exception;
     // Выбор зависимостей из контейнера
     const result: Record<string, any> = {};

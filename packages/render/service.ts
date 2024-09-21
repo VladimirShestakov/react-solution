@@ -4,7 +4,8 @@ import { type ReactNode } from 'react';
 import { type Container } from '../../packages/container';
 import { type DumpService } from '../../packages/dump';
 import { WaitingStore } from '../../packages/waiting-store';
-import { type RenderConfig, type RenderValues } from './types.ts';
+import { type RenderConfig, RenderDump, type RenderValues } from './types.ts';
+// import { renderToPipeableStream } from 'react-dom/server';
 
 export class RenderService {
   protected children?: ReactNode;
@@ -16,14 +17,17 @@ export class RenderService {
 
   // Настройки
   protected config: RenderConfig = {
-    domId: 'root'
+    domId: 'root',
   };
 
-  constructor(protected depends: {
-    container: Container,
-    dump?: DumpService,
-    config?: Patch<RenderConfig>
-  }) {
+  constructor(
+    protected depends: {
+      env: ImportMetaEnv;
+      container: Container;
+      dump?: DumpService;
+      config?: Patch<RenderConfig>;
+    },
+  ) {
     this.config = mc.merge(this.config, depends.config || {});
   }
 
@@ -35,13 +39,23 @@ export class RenderService {
     return this.children;
   }
 
-  public start(dom: HTMLElement) {
-    // Если есть подготовленные данные
-    if (this.hydrate) {
-      hydrateRoot(dom, this.children);
-    } else {
-      createRoot(dom).render(this.children);
+  public start() {
+    if (!this.depends.env.SSR) {
+      const dom = document.getElementById(this.config.domId);
+      if (!dom) throw new Error(`Failed to find the DOM element by "root"`);
+      // Если есть подготовленные данные
+      if (this.hydrate) {
+        hydrateRoot(dom, this.children);
+      } else {
+        createRoot(dom).render(this.children);
+      }
     }
+  }
+
+  public startServer() {
+    // const Writable = import('stream');
+    // console.log(renderToPipeableStream);
+    // console.log(Writable);
   }
 
   public setServerValues(values: RenderValues) {
@@ -78,4 +92,21 @@ export class RenderService {
   // hasInitialState() {
   //   return !this.env.SSR && window.initialData;
   // }
+
+  /**
+   * Установка дампа
+   * @param dump
+   */
+  setDump(dump: RenderDump) {
+    this.waiting.setDump(dump.waiting);
+  }
+
+  /**
+   * Экспорт дампа
+   */
+  getDump(): RenderDump {
+    return {
+      waiting: this.waiting.getDump(),
+    };
+  }
 }

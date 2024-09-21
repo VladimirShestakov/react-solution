@@ -1,6 +1,6 @@
 import { injectClass } from '../../../../packages/container';
-import { ENV } from '../../../../packages/env/token.ts';
-import { HTTP_CLIENT } from '../../../../packages/http-client/token.ts';
+import { ENV } from '../../../../packages/env';
+import { HTTP_CLIENT } from '../../../../packages/http-client';
 import { optionalToken } from '../../../../packages/token';
 import { SessionStore } from './index.ts';
 import { USERS_API } from '../users-api/token.ts';
@@ -14,5 +14,5 @@ export const sessionStore = injectClass({
     httpClient: HTTP_CLIENT,
     usersApi: USERS_API,
     config: optionalToken(SESSION_STORE_CFG),
-  }
+  },
 });

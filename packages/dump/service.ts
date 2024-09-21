@@ -8,14 +8,16 @@ export class DumpService {
   protected data: Map<string, any> = new Map();
   // Настройки
   protected config: DumpConfig = {
-    autoSendDump: true
+    autoSendDump: true,
   };
 
-  constructor(protected depends: {
-    env: ImportMetaEnv,
-    container: Container,
-    config?: Patch<DumpConfig>
-  }) {
+  constructor(
+    protected depends: {
+      env: ImportMetaEnv;
+      container: Container;
+      config?: Patch<DumpConfig>;
+    },
+  ) {
     this.config = mc.merge(this.config, depends.config || {});
     if (this.config.autoSendDump) {
       this.depends.container.events.on('onCreate', this.send);
@@ -46,9 +48,9 @@ export class DumpService {
     return JSON.stringify(Object.fromEntries(this.data));
   }
 
-  protected send = <Type extends object>({ token, value }: { token: Token<Type>, value: Type }) => {
-    console.log('send', token);
-    if (value as any !== this) {
+  protected send = <Type extends object>({ token, value }: { token: Token<Type>; value: Type }) => {
+    //console.log('send', token);
+    if ((value as any) !== this) {
       if (value && 'setDump' in value && typeof value.setDump === 'function') {
         const dump = this.data.get(token.key);
         if (dump) {

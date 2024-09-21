@@ -17,15 +17,12 @@ export function parseControls(control?: string): Map<string, string | number> {
 
 export function parseAcceptEncoding(value?: string): string[] {
   if (!value) return [];
-  return value.split(',').map((item) => item.trim());
+  return value.split(',').map(item => item.trim());
 }
 
-export function getHeadersValues(
-  headers: { [index: string]: unknown },
-  names: string[],
-) {
+export function getHeadersValues(headers: { [index: string]: unknown }, names: string[]) {
   const result = [] as string[];
-  names.forEach((name) => {
+  names.forEach(name => {
     name = name.toLowerCase();
     if (typeof headers[name] === 'string') {
       result.push(headers[name] as string);

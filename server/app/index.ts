@@ -10,17 +10,18 @@ import type { ViteDev } from '../../packages/vite-dev';
 import type { AppConfig } from './types.ts';
 
 export class App {
-
   protected app: Express;
   protected config: AppConfig;
 
-  constructor(protected depends: {
-    env: ImportMetaEnv,
-    proxy: Proxy,
-    config: Patch<AppConfig>,
-    vite: ViteDev,
-    ssr: Ssr
-  }) {
+  constructor(
+    protected depends: {
+      env: ImportMetaEnv;
+      proxy: Proxy;
+      config: Patch<AppConfig>;
+      vite: ViteDev;
+      ssr: Ssr;
+    },
+  ) {
     this.app = express();
     this.config = mc.merge(this.defaultConfig(), depends.config);
   }

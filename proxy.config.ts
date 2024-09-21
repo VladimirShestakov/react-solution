@@ -4,7 +4,7 @@ export default function proxyConfig(env: ImportMetaEnv) {
       target: env.API_URL,
       secure: false,
       changeOrigin: true,
-      timeout: 2000
-    }
+      timeout: 2000,
+    },
   };
 }

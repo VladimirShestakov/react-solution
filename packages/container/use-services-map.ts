@@ -11,6 +11,8 @@ import { useContainer } from './use-container.ts';
  *  const { i18n, store } = useServicesMap({i18n: I18N_TOKEN, store: STORE_TOKEN})
  * ```
  */
-export function useServicesMap<Deps extends Record<string, Token>>(depends: Deps): TypesFromTokens<Deps> {
+export function useServicesMap<Deps extends Record<string, Token>>(
+  depends: Deps,
+): TypesFromTokens<Deps> {
   return useContainer().getMappedWithSuspense(depends);
 }

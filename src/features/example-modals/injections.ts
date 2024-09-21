@@ -11,5 +11,5 @@ export const exampleModalsFeature = [
   cascadeModal,
   messageModal,
   promptModal,
-  pageAsModal
+  pageAsModal,
 ];

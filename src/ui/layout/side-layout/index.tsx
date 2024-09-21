@@ -15,7 +15,7 @@ function SideLayout({
   side = 'start',
   padding = 'none',
   align = 'middle',
-  wrap = true
+  wrap = true,
 }: Props) {
   const cn = bem('SideLayout');
   if (wrap) {
@@ -23,16 +23,16 @@ function SideLayout({
       <div className={cn({ side, padding, align })}>
         {React.Children.map(children, (child, index) => {
           const key = isChildWithKey(child) ? child.key : index;
-          return <div key={key} className={cn('item')}>{child}</div>;
+          return (
+            <div key={key} className={cn('item')}>
+              {child}
+            </div>
+          );
         })}
       </div>
     );
   } else {
-    return (
-      <div className={cn({ side, padding, align })}>
-        {children}
-      </div>
-    );
+    return <div className={cn({ side, padding, align })}>{children}</div>;
   }
 }
 

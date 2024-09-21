@@ -1,4 +1,4 @@
-import isPromise from '../../packages/utils/is-promise.ts';
+import { isPromise } from '../../packages/utils';
 import type { TWaitDump, TWaitKey, TWaitRecord, TWaitState } from './types';
 import { WaitStatus } from '../../packages/waiting-store';
 
@@ -27,7 +27,7 @@ export class WaitingStore<Type = any> {
         waiting: true,
         // При завершении промиса будет сброс признака waiting
         promise: promise
-          .then((result) => this.complete(key, { result }))
+          .then(result => this.complete(key, { result }))
           .catch(error => {
             this.complete(key, { error });
             return error;
@@ -38,7 +38,7 @@ export class WaitingStore<Type = any> {
         waiting: false,
         // При завершении промиса будет сброс признака waiting
         promise: Promise.resolve(promise),
-        result: promise
+        result: promise,
       });
     }
   }
@@ -50,7 +50,7 @@ export class WaitingStore<Type = any> {
    * @param result Результат обещания
    * @param error Ошибка обещания
    */
-  complete(key: TWaitKey, { result, error }: { result?: Type, error?: Error }): Type | undefined {
+  complete(key: TWaitKey, { result, error }: { result?: Type; error?: Error }): Type | undefined {
     if (this.has(key)) {
       // Мутируем
       const item = this.state.get(key) as TWaitRecord;
@@ -62,7 +62,7 @@ export class WaitingStore<Type = any> {
         waiting: false,
         result,
         error,
-        promise: error ? Promise.reject(error) : Promise.resolve(result) as Promise<Type>
+        promise: error ? Promise.reject(error) : (Promise.resolve(result) as Promise<Type>),
       });
     }
     return result;
@@ -170,10 +170,13 @@ export class WaitingStore<Type = any> {
     Object.entries(dump).forEach(([key, item]) => {
       state.set(key, {
         waiting: false,
-        promise: item.error ? Promise.reject(item.error) : Promise.resolve(item.result) as Promise<Type>,
+        promise: item.error
+          ? Promise.reject(item.error)
+          : (Promise.resolve(item.result) as Promise<Type>),
         error: item.error ? new Error(item.error) : undefined,
-        result: item.result
+        result: item.result,
       });
     });
+    this.state = state;
   }
 }

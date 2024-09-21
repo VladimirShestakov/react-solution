@@ -9,5 +9,5 @@ export const catalogFeature = [
   categoriesApi,
   injectTranslations,
   articlesStore,
-  categoriesStore
+  categoriesStore,
 ];

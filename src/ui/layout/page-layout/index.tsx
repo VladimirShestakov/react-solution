@@ -17,9 +17,7 @@ function PageLayout({ children }: Props) {
   const cn = bem('PageLayout');
   return (
     <div className={cn()}>
-      <div className={cn('center')}>
-        {children}
-      </div>
+      <div className={cn('center')}>{children}</div>
     </div>
   );
 }

@@ -1,3 +1,3 @@
 import { AxiosRequestConfig } from 'axios';
 
-export type ApiBaseEndpointOptions = AxiosRequestConfig
+export type ApiBaseEndpointOptions = AxiosRequestConfig;

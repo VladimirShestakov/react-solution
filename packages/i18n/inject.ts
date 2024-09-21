@@ -1,8 +1,8 @@
 import { injectClass } from '../../packages/container';
-import { I18n } from '../../packages/i18n/index.ts';
 import { optionalToken } from '../../packages/token';
+import { ENV } from '../../packages/env';
 import { I18N, I18N_CFG, I18N_DICTIONARY } from './token.ts';
-import { ENV } from '../../packages/env/token.ts';
+import { I18n } from './service.ts';
 
 export const i18nService = injectClass({
   token: I18N,
@@ -10,6 +10,6 @@ export const i18nService = injectClass({
   depends: {
     env: ENV,
     config: optionalToken(I18N_CFG),
-    dictionary: I18N_DICTIONARY
-  }
+    dictionary: I18N_DICTIONARY,
+  },
 });

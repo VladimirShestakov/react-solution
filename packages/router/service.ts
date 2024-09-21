@@ -8,10 +8,12 @@ export class RouterService {
   protected httpStatus: HTTPStatus[] = [{ status: 200 }];
   protected config: RouterConfig;
 
-  constructor(protected depends: {
-    env: ImportMetaEnv,
-    config?: Patch<RouterConfig>
-  }) {
+  constructor(
+    protected depends: {
+      env: ImportMetaEnv;
+      config?: Patch<RouterConfig>;
+    },
+  ) {
     this.config = mc.merge(this.defaultConfig(), depends.config ?? {});
     switch (this.config.type) {
       case 'memory':
@@ -28,7 +30,7 @@ export class RouterService {
     return {
       type: this.depends.env.SSR ? 'memory' : 'browser',
       basename: this.depends.env.BASE_URL,
-      initialEntries: this.depends.env.req ? [this.depends.env.req.url] : undefined
+      initialEntries: this.depends.env.req ? [this.depends.env.req.url] : undefined,
     };
   }
 
@@ -55,7 +57,9 @@ export class RouterService {
    */
   makeHref(search: object, path?: string, clear = false): string {
     const newSearch = this.makeSearch(search, clear, true);
-    return (path || this.getPath()) + newSearch + (this.depends.env.SSR ? '' : window.location.hash);
+    return (
+      (path || this.getPath()) + newSearch + (this.depends.env.SSR ? '' : window.location.hash)
+    );
   }
 
   /**

@@ -5,18 +5,18 @@ export type SsrOptions = {
   workers: number;
 
   template: {
-    dev: string,
-    prod: string,
-  },
+    dev: string;
+    prod: string;
+  };
 
   clientAppFile: {
-    dev: string,
-    prod: string,
-  }
+    dev: string;
+    prod: string;
+  };
 
   // Параметры рендера и кэширования по отдельным адресам запроса
   rules: TRenderRuleConfig[];
-}
+};
 
 export type TRenderRuleConfig = {
   // Шаблон URL запроса, на которые распространяется опция

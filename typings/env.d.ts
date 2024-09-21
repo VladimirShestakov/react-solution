@@ -4,17 +4,17 @@
  * Переменные окружения из .env и process.env
  */
 interface Env {
-  [key: string]: any,
+  [key: string]: any;
 
   // Базовый URL приложения, обычно /
-  BASE_URL: string,
+  BASE_URL: string;
   // Хост адрес сервера.
-  HOST: string,
+  HOST: string;
   // Порт сервера
-  PORT: number,
+  PORT: number;
   // Адрес API сервера, используется для проксирования
-  API_URL: string,
-  API_PATH: string,
+  API_URL: string;
+  API_PATH: string;
 }
 
 /**
@@ -22,16 +22,16 @@ interface Env {
  */
 interface ImportMetaEnv extends Env {
   //
-  SSR: boolean, // Запуск в Node.js
-  PROD: boolean, // MODE==production
-  DEV: boolean, // MODE!=production @todo Убрать, оставив признаки для которых false по умолчанию
-  MODE: string, // production, development and others
+  SSR: boolean; // Запуск в Node.js
+  PROD: boolean; // MODE==production
+  DEV: boolean; // MODE!=production @todo Убрать, оставив признаки для которых false по умолчанию
+  MODE: string; // production, development and others
   // Информация о запросе при SSR (добавит сервер)
   req?: {
-    url: string,
-    headers: Record<string, string | undefined | string[]>,
-    cookies: Record<string, string>,
-  },
+    url: string;
+    headers: Record<string, string | undefined | string[]>;
+    cookies: Record<string, string>;
+  };
   CACHE_SIGNATURE: string;
   // more env variables...
 }

@@ -18,14 +18,14 @@ declare global {
   }
 }
 
-export type I18nTranslationValue = string
+export type I18nTranslationValue = string;
 
 /**
  * Дерево переводов
  */
 export type I18nTranslation = {
-  [word: string]: I18nTranslationValue | I18nTranslation
-}
+  [word: string]: I18nTranslationValue | I18nTranslation;
+};
 
 /**
  * Импортируемое дерево переводов.
@@ -35,40 +35,39 @@ export type I18nTranslation = {
 export type I18nTranslationImport<T extends I18nTranslation = I18nTranslation> =
   | (() => Promise<T>)
   | (() => T)
-  | T
+  | T;
 
 /**
  * Словарь со всеми языками, пространствами и переводами
  */
 export type I18nDictionary = {
-  [locale: string]: I18nNamespaces
-}
+  [locale: string]: I18nNamespaces;
+};
 
 /**
  * Все пути на переводы с учётом пространств именования
  */
 export type I18nPath = ExtractTranslationPaths<{
-  [N in keyof I18nNamespaces]: ExtractTranslationTree<I18nNamespaces[N]>
-}>
+  [N in keyof I18nNamespaces]: ExtractTranslationTree<I18nNamespaces[N]>;
+}>;
 
 /**
  * Вытаскивает тип переводов из импортируемого словаря
  */
-export type ExtractTranslationTree<T> = T extends I18nTranslationImport<infer Type> ? Type : unknown;
+export type ExtractTranslationTree<T> =
+  T extends I18nTranslationImport<infer Type> ? Type : unknown;
 
 /**
  * Формирует пути на свойства объекта с учётом вложенности
  * Например, ExtractTranslationPaths<typeof {a: {b: {c: 100}}, d: 1 }> => "a.b.c" | "d"
  */
 export type ExtractTranslationPaths<Obj extends I18nTranslation> = {
-  [Name in keyof Obj & string]: // Перебираем ключи объекта
-  // Свойство является объектом?
+  [Name in keyof Obj & string]: // Свойство является объектом? // Перебираем ключи объекта
   Obj[Name] extends I18nTranslation
-    // Если свойство объект, то рекурсия на вложенные свойства. Получится шаблон спутями на все вложенные свойства
-    ? Name | `${Name}.${ExtractTranslationPaths<Obj[Name]>}`
-    // Для остальных типов берем их название
-    : `${Name}`
-
+    ? // Если свойство объект, то рекурсия на вложенные свойства. Получится шаблон спутями на все вложенные свойства
+      Name | `${Name}.${ExtractTranslationPaths<Obj[Name]>}`
+    : // Для остальных типов берем их название
+      `${Name}`;
 }[keyof Obj & string]; // Вытаскиваем типы всех свойств - это строковые литералы (пути на свойства)
 
 /**
@@ -76,9 +75,9 @@ export type ExtractTranslationPaths<Obj extends I18nTranslation> = {
  */
 export type I18nDictionaryInner = Partial<{
   [locale: string]: Partial<{
-    [N in keyof I18nNamespaces]: Record<string, I18nTranslationValue>
-  }>
-}>
+    [N in keyof I18nNamespaces]: Record<string, I18nTranslationValue>;
+  }>;
+}>;
 
 /**
  * Параметры функции перевода
@@ -97,17 +96,13 @@ export interface I18nTranslateOptions {
    */
   values?: Record<string, string | number>;
   /**
-   * Ожидание загрузки словаря для интеграции с React <Suspense> (throw promise)
-   */
-  suspense?: boolean;
-  /**
    * Перевод по умолчанию, если его нет в словаре
    */
   fall?: string;
   /**
    * Допустимые локали (по умолчанию определяются на основе подключенных словарей)
    */
-  allowedLocales?: string[]
+  allowedLocales?: string[];
 }
 
 /**
@@ -125,7 +120,10 @@ export type I18nTranslateFn = (key: I18nPath, options?: I18nTranslateOptions) =>
 /**
  * Функция перевода
  */
-export type I18nTranslateFnAsync = (key: I18nPath, options?: I18nTranslateOptions) => Promise<string>;
+export type I18nTranslateFnAsync = (
+  key: I18nPath,
+  options?: I18nTranslateOptions,
+) => Promise<string>;
 
 /**
  * Функция форматирования числа
@@ -136,42 +134,42 @@ export type I18nNumberFormatFn = (value: number, options?: I18nNumberOptions) =>
  * Состояние сервиса, чтобы уведомлять про изменения локали или словаря
  */
 export type I18nState = {
-  locale: string,
-  allowedLocales: string[],
-  dictionary: I18nDictionaryInner,
-}
+  locale: string;
+  allowedLocales: string[];
+  dictionary: I18nDictionaryInner;
+};
 
 /**
  * Настройки сервиса ожиданий
  */
 export type I18nConfig = {
-  log: boolean,
+  log: boolean;
   // Локаль по умолчанию, если отключено автоопределение или не удалось определить.
   // Может быть в формате Accept-Language, чтобы перечислить предпочтительные языки в случаи.
-  locale: string,
+  locale: string;
   // Подобрать локаль автоматически при первом рендере
-  auto: boolean,
+  auto: boolean;
   // Запоминать выбор локали в куке
-  remember: boolean,
-}
+  remember: boolean;
+};
 
 /**
  * Результат хука к i18n
  */
 export type useI18nReturn = {
   // Текущая локаль
-  locale: string,
+  locale: string;
   // Доступные локали
-  locales: string[],
+  locales: string[];
   // Функция для смены локали
-  setLocale: (locale: string) => void,
+  setLocale: (locale: string) => void;
   // Функция для локализации текстов
-  t: I18nTranslateFn,
+  t: I18nTranslateFn;
   // Форматирования числа с учётом локали
-  n: I18nNumberFormatFn,
-}
+  n: I18nNumberFormatFn;
+};
 
 export type I18nDump = {
-  state: I18nState,
-  waiting: TWaitDump,
-}
+  state: I18nState;
+  waiting: TWaitDump;
+};

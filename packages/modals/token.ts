@@ -1,4 +1,4 @@
 import { newToken } from '../../packages/token';
-import type { Modals } from './index.ts';
+import type { Modals } from './service.ts';
 
-export const MODALS = newToken<Modals>('@project/modals');
+export const MODALS = newToken<Modals>('@project/modals/service');

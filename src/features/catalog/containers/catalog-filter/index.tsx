@@ -1,5 +1,5 @@
 import { memo, useCallback, useMemo, useSyncExternalStore } from 'react';
-import { useTranslate } from '../../../../../packages/i18n/use-i18n.ts';
+import { useTranslate } from '../../../../../packages/i18n';
 import { useService } from '../../../../../packages/container';
 import SideLayout from '@src/ui/layout/side-layout';
 import Select from '@src/ui/elements/select';
@@ -9,7 +9,11 @@ import { ARTICLES_STORE } from '../../articles-store/token.ts';
 function CatalogFilter() {
   const t = useTranslate();
   const articles = useService(ARTICLES_STORE);
-  const articlesState = useSyncExternalStore(articles.state.subscribe, articles.state.get, articles.state.get);
+  const articlesState = useSyncExternalStore(
+    articles.state.subscribe,
+    articles.state.get,
+    articles.state.get,
+  );
 
   const callbacks = {
     // Сортировка
@@ -21,18 +25,26 @@ function CatalogFilter() {
   };
 
   const options = {
-    sort: useMemo(() => ([
-      { value: 'order', title: 'По порядку' },
-      { value: 'title.ru', title: 'По именованию' },
-      { value: '-price', title: 'Сначала дорогие' },
-      { value: 'edition', title: 'Древние' },
-    ]), []),
+    sort: useMemo(
+      () => [
+        { value: 'order', title: 'По порядку' },
+        { value: 'title.ru', title: 'По именованию' },
+        { value: '-price', title: 'Сначала дорогие' },
+        { value: 'edition', title: 'Древние' },
+      ],
+      [],
+    ),
   };
 
   return (
     <SideLayout padding="medium">
-      <Select options={options.sort} value={articlesState.params.sort} onChange={callbacks.onSort}/>
-      <Input name="query"
+      <Select
+        options={options.sort}
+        value={articlesState.params.sort}
+        onChange={callbacks.onSort}
+      />
+      <Input
+        name="query"
         value={articlesState.params.query}
         onChange={callbacks.onSearch}
         placeholder={'Поиск'}

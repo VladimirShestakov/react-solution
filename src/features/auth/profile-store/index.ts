@@ -10,21 +10,23 @@ export class ProfileStore {
   readonly state;
   protected config: ProfileStoreConfig;
 
-  constructor(protected depends: {
-    usersApi: UsersApi,
-    config?: Patch<ProfileStoreConfig>
-  }) {
+  constructor(
+    protected depends: {
+      usersApi: UsersApi;
+      config?: Patch<ProfileStoreConfig>;
+    },
+  ) {
     this.config = mc.merge(this.defaultConfig(), depends.config ?? {});
     this.state = new State<ProfileStoreData>(this.defaultState(), {
       log: this.config.log,
-      name: this.config.name
+      name: this.config.name,
     });
   }
 
   defaultState(): ProfileStoreData {
     return {
       data: null,
-      waiting: false // признак ожидания загрузки
+      waiting: false, // признак ожидания загрузки
     };
   }
 
@@ -34,7 +36,7 @@ export class ProfileStore {
   defaultConfig(): ProfileStoreConfig {
     return {
       log: true,
-      name: 'Profile state'
+      name: 'Profile state',
     };
   }
 
@@ -45,16 +47,19 @@ export class ProfileStore {
     // Сброс текущего профиля и установка признака ожидания загрузки
     this.state.set({
       data: null,
-      waiting: true
+      waiting: true,
     });
 
     // Выбор своего профиля из АПИ
     const { data } = await this.depends.usersApi.current({});
 
     // Профиль загружен успешно
-    this.state.set({
-      data: data.result,
-      waiting: false
-    }, 'Загружен профиль из АПИ');
+    this.state.set(
+      {
+        data: data.result,
+        waiting: false,
+      },
+      'Загружен профиль из АПИ',
+    );
   }
 }

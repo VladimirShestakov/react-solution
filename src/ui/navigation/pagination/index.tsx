@@ -3,21 +3,16 @@ import { cn as bem } from '@bem-react/classname';
 import './style.less';
 
 interface Props {
-  page?: number,
-  limit?: number,
-  count?: number,
-  indent?: number,
-  onChange?: (number: number) => void,
-  makeLink?: (number: number) => string,
+  page?: number;
+  limit?: number;
+  count?: number;
+  indent?: number;
+  onChange?: (number: number) => void;
+  makeLink?: (number: number) => string;
 }
 
 function Pagination(props: Props) {
-  const {
-    page = 1,
-    limit = 10,
-    count = 1000,
-    indent = 1,
-  } = props;
+  const { page = 1, limit = 10, count = 1000, indent = 1 } = props;
 
   // Количество страниц
   const length = Math.ceil(count / Math.max(limit, 1));
@@ -52,16 +47,12 @@ function Pagination(props: Props) {
   return (
     <ul className={cn()}>
       {items.map((number, index) => (
-        <li key={index}
-            className={cn('item', { active: number === props.page, split: !number })}
-            onClick={onClickHandler(number)}>
-          {number
-            ? (props.makeLink
-                ? <a href={props.makeLink(number)}>{number}</a>
-                : number
-            )
-            : '...'
-          }
+        <li
+          key={index}
+          className={cn('item', { active: number === props.page, split: !number })}
+          onClick={onClickHandler(number)}
+        >
+          {number ? props.makeLink ? <a href={props.makeLink(number)}>{number}</a> : number : '...'}
         </li>
       ))}
     </ul>

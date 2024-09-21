@@ -3,9 +3,9 @@ import { cn as bem } from '@bem-react/classname';
 import './style.less';
 
 interface Props {
-  label?: React.ReactNode,
-  error?: React.ReactNode,
-  children?: React.ReactNode,
+  label?: React.ReactNode;
+  error?: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 function Field(props: Props) {
@@ -13,12 +13,8 @@ function Field(props: Props) {
   return (
     <div className={cn()}>
       <label className={cn('label')}>{props.label}</label>
-      <div className={cn('input')}>
-        {props.children}
-      </div>
-      <div className={cn('error')}>
-        {props.error}
-      </div>
+      <div className={cn('input')}>{props.children}</div>
+      <div className={cn('error')}>{props.error}</div>
     </div>
   );
 }

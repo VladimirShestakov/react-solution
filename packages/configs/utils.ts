@@ -4,9 +4,9 @@ import {
   isFabric,
   type FunctionWithDepends,
   type InjectFabric,
-  type InjectValue
+  type InjectValue,
 } from '../../packages/container';
-import { ENV } from '../../packages/env/token.ts';
+import { ENV } from '../../packages/env';
 import { type TypesFromTokens, type TokenInterface } from '../../packages/token';
 
 /**
@@ -15,7 +15,10 @@ import { type TypesFromTokens, type TokenInterface } from '../../packages/token'
  * @param token Токен
  * @param value Значение сопоставимое с типом токена
  */
-export function config<T, ExtT extends T>(token: TokenInterface<T>, value: ExtT): InjectValue<T, ExtT>
+export function config<T, ExtT extends T>(
+  token: TokenInterface<T>,
+  value: ExtT,
+): InjectValue<T, ExtT>;
 
 /**
  * Создание пары {Токен/Функция} для инъекции в DI вычисляемых настроек.
@@ -26,7 +29,7 @@ export function config<T, ExtT extends T>(token: TokenInterface<T>, value: ExtT)
 export function config<T, ExtT extends T, Deps = { env: typeof ENV }>(
   token: TokenInterface<T>,
   fabric: FunctionWithDepends<ExtT, TypesFromTokens<Deps>>,
-): InjectFabric<T, ExtT, Deps>
+): InjectFabric<T, ExtT, Deps>;
 
 export function config<T, ExtT extends T, Deps = { env: typeof ENV }>(
   token: TokenInterface<T>,

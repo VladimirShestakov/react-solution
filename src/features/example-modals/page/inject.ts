@@ -4,5 +4,5 @@ import PageAsModal from './index.tsx';
 
 export const pageAsModal = injectValue({
   token: PAGE_AS_MODAL,
-  value: PageAsModal
+  value: PageAsModal,
 });

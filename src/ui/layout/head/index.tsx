@@ -12,9 +12,7 @@ function Head({ title, children }: Props) {
       <div className="Head-place">
         <h1>{title}</h1>
       </div>
-      <div className="Head-place">
-        {children}
-      </div>
+      <div className="Head-place">{children}</div>
     </div>
   );
 }

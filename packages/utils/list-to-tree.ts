@@ -8,7 +8,7 @@ import _get from 'lodash.get';
  * @param childrenKey {String} Свойство-массив, куда добавить отношения на подчиенные объекты
  * @returns {Array} Корневые узлы
  */
-export default function listToTree(
+export function listToTree(
   list: any[],
   privateKey = '_id',
   parentKey = 'parent._id',

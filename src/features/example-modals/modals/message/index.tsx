@@ -1,8 +1,8 @@
 import { memo } from 'react';
 import ModalLayout from '@src/ui/layout/modal-layout';
 import SideLayout from '@src/ui/layout/side-layout';
-import { useTranslate } from '../../../../../packages/i18n/use-i18n.ts';
-import type { ModalWithClose } from '../../../../../packages/modals/types';
+import { useTranslate } from '../../../../../packages/i18n';
+import type { ModalWithClose } from '../../../../../packages/modals';
 
 export interface MessageModalProps extends ModalWithClose<void> {
   title: string;

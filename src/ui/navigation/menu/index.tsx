@@ -4,9 +4,7 @@ import { Props } from './types';
 import './style.less';
 
 function Menu(props: Props) {
-  const {
-    items = [],
-  } = props;
+  const { items = [] } = props;
 
   const cn = bem('Menu');
   return (

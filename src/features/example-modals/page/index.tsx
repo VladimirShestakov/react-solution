@@ -1,7 +1,7 @@
 import { memo, useCallback } from 'react';
-import { useTranslate } from '../../../../packages/i18n/use-i18n.ts';
+import { useTranslate } from '../../../../packages/i18n';
 import { useService } from '../../../../packages/container';
-import { MODALS } from '../../../../packages/modals/token.ts';
+import { MODALS } from '../../../../packages/modals';
 import Head from '@src/ui/layout/head';
 import MainMenu from '@src/features/navigation/components/main-menu';
 import PageLayout from '@src/ui/layout/page-layout';
@@ -24,14 +24,15 @@ function PageAsModal(props: PageAsModalProps) {
     openMessage: useCallback(async () => {
       modals.open(MESSAGE_MODAL, {
         title: 'Сообщение',
-        message: 'Простое окно с сообщением. Заголовок и текст переданы при открытии окна'
+        message: 'Простое окно с сообщением. Заголовок и текст переданы при открытии окна',
       });
     }, []),
 
     openConfirm: useCallback(async () => {
       const result = await modals.open(CONFIRM_MODAL, {
         title: 'Подтвердите действие!',
-        message: 'Вы действительно хотите выполнить некое действие? Ваш выбор отобразится в консоле браузера.'
+        message:
+          'Вы действительно хотите выполнить некое действие? Ваш выбор отобразится в консоле браузера.',
       });
       console.log('confirm', result);
     }, []),
@@ -47,7 +48,7 @@ function PageAsModal(props: PageAsModalProps) {
     openCascade: useCallback(async () => {
       const result = await modals.open(CASCADE_MODAL, {
         title: t('example-modals.cascade.title'),
-        message: `${t('example-modals.cascade.messageCount', { plural: 1 })} ${t('example-modals.cascade.message')}`
+        message: `${t('example-modals.cascade.messageCount', { plural: 1 })} ${t('example-modals.cascade.message')}`,
       });
       console.log('cascade', result);
     }, []),
@@ -58,30 +59,27 @@ function PageAsModal(props: PageAsModalProps) {
 
     onClose: useCallback(() => {
       if (props.close) props.close();
-    }, [props.close])
+    }, [props.close]),
   };
 
   return (
     <PageLayout>
       <Head title="React Skeleton">
-        {props.close ? <button onClick={callbacks.onClose}>Закрыть</button> : <LocaleSelect/>}
+        {props.close ? <button onClick={callbacks.onClose}>Закрыть</button> : <LocaleSelect />}
       </Head>
-      <MainMenu/>
+      <MainMenu />
       <h2>{t('example-modals.title')}</h2>
       <p>
         Модальные окна отображаются поверх текущей страницы, делая элементы страницы недоступными
-        пока
-        окно не закроется.
-        Управление модальными окнами осуществляется сервисом modals. Для открытия окна вызывается
-        метод open с передачей свойств окна. Свойства окна - это свойства React компонента, которым
-        реализовано окно.
+        пока окно не закроется. Управление модальными окнами осуществляется сервисом modals. Для
+        открытия окна вызывается метод open с передачей свойств окна. Свойства окна - это свойства
+        React компонента, которым реализовано окно.
       </p>
       <p>
         Любой React компонент может стать окном, его достаточно прописать в импорте сервиса - в
-        файле <code>@src/services/modals/imports.ts</code>.
-        В компонент окна автоматически передаётся функция обратного вызова close, чтобы закрыть окно
-        и передать результат.
-        Смотрите README в <code className="block">./src/services/modals/README.md</code>
+        файле <code>@src/services/modals/imports.ts</code>. В компонент окна автоматически
+        передаётся функция обратного вызова close, чтобы закрыть окно и передать результат. Смотрите
+        README в <code className="block">./src/services/modals/README.md</code>
       </p>
       <p>
         <button onClick={callbacks.openMessage}>Сообщение</button>
@@ -96,10 +94,9 @@ function PageAsModal(props: PageAsModalProps) {
         <button onClick={callbacks.openCascade}>Каскад окон</button>
       </p>
       <p>
-        Пример отображения страницы в качестве модального окна.
-        Страница отобразится ниже, так как позиционируется в соответствии с нормальным потоком
-        документа.
-        Тогда как в разметке модальных окон используется абсолютная или фиксированная позиция.
+        Пример отображения страницы в качестве модального окна. Страница отобразится ниже, так как
+        позиционируется в соответствии с нормальным потоком документа. Тогда как в разметке
+        модальных окон используется абсолютная или фиксированная позиция.
       </p>
       <p>
         <button onClick={callbacks.openPage}>Открыть текущую страницу сервисом модалок</button>

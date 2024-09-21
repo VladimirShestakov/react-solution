@@ -1,5 +1,12 @@
 {
-  "include": ["typings/**/*", "packages/**/*", "src/**/*", "server/**/*", "vite.config.ts", "server.config.ts"],
+  "include": [
+    "typings/**/*",
+    "packages/**/*",
+    "src/**/*",
+    "server/**/*",
+    "vite.config.ts",
+    "server.config.ts"
+  ],
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
@@ -24,13 +31,10 @@
     "noImplicitThis": true,
     "allowImportingTsExtensions": true
   },
-  "files": [
-    "./typings/env.d.ts",
-    "proxy.config.ts"
-  ],
+  "files": ["./typings/env.d.ts", "proxy.config.ts"],
   "ts-node": {
     "esm": true,
     "experimentalSpecifierResolution": "node",
     "files": true
-  },
+  }
 }

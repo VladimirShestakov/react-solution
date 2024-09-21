@@ -1,7 +1,7 @@
 import {
   Action,
   ScrollParams,
-  ZoomParams
+  ZoomParams,
 } from '@src/features/example-canvas/components/draw/core/types';
 import Figure from '@src/features/example-canvas/components/draw/core/elements/figure';
 import Leaf from '@src/features/example-canvas/components/draw/core/elements/leaf';
@@ -24,7 +24,7 @@ class Core {
     dpr: 1,
     scrollX: 0,
     scrollY: 0,
-    zoom: 1
+    zoom: 1,
   };
   // Активное действие (обычно при зажатой клавиши мышки)
   action: Action | null = null;
@@ -130,7 +130,7 @@ class Core {
     // Центр масштабирования с учётом текущего смещения и масштабирования
     const centerReal = {
       x: (center.x + this.metrics.scrollX) / this.metrics.zoom,
-      y: (center.y + this.metrics.scrollY) / this.metrics.zoom
+      y: (center.y + this.metrics.scrollY) / this.metrics.zoom,
     };
     // Точная установка масштаба
     if (typeof zoom != 'undefined') this.metrics.zoom = zoom;
@@ -141,7 +141,7 @@ class Core {
     // Центр масштабирования с учётом нового масштаба
     const centerNew = {
       x: centerReal.x * this.metrics.zoom,
-      y: centerReal.y * this.metrics.zoom
+      y: centerReal.y * this.metrics.zoom,
     };
     // Корректировка смещения
     this.scroll({
@@ -155,7 +155,7 @@ class Core {
    * @param x
    * @param y
    */
-  findElementByPont({ x, y }: { x: number, y: number }) {
+  findElementByPont({ x, y }: { x: number; y: number }) {
     const sorted = this.elements.sort((a, b) => {
       if (a.zIndex < b.zIndex) return 1;
       if (a.zIndex > b.zIndex) return -1;
@@ -172,8 +172,8 @@ class Core {
   onMouseDown = (e: MouseEvent) => {
     // Курсор с учётом масштабирования и скролла
     const point = {
-      x: ((e.clientX - this.metrics.left) + this.metrics.scrollX) / this.metrics.zoom,
-      y: ((e.clientY - this.metrics.top) + this.metrics.scrollY) / this.metrics.zoom,
+      x: (e.clientX - this.metrics.left + this.metrics.scrollX) / this.metrics.zoom,
+      y: (e.clientY - this.metrics.top + this.metrics.scrollY) / this.metrics.zoom,
     };
     // Поиск фигуры по точке
     const element = this.findElementByPont(point);
@@ -188,7 +188,7 @@ class Core {
         y: point.y,
         // Координаты фигуры
         targetX: element.x,
-        targetY: element.y
+        targetY: element.y,
       };
       element.setPause(true);
     } else {
@@ -200,7 +200,7 @@ class Core {
         y: e.clientY - this.metrics.top,
         // Запоминаем исходное смещение, чтобы к нему добавлять расчётное
         targetX: this.metrics.scrollX,
-        targetY: this.metrics.scrollY
+        targetY: this.metrics.scrollY,
       };
     }
   };
@@ -208,8 +208,8 @@ class Core {
   onMouseMove = (e: MouseEvent) => {
     // Курсор с учётом масштабирования и скролла
     const point = {
-      x: ((e.clientX - this.metrics.left) + this.metrics.scrollX) / this.metrics.zoom,
-      y: ((e.clientY - this.metrics.top) + this.metrics.scrollY) / this.metrics.zoom,
+      x: (e.clientX - this.metrics.left + this.metrics.scrollX) / this.metrics.zoom,
+      y: (e.clientY - this.metrics.top + this.metrics.scrollY) / this.metrics.zoom,
     };
     if (this.action) {
       if (this.action.name === 'drag' && this.action.element) {
@@ -222,8 +222,8 @@ class Core {
       if (this.action.name === 'scroll') {
         // Скролл использует не масштабированную точку, так как сам же на неё повлиял бы
         this.scroll({
-          x: this.action.targetX - ((e.clientX - this.metrics.left) - this.action.x),
-          y: this.action.targetY - ((e.clientY - this.metrics.top) - this.action.y),
+          x: this.action.targetX - (e.clientX - this.metrics.left - this.action.x),
+          y: this.action.targetY - (e.clientY - this.metrics.top - this.action.y),
         });
       }
     }
@@ -261,7 +261,7 @@ class Core {
         x1: this.metrics.scrollX / this.metrics.zoom,
         y1: this.metrics.scrollY / this.metrics.zoom,
         x2: (this.metrics.width + this.metrics.scrollX) / this.metrics.zoom,
-        y2: (this.metrics.height + this.metrics.scrollY) / this.metrics.zoom
+        y2: (this.metrics.height + this.metrics.scrollY) / this.metrics.zoom,
       };
 
       this.ctx.save();

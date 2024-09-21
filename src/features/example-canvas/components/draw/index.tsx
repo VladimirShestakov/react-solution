@@ -3,7 +3,6 @@ import Core from './core';
 import './style.css';
 
 function Draw() {
-
   const dom = useRef<HTMLDivElement>(null);
   const core = useMemo(() => {
     if (!import.meta.env.SSR) return new Core();
@@ -14,9 +13,7 @@ function Draw() {
     return () => core?.unmount();
   }, []);
 
-  return (
-    <div className="Draw" ref={dom}/>
-  );
+  return <div className="Draw" ref={dom} />;
 }
 
 export default React.memo(Draw);

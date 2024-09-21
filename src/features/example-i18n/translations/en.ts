@@ -1,8 +1,8 @@
 export default {
-  "title": "Internationalization (i18n)",
-  "locales": {
-    "ru-RU": "Russian",
-    "en-EN": "English"
+  title: 'Internationalization (i18n)',
+  locales: {
+    'ru-RU': 'Russian',
+    'en-EN': 'English',
   },
   content: {
     pLocale: `Translate dictionary texts using phrase code.
@@ -26,9 +26,6 @@ export default {
     pHook: `All internationalization functions are implemented by the i18n service, in react components to the current
        the locale, the function for changing it, and the translation function can be accessed through the useI18n() hook.
        The hook will sign the component to change the locale or load dictionaries so that the component re-renders.
-     `
-  }
+     `,
+  },
 };
-
-
-

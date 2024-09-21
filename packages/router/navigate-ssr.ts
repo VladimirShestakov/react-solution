@@ -14,8 +14,7 @@ export function NavigateSSR({
   httpStatus = 301,
 }: NavigateSSRProps): null {
   if (import.meta.env.SSR) {
-    if (typeof to === 'string')
-      useService(ROUTER_SERVICE).setHttpStatus(httpStatus, to);
+    if (typeof to === 'string') useService(ROUTER_SERVICE).setHttpStatus(httpStatus, to);
     return null;
   } else {
     return Navigate({ to, replace, state, relative });

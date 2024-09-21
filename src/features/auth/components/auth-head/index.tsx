@@ -1,5 +1,5 @@
 import { useService } from '../../../../../packages/container';
-import { useTranslate } from '../../../../../packages/i18n/use-i18n.ts';
+import { useTranslate } from '../../../../../packages/i18n';
 import { SESSION_STORE } from '../../session-store/token.ts';
 import { memo, useCallback, useSyncExternalStore } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -10,7 +10,11 @@ function AuthHead() {
   const navigate = useNavigate();
   const location = useLocation();
   const session = useService(SESSION_STORE);
-  const sessionState = useSyncExternalStore(session.state.subscribe, session.state.get, session.state.get);
+  const sessionState = useSyncExternalStore(
+    session.state.subscribe,
+    session.state.get,
+    session.state.get,
+  );
 
   const callbacks = {
     // Переход к авторизации
@@ -27,10 +31,11 @@ function AuthHead() {
   return (
     <SideLayout side="end">
       {sessionState.user ? <Link to="/profile">{sessionState.user.profile.name}</Link> : ''}
-      {sessionState.user
-        ? <button onClick={callbacks.onSignOut}>{t('auth.signOut')}</button>
-        : <button onClick={callbacks.onSignIn}>{t('auth.signIn')}</button>
-      }
+      {sessionState.user ? (
+        <button onClick={callbacks.onSignOut}>{t('auth.signOut')}</button>
+      ) : (
+        <button onClick={callbacks.onSignIn}>{t('auth.signIn')}</button>
+      )}
     </SideLayout>
   );
 }

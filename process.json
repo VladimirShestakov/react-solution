@@ -3,8 +3,8 @@
     {
       "name": "SSR",
       "script": "server/index.ts",
-      "instances" : "1",
-      "exec_mode" : "cluster",
+      "instances": "1",
+      "exec_mode": "cluster",
       "watch": false,
       "node_args": "",
       "env": {

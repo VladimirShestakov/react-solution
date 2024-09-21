@@ -10,5 +10,5 @@ export const categoriesStore = injectClass({
   depends: {
     categoriesApi: CATEGORIES_API,
     config: optionalToken(CATEGORIES_STORE_CFG),
-  }
+  },
 });

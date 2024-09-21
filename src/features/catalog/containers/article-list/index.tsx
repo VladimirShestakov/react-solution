@@ -7,25 +7,31 @@ import Spinner from '@src/ui/elements/spinner';
 import { ARTICLES_STORE } from '../../articles-store/token.ts';
 
 function ArticleList() {
-
   const { articles, router, dumpService } = useServicesMap({
     articles: ARTICLES_STORE,
     router: ROUTER_SERVICE,
-    dumpService: DUMP_SERVICE
+    dumpService: DUMP_SERVICE,
   });
 
   //тест
-  const articlesState = useSyncExternalStore(articles.state.subscribe, articles.state.get, articles.state.get);
+  const articlesState = useSyncExternalStore(
+    articles.state.subscribe,
+    articles.state.get,
+    articles.state.get,
+  );
 
   const callbacks = {
     // Пагинация
-    onPaginate: useCallback((page: number) => {
-      articles.setParams({ page });
-    }, [articles]),
+    onPaginate: useCallback(
+      (page: number) => {
+        articles.setParams({ page });
+      },
+      [articles],
+    ),
     // генератор ссылки для пагинатора
     makePaginatorLink: useCallback((page: number) => {
       return router.makeHref(articles.exportParams({ page }));
-    }, [])
+    }, []),
   };
 
   return (
@@ -38,9 +44,11 @@ function ArticleList() {
         ))}
       </ul>
       <Pagination
-        count={articlesState.data.count} page={articlesState.params.page}
+        count={articlesState.data.count}
+        page={articlesState.params.page}
         limit={articlesState.params.limit}
-        onChange={callbacks.onPaginate} makeLink={callbacks.makePaginatorLink}
+        onChange={callbacks.onPaginate}
+        makeLink={callbacks.makePaginatorLink}
       />
     </Spinner>
   );

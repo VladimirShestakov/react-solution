@@ -1,4 +1,4 @@
-import { Token } from './index.ts';
+import { Token } from './token.ts';
 import { TokenDecorator } from './decorator.ts';
 import type { TokenInterface } from './types.ts';
 
@@ -31,17 +31,15 @@ export function arrayToken<Type>(token: TokenInterface<Type>): TokenDecorator<Ty
  * @param value
  */
 export function isToken<Type>(
-  value: TokenInterface<Type> | unknown
+  value: TokenInterface<Type> | unknown,
 ): value is TokenInterface<Type> {
-  return Boolean(value
-    && typeof value === 'object'
-    && 'key' in value
-    && typeof value.key === 'string'
+  return Boolean(
+    value && typeof value === 'object' && 'key' in value && typeof value.key === 'string',
   );
 }
 
 export function isTokenDecorator<Type>(
-  value: TokenDecorator<Type> | unknown
+  value: TokenDecorator<Type> | unknown,
 ): value is TokenDecorator<Type> {
   return value instanceof TokenDecorator;
 }

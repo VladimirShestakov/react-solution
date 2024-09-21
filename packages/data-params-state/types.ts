@@ -1,36 +1,36 @@
 export interface DefaultConfig {
-  name: string,
-  log: boolean,
+  name: string;
+  log: boolean;
   // Запоминать параметры
   rememberParams: boolean;
 }
 
 export interface DefaultParams {
   // Количество элементов на страницу
-  limit: number,
+  limit: number;
   // Номер страницы
-  page: number,
+  page: number;
   // Сортировка
-  sort: string,
+  sort: string;
   // Поисковый запрос (фильтр по строке)
   // query: string
 }
 
 export type TDataParamsState<Data, Params> = {
-  data: Data,
+  data: Data;
   // Параметры выборки списка элементов
-  params: Params
+  params: Params;
   // Ожидание выборки списка элементов (из АПИ)
-  wait: boolean,
+  wait: boolean;
   // Ошибки выборки списка элементов (из АПИ)
-  errors: any,
-}
+  errors: any;
+};
 
 export type SetParamsOptions = {
   // Способ изменения адреса браузера, если параметры сохраняются в url search (push/replace)
-  push?: boolean,
+  push?: boolean;
   // Загружать данные по новым параметрам
-  load?: boolean
+  load?: boolean;
   // Сбросить текущие данные
-  clear?: boolean
-}
+  clear?: boolean;
+};

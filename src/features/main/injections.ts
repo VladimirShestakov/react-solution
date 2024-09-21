@@ -1,5 +1,3 @@
 import { injectTranslations } from './translations/ingect.ts';
 
-export const mainFeature = [
-  injectTranslations
-];
+export const mainFeature = [injectTranslations];

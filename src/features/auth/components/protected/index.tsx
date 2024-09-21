@@ -5,15 +5,19 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useInit } from '../../../../../packages/render';
 
 interface Props {
-  children: ReactNode,
-  redirect: string
+  children: ReactNode;
+  redirect: string;
 }
 
 function Protected({ children, redirect }: Props) {
   const navigate = useNavigate();
   const location = useLocation();
   const session = useService(SESSION_STORE);
-  const sessionState = useSyncExternalStore(session.state.subscribe, session.state.get, session.state.get);
+  const sessionState = useSyncExternalStore(
+    session.state.subscribe,
+    session.state.get,
+    session.state.get,
+  );
 
   useInit(async () => {
     // Вызывается даже если есть сессиия в целях её акутализации

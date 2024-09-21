@@ -10,13 +10,13 @@ import { IObservable } from '@src/utils/observable/types';
  */
 export default function useObservable<Result, State>(
   observer: IObservable<State>,
-  selector: (state: State) => Result
+  selector: (state: State) => Result,
 ): Result {
   const [result, setResult] = useState(() => selector(observer.getState()));
   const subscribe = useCallback(() => {
     return observer.subscribe(() => {
       const newResult = selector(observer.getState());
-      setResult((prevResult) => {
+      setResult(prevResult => {
         return shallowequal(prevResult, newResult) ? prevResult : newResult;
       });
     });

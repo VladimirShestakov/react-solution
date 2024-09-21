@@ -4,23 +4,22 @@ import debounce from 'lodash.debounce';
 import './style.less';
 
 interface Props {
-  value: string,
-  name: string,
-  onChange: (value: string, name: string) => void,
-  type?: string,
-  placeholder?: string,
-  size?: 'big',
-  delay?: number
+  value: string;
+  name: string;
+  onChange: (value: string, name: string) => void;
+  type?: string;
+  placeholder?: string;
+  size?: 'big';
+  delay?: number;
 }
 
 function Input(props: Props) {
-
   // Внутренний стейт для быстрого отображения ввода
   const [value, setValue] = useState(props.value);
 
   const onChangeDebounce = useCallback(
     debounce(value => props.onChange(value, props.name), props.delay || 600),
-    [props.onChange, props.name]
+    [props.onChange, props.name],
   );
 
   // Обработчик изменений в поле

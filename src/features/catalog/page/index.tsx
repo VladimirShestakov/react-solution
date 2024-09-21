@@ -3,7 +3,7 @@ import { memo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useInit } from '../../../../packages/render';
 import useRefreshKey from '../../../../packages/router/use-refresh-key';
-import useI18n from '../../../../packages/i18n/use-i18n.ts';
+import { useI18n } from '../../../../packages/i18n';
 import Head from '@src/ui/layout/head';
 import MainMenu from '@src/features/navigation/components/main-menu';
 import PageLayout from '@src/ui/layout/page-layout';
@@ -28,41 +28,49 @@ function CatalogPage() {
   // то получим новый ключ и сможем перезагрузить список
   const refreshKey = useRefreshKey('refreshArticles');
 
-  useInit(async () => {
-    // Инициализация параметров каталога
-    await articles.initParams({ category: categoryId });
-  }, [categoryId, locale, refreshKey], { ssr: 'articles.init' });
+  useInit(
+    async () => {
+      // Инициализация параметров каталога
+      await articles.initParams({ category: categoryId });
+    },
+    [categoryId, locale, refreshKey],
+    { ssr: 'articles.init' },
+  );
 
-  useInit(async () => {
-    // Загрузка списка категорий
-    await categories.load({ fields: '*', limit: 1000 });
-  }, [locale], { ssr: 'categories.load' });
+  useInit(
+    async () => {
+      // Загрузка списка категорий
+      await categories.load({ fields: '*', limit: 1000 });
+    },
+    [locale],
+    { ssr: 'categories.load' },
+  );
 
   return (
     <PageLayout>
-      <Head title="React Skeleton"><LocaleSelect/></Head>
-      <MainMenu/>
+      <Head title="React Skeleton">
+        <LocaleSelect />
+      </Head>
+      <MainMenu />
       <h2>{t('catalog.title')}</h2>
       <p>
-        Отображение отфильтрованного списка загруженного из АПИ.
-        Параметры списка: сортировка, пагинация, поиск - являются параметрами списка.
-        Параметры могут сохранятся в адресе страницы и восстанавливаться из адреса при открытии
-        страницы по прямой ссылке.
+        Отображение отфильтрованного списка загруженного из АПИ. Параметры списка: сортировка,
+        пагинация, поиск - являются параметрами списка. Параметры могут сохранятся в адресе страницы
+        и восстанавливаться из адреса при открытии страницы по прямой ссылке.
       </p>
       <p>
         Все действия происходят над параметрами списка (фильтра) - их установка, сброс,
         восстановление. Список элементов подгружается из АПИ с учётом установленных (текущих)
-        параметров.
-        Варианты значений для некоторых элементов фильтра загружаются отдельно.
-        Для них отдельное внешнее состояние.
+        параметров. Варианты значений для некоторых элементов фильтра загружаются отдельно. Для них
+        отдельное внешнее состояние.
       </p>
       <SideLayout side="between" align="top" wrap={false}>
         <Sider>
-          <CategoryTree/>
+          <CategoryTree />
         </Sider>
         <Content>
-          <CatalogFilter/>
-          <ArticleList/>
+          <CatalogFilter />
+          <ArticleList />
         </Content>
       </SideLayout>
     </PageLayout>

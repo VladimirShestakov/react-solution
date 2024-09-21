@@ -1,5 +1,5 @@
 import { newToken } from '../../packages/token';
-import type { DumpService } from './index.ts';
+import type { DumpService } from './service.ts';
 import type { DumpConfig } from './types.ts';
 
 export const DUMP_SERVICE = newToken<DumpService>('@react-skeleton/dump/service');

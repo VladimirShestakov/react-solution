@@ -1,5 +1,4 @@
-import { HttpClient } from '../../../../packages/http-client';
-import { ApiError } from '../../../../packages/http-client/types.ts';
+import { type HttpClient, ApiError } from '../../../../packages/http-client';
 import { State } from '../../../../packages/state';
 import mc from 'merge-change';
 import type { SignInBody } from '../users-api/types.ts';
@@ -13,16 +12,18 @@ export class SessionStore {
   readonly state;
   protected config: SessionStoreConfig;
 
-  constructor(protected depends: {
-    env: ImportMetaEnv,
-    httpClient: HttpClient,
-    usersApi: UsersApi,
-    config?: Patch<SessionStoreConfig>
-  }) {
+  constructor(
+    protected depends: {
+      env: ImportMetaEnv;
+      httpClient: HttpClient;
+      usersApi: UsersApi;
+      config?: Patch<SessionStoreConfig>;
+    },
+  ) {
     this.config = mc.merge(this.defaultConfig(), depends.config ?? {});
     this.state = new State<SessionStoreData>(this.defaultState(), {
       log: this.config.log,
-      name: this.config.name
+      name: this.config.name,
     });
   }
 
@@ -44,7 +45,7 @@ export class SessionStore {
       log: true,
       name: 'Sessions state',
       tokenHeader: 'X-Token',
-      saveToLocalStorage: !this.depends.env.SSR
+      saveToLocalStorage: !this.depends.env.SSR,
     };
   }
 
@@ -54,14 +55,17 @@ export class SessionStore {
   async signIn(data: SignInBody) {
     this.state.set(this.defaultState(), 'Авторизация');
     try {
-      const res = await this.depends.usersApi.signIn({data});
-      this.state.set({
-        ...this.state.get(),
-        token: res.data.result.token,
-        user: res.data.result.user,
-        exists: true,
-        waiting: false
-      }, 'Успешная авторизация');
+      const res = await this.depends.usersApi.signIn({ data });
+      this.state.set(
+        {
+          ...this.state.get(),
+          token: res.data.result.token,
+          user: res.data.result.user,
+          exists: true,
+          waiting: false,
+        },
+        'Успешная авторизация',
+      );
 
       if (this.config.saveToLocalStorage) {
         // Запоминаем токен, чтобы потом автоматически аутентифицировать юзера
@@ -73,11 +77,14 @@ export class SessionStore {
     } catch (e) {
       if (e instanceof ApiError) {
         if (e.response?.data?.error) {
-          this.state.set({
-            ...this.state.get(),
-            errors: this.simplifyErrors(e.response.data.error.data.issues),
-            waiting: false
-          }, 'Ошибка авторизации');
+          this.state.set(
+            {
+              ...this.state.get(),
+              errors: this.simplifyErrors(e.response.data.error.data.issues),
+              waiting: false,
+            },
+            'Ошибка авторизации',
+          );
         }
       } else {
         console.error(e);
@@ -101,7 +108,7 @@ export class SessionStore {
     } catch (error) {
       console.error(error);
     }
-    this.state.set({...this.defaultState(), waiting: false});
+    this.state.set({ ...this.defaultState(), waiting: false });
   }
 
   /**
@@ -119,19 +126,36 @@ export class SessionStore {
         // Удаляем плохой токен
         window.localStorage.removeItem('token');
         this.depends.httpClient.setHeader(this.config.tokenHeader, null);
-        this.state.set({
-          ...this.state.get(), exists: false, waiting: false
-        }, 'Сессии нет');
+        this.state.set(
+          {
+            ...this.state.get(),
+            exists: false,
+            waiting: false,
+          },
+          'Сессии нет',
+        );
       } else {
-        this.state.set({
-          ...this.state.get(), token: token, user: res.data.result, exists: true, waiting: false
-        }, 'Успешно вспомнили сессию');
+        this.state.set(
+          {
+            ...this.state.get(),
+            token: token,
+            user: res.data.result,
+            exists: true,
+            waiting: false,
+          },
+          'Успешно вспомнили сессию',
+        );
       }
     } else {
       // Если токена не было, то сбрасываем ожидание (так как по умолчанию true)
-      this.state.set({
-        ...this.state.get(), exists: false, waiting: false
-      }, 'Сессии нет');
+      this.state.set(
+        {
+          ...this.state.get(),
+          exists: false,
+          waiting: false,
+        },
+        'Сессии нет',
+      );
     }
   }
 
@@ -139,10 +163,10 @@ export class SessionStore {
    * Сброс ошибок авторизации
    */
   resetErrors() {
-    this.state.set({...this.defaultState(), errors: null});
+    this.state.set({ ...this.defaultState(), errors: null });
   }
 
-  simplifyErrors(issues: Array<{ path: string[], message: string }>) {
+  simplifyErrors(issues: Array<{ path: string[]; message: string }>) {
     const result: Record<string, string[]> = {};
     for (const issue of issues) {
       const key = issue.path.join('.') || 'other';

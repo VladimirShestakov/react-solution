@@ -14,7 +14,7 @@ function Tree(props: Props) {
         {props.items.map(item => (
           <li key={item._id} className={'Tree__item'}>
             <span>{props.renderItem ? props.renderItem(item) : item?.title}</span>
-            <TreeMemo {...props} items={item?.children}/>
+            <TreeMemo {...props} items={item?.children} />
           </li>
         ))}
       </ul>

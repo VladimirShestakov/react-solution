@@ -10,5 +10,5 @@ export const profileStore = injectClass({
   depends: {
     usersApi: USERS_API,
     config: optionalToken(PROFILE_STORE_CFG),
-  }
+  },
 });

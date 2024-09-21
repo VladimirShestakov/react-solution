@@ -1,5 +1,5 @@
 import { injectValue } from '../../../../packages/container';
-import { I18N_DICTIONARY } from '../../../../packages/i18n/token.ts';
+import { I18N_DICTIONARY } from '../../../../packages/i18n';
 
 export const injectTranslations = injectValue({
   token: I18N_DICTIONARY,
@@ -7,5 +7,5 @@ export const injectTranslations = injectValue({
     'en-EN': { main: () => import('./en.js') },
     'ru-RU': { main: () => import('./ru.js') },
   },
-  merge: true
+  merge: true,
 });

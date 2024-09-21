@@ -1,8 +1,8 @@
 import { memo, ReactNode, useCallback, useState } from 'react';
 import ModalLayout from '@src/ui/layout/modal-layout';
 import SideLayout from '@src/ui/layout/side-layout';
-import { useTranslate } from '../../../../../packages/i18n/use-i18n.ts';
-import type { ModalWithClose } from '../../../../../packages/modals/types.ts';
+import { useTranslate } from '../../../../../packages/i18n';
+import type { ModalWithClose } from '../../../../../packages/modals';
 
 export interface PromptModalProps extends ModalWithClose<string | null> {
   title: string;
@@ -21,7 +21,7 @@ function PromptModal(props: PromptModalProps): ReactNode {
     <ModalLayout onClose={callbacks.onCancel}>
       <h2>{props.title}</h2>
       <p>
-        <input type="text" value={value} onChange={(e) => setValue(e.target.value)}/>
+        <input type="text" value={value} onChange={e => setValue(e.target.value)} />
       </p>
       <p>{props.message}</p>
       <SideLayout side="end">

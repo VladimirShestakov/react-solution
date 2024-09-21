@@ -8,7 +8,7 @@ import type { I18nPath, I18nTranslateOptions, useI18nReturn } from './types.ts';
  * Отслеживает изменения локали или загрузки словаря для перерендера компонента
  * @throws
  */
-export default function useI18n(): useI18nReturn {
+export function useI18n(): useI18nReturn {
   const i18n = useService(I18N);
   const state = useSyncExternalStore(i18n.state.subscribe, i18n.state.get, i18n.state.get);
 
