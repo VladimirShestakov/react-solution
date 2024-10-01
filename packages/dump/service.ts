@@ -1,7 +1,7 @@
 import mc from 'merge-change';
 import { parse } from 'zipson';
-import { type Container } from '../../packages/container';
-import { type Token } from '../../packages/token';
+import { type Container } from '../container';
+import { type Token } from '../token';
 import { type DumpConfig } from './types.ts';
 
 export class DumpService {

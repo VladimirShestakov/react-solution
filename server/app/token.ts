@@ -1,4 +1,4 @@
-import { newToken } from '../../packages/token';
+import { newToken } from 'react-solution/token';
 import type { App } from './index.ts';
 import type { AppConfig } from './types.ts';
 

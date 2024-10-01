@@ -1,7 +1,7 @@
 import { memo, useCallback } from 'react';
-import { useTranslate } from '../../../../packages/i18n';
-import { useService } from '../../../../packages/container';
-import { MODALS } from '../../../../packages/modals';
+import { useTranslate } from 'react-solution/i18n';
+import { useService } from 'react-solution/container';
+import { MODALS } from 'react-solution/modals';
 import Head from '@src/ui/layout/head';
 import MainMenu from '@src/features/navigation/components/main-menu';
 import PageLayout from '@src/ui/layout/page-layout';
@@ -64,7 +64,7 @@ function PageAsModal(props: PageAsModalProps) {
 
   return (
     <PageLayout>
-      <Head title="React Skeleton">
+      <Head title="React Solution">
         {props.close ? <button onClick={callbacks.onClose}>Закрыть</button> : <LocaleSelect />}
       </Head>
       <MainMenu />

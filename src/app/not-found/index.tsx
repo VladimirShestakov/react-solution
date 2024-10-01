@@ -1,11 +1,11 @@
-import { useService } from '../../../packages/container';
-import { ROUTER_SERVICE } from '../../../packages/router';
+import { useService } from 'react-solution/container';
+import { ROUTER_SERVICE } from 'react-solution/router';
+import { useInit, useUninit } from 'react-solution/render';
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import Head from '@src/ui/layout/head';
 import MainMenu from '@src/features/navigation/components/main-menu';
 import PageLayout from '@src/ui/layout/page-layout';
-import { useInit, useUninit } from '../../../packages/render';
 
 function NotFound() {
   const routerService = useService(ROUTER_SERVICE);
@@ -16,7 +16,7 @@ function NotFound() {
 
   return (
     <PageLayout>
-      <Head title="React Skeleton"></Head>
+      <Head title="React Solution"></Head>
       <MainMenu />
       <h2>404</h2>
       <p>Страница не найдена</p>

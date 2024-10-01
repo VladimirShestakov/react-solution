@@ -1,4 +1,4 @@
-import { Token, type TypesFromTokens, type TokenInterface } from '../../packages/token';
+import { Token, type TypesFromTokens, type TokenInterface } from '../token';
 
 /**
  * Реэкспорт типа на контейнер

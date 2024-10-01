@@ -1,10 +1,10 @@
-import { Events } from '../../packages/events';
-import { WaitingStore, type TWaitKey, WaitStatus } from '../../packages/waiting-store';
+import { Events } from '../events';
+import { WaitingStore, type TWaitKey, WaitStatus } from '../waiting-store';
 import mc from 'merge-change';
 import { CONTAINER } from './token.ts';
 import { isInjectClass, isInjectFabric, isInjectValue } from './utils.ts';
 import { type ContainerEvents, type Inject, InjectArray } from './types';
-import { type TokenInterface, type TypesFromTokens, type TokenKey } from '../../packages/token';
+import { type TokenInterface, type TypesFromTokens, type TokenKey } from '../token';
 
 export class Container {
   readonly events: Events<ContainerEvents> = new Events();

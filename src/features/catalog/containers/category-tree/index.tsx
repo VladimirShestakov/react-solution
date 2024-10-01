@@ -1,7 +1,7 @@
 import { memo, useMemo, useSyncExternalStore } from 'react';
 import { Link } from 'react-router-dom';
-import { useService } from '../../../../../packages/container';
-import { ROUTER_SERVICE } from '../../../../../packages/router';
+import { useService } from 'react-solution/container';
+import { ROUTER_SERVICE } from 'react-solution/router';
 import Tree from '@src/ui/elements/tree';
 import Spinner from '@src/ui/elements/spinner';
 import { ARTICLES_STORE } from '../../articles-store/token.ts';

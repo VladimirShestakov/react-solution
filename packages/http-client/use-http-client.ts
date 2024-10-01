@@ -1,6 +1,6 @@
-import { useService } from '../../packages/container';
-import { HTTP_CLIENT } from './token.ts';
-import type { HttpClient } from './types.ts';
+import { useService } from '../container';
+import { HTTP_CLIENT } from './token';
+import type { HttpClient } from './types';
 
 /**
  * Хук для доступа к HttpClient из react

@@ -1,6 +1,6 @@
-import { injectClass } from '../../packages/container';
-import { optionalToken } from '../../packages/token';
-import { ENV } from '../../packages/env';
+import { injectClass } from '../container';
+import { optionalToken } from '../token';
+import { ENV } from '../env';
 import { I18N, I18N_CFG, I18N_DICTIONARY } from './token.ts';
 import { I18n } from './service.ts';
 

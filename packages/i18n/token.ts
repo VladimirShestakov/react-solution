@@ -1,4 +1,4 @@
-import { newToken } from '../../packages/token';
+import { newToken } from '../token';
 import type { I18n } from './service.ts';
 import type { I18nDictionary, I18nConfig, I18nState } from './types.ts';
 

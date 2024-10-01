@@ -1,7 +1,7 @@
-import { codeGenerator } from '../../packages/utils';
-import type { Token } from '../../packages/token';
 import type { ComponentProps } from 'react';
-import { ModalsStack, ModalState, ModalComponent, ModalProps, ModalResult } from './types';
+import { codeGenerator } from '../utils';
+import type { Token } from '../token';
+import { ModalsStack, ModalState, ModalComponent, ModalProps, ModalResult } from './types.ts';
 
 /**
  * Сервис модальных окон

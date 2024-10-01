@@ -1,6 +1,6 @@
-import { useServicesMap } from '../../packages/container';
-import { ENV } from '../../packages/env';
-import { RENDER_SERVICE } from '../../packages/render';
+import { useServicesMap } from '../container';
+import { ENV } from '../env';
+import { RENDER_SERVICE } from '../render';
 import { useEffect } from 'react';
 
 /**

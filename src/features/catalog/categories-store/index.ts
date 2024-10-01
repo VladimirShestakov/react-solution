@@ -1,6 +1,6 @@
 import mc from 'merge-change';
-import { State } from '../../../../packages/state';
-import { listToTree } from '../../../../packages/utils';
+import { State } from 'react-solution/state';
+import { listToTree } from 'react-solution/utils';
 import type { CategoriesApi } from '../categories-api';
 import type { CategoriesStoreConfig, CategoriesStoreData } from './types.ts';
 

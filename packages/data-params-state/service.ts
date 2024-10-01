@@ -1,8 +1,8 @@
-import type { RouterService } from '../../packages/router';
+import type { RouterService } from '../router';
 import { z } from 'zod';
 import mc from 'merge-change';
-import { exclude } from '../../packages/utils';
-import { State } from '../../packages/state';
+import { exclude } from '../utils';
+import { State } from '../state';
 import type { DefaultConfig, DefaultParams, SetParamsOptions, TDataParamsState } from './types.ts';
 
 export abstract class DataParamsState<

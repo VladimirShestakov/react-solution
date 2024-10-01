@@ -5,9 +5,9 @@ import {
   type FunctionWithDepends,
   type InjectFabric,
   type InjectValue,
-} from '../../packages/container';
-import { ENV } from '../../packages/env';
-import { type TypesFromTokens, type TokenInterface } from '../../packages/token';
+} from '../container';
+import { ENV } from '../env';
+import { type TypesFromTokens, type TokenInterface } from '../token';
 
 /**
  * Создание пары {Токен, Значение} для инъекции в DI настроек

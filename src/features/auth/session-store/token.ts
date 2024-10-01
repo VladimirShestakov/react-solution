@@ -1,4 +1,4 @@
-import { newToken } from '../../../../packages/token';
+import { newToken } from 'react-solution/token';
 import type { SessionStore } from './index.ts';
 import type { SessionStoreConfig } from './types.ts';
 

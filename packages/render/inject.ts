@@ -1,7 +1,7 @@
-import { CONTAINER, injectClass } from '../../packages/container';
-import { DUMP_SERVICE } from '../../packages/dump';
-import { optionalToken } from '../../packages/token';
-import { ENV } from '../../packages/env';
+import { CONTAINER, injectClass } from '../container';
+import { DUMP_SERVICE } from '../dump';
+import { optionalToken } from '../token';
+import { ENV } from '../env';
 import { RenderService } from './service.ts';
 import { RENDER_SERVICE, RENDER_CFG } from './token.ts';
 

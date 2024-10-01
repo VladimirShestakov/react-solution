@@ -1,5 +1,5 @@
-import { type HttpClient, ApiError } from '../../../../packages/http-client';
-import { State } from '../../../../packages/state';
+import { type HttpClient, ApiError } from 'react-solution/http-client';
+import { State } from 'react-solution/state';
 import mc from 'merge-change';
 import type { SignInBody } from '../users-api/types.ts';
 import type { UsersApi } from '../users-api';

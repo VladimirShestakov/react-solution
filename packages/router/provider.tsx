@@ -8,7 +8,7 @@ import type { RouterService } from './service.ts';
  * @param children
  * @return {JSX.Element}
  */
-function RouterProvider({
+export function RouterProvider({
   router,
   children,
 }: {
@@ -39,4 +39,4 @@ function RouterProvider({
   );
 }
 
-export default React.memo(RouterProvider);
+export const RouterProviderMemo = React.memo(RouterProvider);

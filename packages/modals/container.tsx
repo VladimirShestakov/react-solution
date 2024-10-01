@@ -1,5 +1,5 @@
-import { useContainer } from '../../packages/container';
 import { memo, useSyncExternalStore } from 'react';
+import { useContainer } from '../container';
 import { MODALS } from './token.ts';
 
 /**

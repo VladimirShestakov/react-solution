@@ -1,3 +1,3 @@
-import { newToken } from '../../packages/token';
+import { newToken } from '../token';
 
-export const ENV = newToken<ImportMetaEnv>('@react-skeleton/env');
+export const ENV = newToken<ImportMetaEnv>('@react-solution/env');

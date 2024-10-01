@@ -1,5 +1,8 @@
-import { State } from '../../packages/state';
-import { WaitingStore } from '../../packages/waiting-store';
+import acceptLang from 'accept-language-parser';
+import mc from 'merge-change';
+import cookie from 'js-cookie';
+import { State } from '../state';
+import { WaitingStore } from '../waiting-store';
 import type {
   I18nDictionary,
   I18nState,
@@ -10,11 +13,8 @@ import type {
   I18nNumberOptions,
   I18nTranslation,
   I18nDump,
-} from './types';
-import mc from 'merge-change';
-import { flat } from '../../packages/utils';
-import acceptLang from 'accept-language-parser';
-import cookie from 'js-cookie';
+} from './types.ts';
+import { flat } from '../utils';
 
 /**
  * Сервис мультиязычности

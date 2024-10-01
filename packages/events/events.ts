@@ -1,4 +1,4 @@
-import { EventsMap, Listener } from '../../packages/events';
+import { EventsMap, Listener } from '../events';
 
 /**
  * Эмиттер событий.

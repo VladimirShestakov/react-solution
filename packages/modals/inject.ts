@@ -1,4 +1,4 @@
-import { injectClass } from '../../packages/container';
+import { injectClass } from '../container';
 import { Modals } from './service.ts';
 import { MODALS } from './token.ts';
 

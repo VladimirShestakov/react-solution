@@ -1,6 +1,6 @@
-import { HTTP_CLIENT } from '../../../../packages/http-client';
-import { injectClass } from '../../../../packages/container';
-import { optionalToken } from '../../../../packages/token';
+import { HTTP_CLIENT } from 'react-solution/http-client';
+import { injectClass } from 'react-solution/container';
+import { optionalToken } from 'react-solution/token';
 import { ArticlesApi } from './index.ts';
 import { ARTICLES_API, ARTICLES_API_CFG } from './token.ts';
 

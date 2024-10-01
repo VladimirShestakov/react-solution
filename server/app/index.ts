@@ -4,9 +4,9 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import cookieParser from 'cookie-parser';
 import type { Express, Request, Response } from 'express';
-import type { Proxy } from '../../packages/proxy';
-import type { Ssr } from '../../packages/ssr';
-import type { ViteDev } from '../../packages/vite-dev';
+import type { Proxy } from 'react-solution/proxy';
+import type { Ssr } from 'react-solution/ssr';
+import type { ViteDev } from 'react-solution/vite-dev';
 import type { AppConfig } from './types.ts';
 
 export class App {

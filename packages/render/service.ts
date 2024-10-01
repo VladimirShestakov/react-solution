@@ -1,9 +1,9 @@
 import mc from 'merge-change';
 import { createRoot, hydrateRoot } from 'react-dom/client';
 import { type ReactNode } from 'react';
-import { type Container } from '../../packages/container';
-import { type DumpService } from '../../packages/dump';
-import { WaitingStore } from '../../packages/waiting-store';
+import { type Container } from '../container';
+import { type DumpService } from '../dump';
+import { WaitingStore } from '../waiting-store';
 import { type RenderConfig, RenderDump, type RenderValues } from './types.ts';
 // import { renderToPipeableStream } from 'react-dom/server';
 

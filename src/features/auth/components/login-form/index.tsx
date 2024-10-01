@@ -1,8 +1,8 @@
-import { useService } from '../../../../../packages/container';
-import { SESSION_STORE } from '../../session-store/token.ts';
 import { FormEvent, memo, useCallback, useState, useSyncExternalStore } from 'react';
-import { useTranslate } from '../../../../../packages/i18n';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useTranslate } from 'react-solution/i18n';
+import { useService } from 'react-solution/container';
+import { SESSION_STORE } from '../../session-store/token.ts';
 import Field from '@src/ui/elements/field';
 import Input from '@src/ui/elements/input';
 import type { SignInBody } from '../../users-api/types';

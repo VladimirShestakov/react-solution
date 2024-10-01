@@ -1,20 +1,20 @@
-// import { injectClass, injectFabric } from './utils.ts';
+// import { injectClass, injectFabric } from './utils';
 // import {
 //   CACHE_STORE,
 //   CACHE_STORE_CFG,
 //   CACHE_STORE_EXT,
 //   CACHE_STORE_I
-// } from '../cache-store/token.ts';
+// } from '../cache-store/token';
 // import { CacheStore } from '../cache-store';
-// import { CONFIGS } from '../configs/token.ts';
-// import { TCacheConfig } from '../cache-store/types.ts';
-// import { SSR, SSR_CGF } from '../ssr/token.ts';
+// import { CONFIGS } from '../configs/token';
+// import { TCacheConfig } from '../cache-store/types';
+// import { SSR, SSR_CGF } from '../ssr/token';
 // import { Ssr } from '../ssr';
 // import { ENV } from '../env';
-// import { VITE_DEV } from '../vite-dev-service/token.ts';
+// import { VITE_DEV } from '../vite-dev-service/token';
 // import { ViteDevService } from '../vite-dev-service';
-// import { SsrOptions } from '../ssr/types.ts';
-// import { nestedToken } from '../token/utils.ts';
+// import { SsrOptions } from '../ssr/types';
+// import { nestedToken } from '../token/utils';
 //
 // // Тест инъекций
 // // Верно: Токен на интерфейс

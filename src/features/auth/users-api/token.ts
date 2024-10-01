@@ -1,4 +1,4 @@
-import { newToken } from '../../../../packages/token';
+import { newToken } from 'react-solution/token';
 import type { UsersApi } from './index.ts';
 import type { UsersApiConfig } from './types.ts';
 

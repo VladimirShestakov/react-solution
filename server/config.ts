@@ -1,9 +1,9 @@
+import { PROXY_CFG } from 'react-solution/proxy';
+import { CACHE_STORE_CFG } from 'react-solution/cache-store';
+import { SSR_CGF } from 'react-solution/ssr';
+import { config } from 'react-solution/configs';
 import proxyConfig from '../proxy.config';
-import { PROXY_CFG } from '../packages/proxy';
-import { CACHE_STORE_CFG } from '../packages/cache-store';
 import { APP_CFG } from './app/token.ts';
-import { SSR_CGF } from '../packages/ssr';
-import { config } from '../packages/configs';
 
 export default [
   config(APP_CFG, ({ env }) => ({

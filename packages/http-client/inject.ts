@@ -1,4 +1,4 @@
-import { injectClass } from '../../packages/container';
+import { injectClass } from '../container';
 import { HttpClient } from './service.ts';
 import { HTTP_CLIENT, HTTP_CLIENT_CFG } from './token.ts';
 

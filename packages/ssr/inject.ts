@@ -1,7 +1,7 @@
-import { injectFabric } from '../../packages/container';
-import { CACHE_STORE } from '../../packages/cache-store';
-import { ENV } from '../../packages/env';
-import { VITE_DEV } from '../../packages/vite-dev';
+import { injectFabric } from '../container';
+import { CACHE_STORE } from '../cache-store';
+import { ENV } from '../env';
+import { VITE_DEV } from '../vite-dev';
 import { SSR, SSR_CGF } from './token.ts';
 import { Ssr } from './service.ts';
 

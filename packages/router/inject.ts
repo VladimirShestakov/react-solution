@@ -1,6 +1,6 @@
-import { injectClass } from '../../packages/container';
-import { ENV } from '../../packages/env';
-import { optionalToken } from '../../packages/token';
+import { injectClass } from '../container';
+import { ENV } from '../env';
+import { optionalToken } from '../token';
 import { RouterService } from './service.ts';
 import { ROUTER_SERVICE, ROUTER_CFG } from './token.ts';
 

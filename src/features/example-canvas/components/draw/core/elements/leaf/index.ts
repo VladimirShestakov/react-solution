@@ -1,6 +1,6 @@
-import Figure from '@src/features/example-canvas/components/draw/core/elements/figure';
 import { createNoise2D } from 'simplex-noise';
-import { randomItem, roundRange } from '../../../../../../../../packages/utils';
+import { randomItem, roundRange } from 'react-solution/utils';
+import Figure from '@src/features/example-canvas/components/draw/core/elements/figure';
 import leafsImages from './img/export';
 
 const maxX = 500; // По сути ширина канвы, чтобы случайное число растянуть плавно на размер канвы

@@ -1,4 +1,4 @@
-import { newToken } from '../../../../packages/token';
+import { newToken } from 'react-solution/token';
 import type { ProfileStore } from './index.ts';
 import type { ProfileStoreConfig } from './types.ts';
 

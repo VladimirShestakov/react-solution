@@ -1,4 +1,4 @@
-import { injectValue } from '../../../../../packages/container';
+import { injectValue } from 'react-solution/container';
 import CascadeModal from './index.tsx';
 import { CASCADE_MODAL } from './token.ts';
 

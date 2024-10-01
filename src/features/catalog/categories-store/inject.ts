@@ -1,5 +1,5 @@
-import { injectClass } from '../../../../packages/container';
-import { optionalToken } from '../../../../packages/token';
+import { injectClass } from 'react-solution/container';
+import { optionalToken } from 'react-solution/token';
 import { CATEGORIES_API } from '../categories-api/token.ts';
 import { CategoriesStore } from './index.ts';
 import { CATEGORIES_STORE, CATEGORIES_STORE_CFG } from './token.ts';

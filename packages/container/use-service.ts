@@ -1,4 +1,4 @@
-import type { Token } from '../../packages/token';
+import type { Token } from '../token';
 import { useContainer } from './use-container.ts';
 
 /**

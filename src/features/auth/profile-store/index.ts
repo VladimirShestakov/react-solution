@@ -1,5 +1,5 @@
-import { State } from '../../../../packages/state';
 import mc from 'merge-change';
+import { State } from 'react-solution/state';
 import type { UsersApi } from '../users-api';
 import type { ProfileStoreConfig, ProfileStoreData } from './types.ts';
 

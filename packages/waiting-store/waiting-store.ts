@@ -1,6 +1,6 @@
-import { isPromise } from '../../packages/utils';
-import type { TWaitDump, TWaitKey, TWaitRecord, TWaitState } from './types';
-import { WaitStatus } from '../../packages/waiting-store';
+import { isPromise } from '../utils';
+import type { TWaitDump, TWaitKey, TWaitRecord, TWaitState } from './types.ts';
+import { WaitStatus } from './constants.ts';
 
 /**
  * Хранилище ожиданий.

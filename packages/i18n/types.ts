@@ -1,4 +1,4 @@
-import { type TWaitDump } from '../../packages/waiting-store';
+import { type TWaitDump } from '../waiting-store';
 
 /**
  * Расширяемое пространство словарей.

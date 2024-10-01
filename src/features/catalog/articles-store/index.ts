@@ -1,9 +1,9 @@
-import { FindQuery } from '../../../../packages/http-client';
-import { exclude } from '../../../../packages/utils';
 import { z } from 'zod';
 import mc from 'merge-change';
-import { DataParamsState, type DefaultConfig } from '../../../../packages/data-params-state';
-import type { RouterService } from '../../../../packages/router';
+import { FindQuery } from 'react-solution/http-client';
+import { exclude } from 'react-solution/utils';
+import { DataParamsState, type DefaultConfig } from 'react-solution/data-params-state';
+import type { RouterService } from 'react-solution/router';
 import type { ArticlesApi } from '@src/features/catalog/articles-api';
 import type { TArticleData, TArticleParams } from './types.ts';
 

@@ -6,12 +6,12 @@ import path from 'node:path';
 import uniqid from 'uniqid';
 import { fileURLToPath } from 'url';
 import { URLPattern } from 'urlpattern-polyfill';
-import type { ICacheStore, TCache } from '../../packages/cache-store';
-import type { ViteDev } from '../../packages/vite-dev';
-import { getHeadersValues, parseAcceptEncoding, parseControls } from './lib/parse-head.ts';
-import { RenderQueue } from './lib/queue.ts';
-import { render, type RenderParams } from './lib/render.ts';
-import type { SsrOptions, TRenderRule, TSSRResponse } from './types.ts';
+import type { ICacheStore, TCache } from '../cache-store';
+import type { ViteDev } from '../vite-dev';
+import { getHeadersValues, parseAcceptEncoding, parseControls } from './lib/parse-head';
+import { RenderQueue } from './lib/queue';
+import { render, type RenderParams } from './lib/render';
+import type { SsrOptions, TRenderRule, TSSRResponse } from './types';
 
 export class Ssr {
   protected data: Record<string, any> = {};
@@ -75,7 +75,7 @@ export class Ssr {
   }
 
   private relativeFilePath(rootFilePath: string): string {
-    const __dirname = path.dirname(fileURLToPath(import.meta.url));
+    const __dirname = path.dirname(fileURLToPath(import.meta.url)) + '/lib';
     const fileName = path.resolve(process.cwd(), rootFilePath);
     return './' + path.relative(__dirname, fileName);
   }
@@ -182,7 +182,7 @@ export class Ssr {
         prod: '../../dist/client/index.html',
       },
       clientAppFile: {
-        dev: '../src/client-app.tsx',
+        dev: '../src/client-app',
         prod: '../../dist/server/client-app.js',
       },
       // Правила рендера и кэширования страниц.

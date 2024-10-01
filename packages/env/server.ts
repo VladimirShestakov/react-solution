@@ -1,7 +1,7 @@
 import typedVariables from 'dotenv-parse-variables';
 import mc from 'merge-change';
 import { loadEnv as loadEnvVite } from 'vite';
-import { injectValue } from '../../packages/container';
+import { injectValue } from '../container';
 import { ENV } from './token.ts';
 
 export const envServer = (envPatch: Patch<ImportMetaEnv> = {}) =>

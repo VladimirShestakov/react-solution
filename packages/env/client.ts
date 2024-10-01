@@ -1,5 +1,5 @@
 import mc from 'merge-change';
-import { injectValue } from '../../packages/container';
+import { injectValue } from '../container';
 import { ENV } from './token.ts';
 
 export const envClient = (envPatch: Patch<ImportMetaEnv> = {}) =>

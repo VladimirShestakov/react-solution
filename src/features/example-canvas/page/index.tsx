@@ -8,7 +8,7 @@ import Draw from '@src/features/example-canvas/components/draw';
 function ExampleCanvasPage() {
   return (
     <PageLayout>
-      <Head title="React Skeleton">
+      <Head title="React Solution">
         <LocaleSelect />
       </Head>
       <MainMenu />

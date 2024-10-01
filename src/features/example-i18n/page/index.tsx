@@ -1,4 +1,4 @@
-import { useI18n } from '../../../../packages/i18n';
+import { useI18n } from 'react-solution/i18n';
 import { memo } from 'react';
 import Head from '@src/ui/layout/head';
 import MainMenu from '@src/features/navigation/components/main-menu';
@@ -10,7 +10,7 @@ function I18nExamplePage() {
 
   return (
     <PageLayout>
-      <Head title="React Skeleton">
+      <Head title="React Solution">
         <LocaleSelect />
       </Head>
       <MainMenu />

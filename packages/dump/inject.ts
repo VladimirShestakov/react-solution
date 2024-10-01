@@ -1,6 +1,6 @@
-import { CONTAINER, injectClass } from '../../packages/container';
-import { optionalToken } from '../../packages/token';
-import { ENV } from '../../packages/env';
+import { CONTAINER, injectClass } from '../container';
+import { optionalToken } from '../token';
+import { ENV } from '../env';
 import { DumpService } from './service.ts';
 import { DUMP_SERVICE, DUMP_CFG } from './token.ts';
 

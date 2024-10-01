@@ -1,4 +1,4 @@
-import { ApiBaseEndpoint, queryParams } from '../../../../packages/http-client';
+import { ApiBaseEndpoint, queryParams } from 'react-solution/http-client';
 import type { UsersApiConfig, SignInBody } from './types.ts';
 
 export class UsersApi extends ApiBaseEndpoint<UsersApiConfig> {

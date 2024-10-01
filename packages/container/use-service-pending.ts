@@ -1,5 +1,5 @@
-import type { Token } from '../../packages/token';
-import { WaitStatus } from '../../packages/waiting-store';
+import type { Token } from '../token';
+import { WaitStatus } from '../waiting-store';
 import { useEffect, useState } from 'react';
 import { useContainer } from './use-container.ts';
 

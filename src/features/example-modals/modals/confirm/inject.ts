@@ -1,4 +1,4 @@
-import { injectValue } from '../../../../../packages/container';
+import { injectValue } from 'react-solution/container';
 import ConfirmModal from './index.tsx';
 import { CONFIRM_MODAL } from './token.ts';
 

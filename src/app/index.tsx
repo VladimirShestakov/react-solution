@@ -1,7 +1,7 @@
 import React, { lazy, memo, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { ModalsContainer } from '../../packages/modals';
+import { ModalsContainer } from 'react-solution/modals';
 import Loading from '@src/app/loading';
 import Protected from '@src/features/auth/components/protected';
 import ExampleCanvasPage from '@src/features/example-canvas/page';
@@ -26,8 +26,8 @@ function App() {
     <>
       <Helmet>
         <html lang="en" />
-        <title>React Skeleton!</title>
-        <meta name="description" content="React skeleton example" />
+        <title>React Solution!</title>
+        <meta name="description" content="React solution" />
       </Helmet>
       <Suspense fallback={<Loading />}>
         <Routes>

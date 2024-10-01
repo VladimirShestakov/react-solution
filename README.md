@@ -1,11 +1,11 @@
-# React Skeleton
+# React Solution
 
 Каркас приложения на React & Vite с рендером на сервере (SSR) или клиенте (SPA).
 Открытая структура кода для свободного изменения.
 
 ## Новый проект
 
-Новый проект создается форком или клонированием репозитория react-skeleton,
+Новый проект создается форком или клонированием репозитория react-solution,
 чтобы в дальнейшем свободно модифицировать код под особенности проекта.
 
 ## Требования
@@ -102,9 +102,9 @@ server: {
 ```
 server {
   listen 80;
-  server_name react-skeleton.com;
+  server_name react-solution.com;
   location / {
-    root /home/user/react-skeleton/dist/client;
+    root /home/user/react-solution/dist/client;
     try_files $uri /index.html;
   }
 }
@@ -121,18 +121,18 @@ server {
 ```
 server {
   listen 80;
-  server_name react-skeleton.com;
+  server_name react-solution.com;
   client_max_body_size 10M;
 
   # Прокси к АПИ (в соотв. с настройками приложения)
   location /api/ {
     proxy_redirect off;
-    proxy_set_header Host api.react-skeleton.com;
+    proxy_set_header Host api.react-solution.com;
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header X-Forwarded-Proto $scheme;
     proxy_set_header X-Frame-Options SAMEORIGIN;
-    proxy_pass https://api.react-skeleton.com;
+    proxy_pass https://api.react-solution.com;
   }
 
   # Запросы к файлам сборки (скрипты, стили, картинки..)

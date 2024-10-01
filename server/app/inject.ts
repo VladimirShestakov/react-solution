@@ -1,8 +1,8 @@
-import { injectClass } from '../../packages/container';
-import { PROXY } from '../../packages/proxy';
-import { ENV } from '../../packages/env';
-import { VITE_DEV } from '../../packages/vite-dev';
-import { SSR } from '../../packages/ssr';
+import { injectClass } from 'react-solution/container';
+import { PROXY } from 'react-solution/proxy';
+import { ENV } from 'react-solution/env';
+import { VITE_DEV } from 'react-solution/vite-dev';
+import { SSR } from 'react-solution/ssr';
 import { APP, APP_CFG } from './token.ts';
 import { App } from './index.ts';
 

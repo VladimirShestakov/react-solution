@@ -1,5 +1,5 @@
-import { injectFabric } from '../../packages/container';
-import { ENV } from '../../packages/env';
+import { injectFabric } from '../container';
+import { ENV } from '../env';
 import { VITE_DEV } from './token.ts';
 import { ViteDev } from './service.ts';
 

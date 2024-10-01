@@ -1,6 +1,6 @@
-import type { I18nTranslateFn } from '../../../../../packages/i18n';
 import { memo } from 'react';
 import { cn as bem } from '@bem-react/classname';
+import type { I18nTranslateFn } from 'react-solution/i18n';
 import './style.less';
 
 interface Props {

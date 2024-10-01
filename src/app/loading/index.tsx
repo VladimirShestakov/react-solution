@@ -11,7 +11,7 @@ import PageLayout from '@src/ui/layout/page-layout';
 function Loading() {
   return (
     <PageLayout>
-      <Head title="React Skeleton"></Head>
+      <Head title="React Solution"></Head>
       <p>Загрузка...</p>
     </PageLayout>
   );

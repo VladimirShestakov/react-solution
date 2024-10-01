@@ -1,6 +1,6 @@
 import mc from 'merge-change';
 import type { AxiosRequestConfig, AxiosResponse } from 'axios';
-import type { HttpClient } from '../types.ts';
+import type { HttpClient } from '../types';
 import type { ApiBaseEndpointOptions } from './types';
 
 /**

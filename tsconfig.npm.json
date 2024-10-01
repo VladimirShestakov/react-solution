@@ -1,0 +1,35 @@
+{
+  "include": [
+    "typings/*",
+    "packages/*",
+    "packages/package.json"
+  ],
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./lib",
+    "lib": ["dom", "esnext"],
+    "target": "ESNext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": true,
+    "jsx": "react-jsx",
+    "allowJs": true,
+    "declaration": true,
+    "sourceMap": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "noImplicitOverride": true,
+    "noImplicitThis": true,
+  },
+  "files": ["./packages/index.ts"],
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node",
+    "files": true
+  }
+}

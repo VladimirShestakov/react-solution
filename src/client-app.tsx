@@ -1,11 +1,15 @@
 import React from 'react';
 import { HelmetProvider, HelmetServerState } from 'react-helmet-async';
-import RouterProvider from '../packages/router/provider';
-import { commonClient } from '../packages/common-client.ts';
-import { envClient } from '../packages/env';
-import { Container, ContainerProvider } from '../packages/container';
-import { RENDER_SERVICE, type RenderService } from '../packages/render';
-import { ROUTER_SERVICE } from '../packages/router';
+import {
+  commonClient,
+  envClient,
+  Container,
+  ContainerProvider,
+  RouterProvider,
+  RENDER_SERVICE,
+  ROUTER_SERVICE,
+  type RenderService,
+} from 'react-solution';
 import { authFeature } from '@src/features/auth/injections.ts';
 import { catalogFeature } from '@src/features/catalog/injections.ts';
 import { exampleI18nFeature } from '@src/features/example-i18n/injections.ts';

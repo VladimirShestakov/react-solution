@@ -1,8 +1,8 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { Worker } from 'worker_threads';
-import type { ICacheStore } from '../../../packages/cache-store';
-import type { RenderError, RenderParams, RenderResult } from './render';
+import type { ICacheStore } from '../../cache-store';
+import type { RenderError, RenderParams, RenderResult } from './render.ts';
 
 export type WorkerInfo = {
   worker: Worker;
@@ -28,7 +28,7 @@ export class RenderQueue {
     this.workersCount = workersCount;
     this.workerFile = path.resolve(
       path.dirname(fileURLToPath(import.meta.url)),
-      './queue-worker.ts',
+      './queue-worker',
     );
     const cnt = Math.max(1, this.workersCount);
     for (let i = 0; i < cnt; i++) {

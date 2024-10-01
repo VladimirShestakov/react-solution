@@ -9,7 +9,7 @@ import LoginForm from '../../components/login-form';
 function LoginPage() {
   return (
     <PageLayout>
-      <Head title="React Skeleton">
+      <Head title="React Solution">
         <LocaleSelect />
       </Head>
       <MainMenu />

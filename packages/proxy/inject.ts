@@ -1,4 +1,4 @@
-import { injectClass } from '../../packages/container';
+import { injectClass } from '../container';
 import { Proxy } from './service.ts';
 import { PROXY, PROXY_CFG } from './token.ts';
 
