@@ -1,6 +1,6 @@
 import { memo, useSyncExternalStore } from 'react';
 import { useContainer } from '../container';
-import { MODALS } from './token.ts';
+import { MODALS } from './token';
 
 /**
  * Отображает стек открытых модальных окон

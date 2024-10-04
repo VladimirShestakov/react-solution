@@ -3,7 +3,8 @@ import { z } from 'zod';
 import mc from 'merge-change';
 import { exclude } from '../utils';
 import { State } from '../state';
-import type { DefaultConfig, DefaultParams, SetParamsOptions, TDataParamsState } from './types.ts';
+import type { Patch, PartialDeep } from '../types';
+import type { DefaultConfig, DefaultParams, SetParamsOptions, TDataParamsState } from './types';
 
 export abstract class DataParamsState<
   Data,
@@ -15,7 +16,7 @@ export abstract class DataParamsState<
 
   protected constructor(
     protected depends: {
-      env: ImportMetaEnv;
+      env: Env;
       config?: Patch<Config>;
       router: RouterService;
     },

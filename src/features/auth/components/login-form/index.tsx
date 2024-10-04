@@ -1,7 +1,7 @@
 import { FormEvent, memo, useCallback, useState, useSyncExternalStore } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useTranslate } from 'react-solution/i18n';
-import { useService } from 'react-solution/container';
+import { useTranslate } from 'react-solution';
+import { useService } from 'react-solution';
 import { SESSION_STORE } from '../../session-store/token.ts';
 import Field from '@src/ui/elements/field';
 import Input from '@src/ui/elements/input';

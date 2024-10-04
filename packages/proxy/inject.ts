@@ -1,6 +1,6 @@
 import { injectClass } from '../container';
-import { Proxy } from './service.ts';
-import { PROXY, PROXY_CFG } from './token.ts';
+import { Proxy } from './service';
+import { PROXY, PROXY_CFG } from './token';
 
 export const proxy = injectClass({
   token: PROXY,

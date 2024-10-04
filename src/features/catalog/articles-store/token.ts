@@ -1,5 +1,6 @@
-import { newToken } from 'react-solution/token';
-import type { DefaultConfig } from 'react-solution/data-params-state';
+import { newToken } from 'react-solution';
+import type { Patch } from 'react-solution';
+import type { DefaultConfig } from 'react-solution';
 import type { ArticlesStore } from './index.ts';
 
 export const ARTICLES_STORE = newToken<ArticlesStore>('@project/catalog/articles-store');

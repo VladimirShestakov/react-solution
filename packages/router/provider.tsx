@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Router } from 'react-router-dom';
-import type { RouterService } from './service.ts';
+import type { RouterService } from './service';
 
 /**
  * Провайдер для роутера вместо <BrowserRouter> <MemoryRouter>

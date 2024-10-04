@@ -5,7 +5,7 @@ export class ViteDev {
 
   constructor(
     protected depends: {
-      env: ImportMetaEnv;
+      env: Env;
     },
   ) {}
 

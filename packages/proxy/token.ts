@@ -1,6 +1,7 @@
 import { newToken } from '../token';
-import type { Proxy } from './service.ts';
-import type { ProxyOptions } from './types.ts';
+import type { Patch } from '../types';
+import type { Proxy } from './service';
+import type { ProxyOptions } from './types';
 
 export const PROXY = newToken<Proxy>('@react-solution/proxy/service');
 

@@ -1,4 +1,4 @@
-import { exclude } from './index.ts';
+import { exclude } from './index';
 
 describe('utils/exclude', () => {
   test('empty exclude', () => {

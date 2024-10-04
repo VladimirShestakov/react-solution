@@ -1,6 +1,7 @@
 import { newToken } from '../token';
-import type { RouterConfig } from './types.ts';
-import type { RouterService } from './service.ts';
+import type { Patch } from '../types';
+import type { RouterConfig } from './types';
+import type { RouterService } from './service';
 
 export const ROUTER_SERVICE = newToken<RouterService>('@react-solution/router/service');
 

@@ -1,6 +1,6 @@
 import { injectClass } from '../container';
-import { CacheStore } from './service.ts';
-import { CACHE_STORE, CACHE_STORE_CFG } from './token.ts';
+import { CacheStore } from './service';
+import { CACHE_STORE, CACHE_STORE_CFG } from './token';
 
 export const cacheStore = injectClass({
   token: CACHE_STORE,

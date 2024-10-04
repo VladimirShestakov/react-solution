@@ -1,12 +1,12 @@
 /**
  * HTTP server for render
  */
-import { Container } from 'react-solution/container';
-import { envServer } from 'react-solution/env/server.ts';
-import { cacheStore } from 'react-solution/cache-store';
-import { ssr } from 'react-solution/ssr';
-import { proxy } from 'react-solution/proxy';
-import { viteDev } from 'react-solution/vite-dev';
+import { Container } from 'react-solution';
+import { envServer } from 'react-solution/server';
+import { cacheStore } from 'react-solution/server';
+import { ssr } from 'react-solution/server';
+import { proxy } from 'react-solution/server';
+import { viteDev } from 'react-solution/server';
 
 import { app } from './app/inject.ts';
 import { APP } from './app/token.ts';

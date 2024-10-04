@@ -1,3 +1,3 @@
-export * from './inject.ts';
-export * from './service.ts';
-export * from './token.ts';
+export * from './inject';
+export * from './service';
+export * from './token';

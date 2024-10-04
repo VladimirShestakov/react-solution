@@ -1,4 +1,4 @@
-import { isPlainObject } from './is-plain-object.ts';
+import { isPlainObject } from './is-plain-object';
 
 /**
  * Конвертация вложенной структуры в плоскую

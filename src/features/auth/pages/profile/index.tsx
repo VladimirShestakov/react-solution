@@ -1,7 +1,7 @@
 import { memo, useSyncExternalStore } from 'react';
-import { useService } from 'react-solution/container';
-import { useInit } from 'react-solution/render';
-import { useTranslate } from 'react-solution/i18n';
+import { useService } from 'react-solution';
+import { useInit } from 'react-solution';
+import { useTranslate } from 'react-solution';
 import LocaleSelect from '@src/features/example-i18n/components/locale-select';
 import AuthHead from '@src/features/auth/components/auth-head';
 import SideLayout from '@src/ui/layout/side-layout';

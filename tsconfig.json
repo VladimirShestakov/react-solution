@@ -5,8 +5,10 @@
     "src/**/*",
     "server/**/*",
     "vite.config.ts",
+    "vite.lib.config.ts",
     "server.config.ts"
   ],
+  "exclude": ["node_modules"],
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
@@ -14,12 +16,11 @@
       "@src/*": ["src/*"]
     },
     "lib": ["dom", "esnext"],
+    "allowJs": true,
     "target": "es2017",
     "jsx": "react-jsx",
     "module": "esnext",
     "moduleResolution": "node",
-    "allowJs": true,
-    "outDir": "./dist/",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
@@ -29,9 +30,11 @@
     "resolveJsonModule": true,
     "noImplicitOverride": true,
     "noImplicitThis": true,
-    "allowImportingTsExtensions": true
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "removeComments": false
   },
-  "files": ["./typings/env.d.ts", "proxy.config.ts"],
+  "files": ["proxy.config.ts"],
   "ts-node": {
     "esm": true,
     "experimentalSpecifierResolution": "node",

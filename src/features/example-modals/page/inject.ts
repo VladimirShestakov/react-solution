@@ -1,4 +1,4 @@
-import { injectValue } from 'react-solution/container';
+import { injectValue } from 'react-solution';
 import { PAGE_AS_MODAL } from '@src/features/example-modals/page/token.ts';
 import PageAsModal from './index.tsx';
 

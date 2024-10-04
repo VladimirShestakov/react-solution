@@ -35,7 +35,7 @@ export default SomeService;
 
 ```ts
 class SomeService extends Service<TSomeServiceConfig> {
-  defaultConfig(env: ImportMetaEnv): TSomeServiceConfig {
+  defaultConfig(env: Env): TSomeServiceConfig {
     return {
       someOption: env.DEV ? 'defaultValue' : 'prodValue',
     };
@@ -50,7 +50,7 @@ type TSomeServiceConfig = {
 Настройки можно будет указать в файле `@src/config.ts` по названию сервиса.
 
 ```ts
-export default (env: ImportMetaEnv): TServicesConfig => ({
+export default (env: Env): TServicesConfig => ({
   //...
   some: {
     someOption: 'realValue',

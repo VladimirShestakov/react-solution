@@ -1,5 +1,5 @@
-import { injectValue } from 'react-solution/container';
-import { I18N_DICTIONARY } from 'react-solution/i18n';
+import { injectValue } from 'react-solution';
+import { I18N_DICTIONARY } from 'react-solution';
 
 export const injectTranslations = injectValue({
   token: I18N_DICTIONARY,

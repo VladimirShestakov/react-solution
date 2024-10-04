@@ -1,6 +1,6 @@
-import { useService } from 'react-solution/container';
-import { ROUTER_SERVICE } from 'react-solution/router';
-import { useInit, useUninit } from 'react-solution/render';
+import { useService } from 'react-solution';
+import { ROUTER_SERVICE } from 'react-solution';
+import { useInit, useUninit } from 'react-solution';
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import Head from '@src/ui/layout/head';

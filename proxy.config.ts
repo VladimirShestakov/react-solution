@@ -1,4 +1,4 @@
-export default function proxyConfig(env: ImportMetaEnv) {
+export default function proxyConfig(env: Env) {
   return {
     [env.API_PATH]: {
       target: env.API_URL,

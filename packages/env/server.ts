@@ -2,9 +2,10 @@ import typedVariables from 'dotenv-parse-variables';
 import mc from 'merge-change';
 import { loadEnv as loadEnvVite } from 'vite';
 import { injectValue } from '../container';
-import { ENV } from './token.ts';
+import { ENV } from './token';
+import type { Patch } from '../types';
 
-export const envServer = (envPatch: Patch<ImportMetaEnv> = {}) =>
+export const envServer = (envPatch: Patch<Env> = {}) =>
   injectValue({
     token: ENV,
     value: mc.merge(
@@ -14,7 +15,7 @@ export const envServer = (envPatch: Patch<ImportMetaEnv> = {}) =>
         PROD: !process.env.NODE_ENV || process.env.NODE_ENV === 'production',
         DEV: Boolean(process.env.NODE_ENV && process.env.NODE_ENV !== 'production'),
         ...typedVariables(loadEnvVite(process.env.NODE_ENV || 'production', process.cwd(), '')),
-      } as ImportMetaEnv,
+      } as Env,
       envPatch,
     ),
   });

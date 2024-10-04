@@ -4,18 +4,6 @@ export type RenderConfig = {
   domId: string;
 };
 
-// export type RenderValues = {
-//   htmlAttributes?: string;
-//   bodyAttributes?: string;
-//   title?: string;
-//   head?: string;
-//   http?: {
-//     status: number;
-//     location?: string
-//     // куки?
-//   }
-// }
-
 export type RenderValues = {
   // Замена аттрибутов тега <html>
   htmlAttributes?: (attributes: string) => string;

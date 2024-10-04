@@ -1,7 +1,7 @@
 import { memo, ReactNode, useEffect, useSyncExternalStore } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useService } from 'react-solution/container';
-import { useInit } from 'react-solution/render';
+import { useService } from 'react-solution';
+import { useInit } from 'react-solution';
 import { SESSION_STORE } from '../../session-store/token.ts';
 
 interface Props {

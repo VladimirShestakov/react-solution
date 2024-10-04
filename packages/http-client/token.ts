@@ -1,5 +1,6 @@
 import { newToken } from '../token';
-import { HttpClientOptions, HttpClient } from './types.ts';
+import type { Patch } from '../types';
+import { HttpClientOptions, HttpClient } from './types';
 
 export const HTTP_CLIENT = newToken<HttpClient>('@react-solution/http-client');
 

@@ -1,5 +1,5 @@
 import { type Token, type TypesFromTokens } from '../token';
-import { useContainer } from './use-container.ts';
+import { useContainer } from './use-container';
 
 /**
  * Хук для выбора множества сервисов из DI по указанной карте токенов (Map)

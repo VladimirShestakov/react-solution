@@ -1,6 +1,6 @@
-import { Token } from './token.ts';
-import { TokenDecorator } from './decorator.ts';
-import type { TokenInterface } from './types.ts';
+import { Token } from './token';
+import { TokenDecorator } from './decorator';
+import type { TokenInterface } from './types';
 
 /**
  * Создание токена.

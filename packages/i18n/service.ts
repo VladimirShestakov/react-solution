@@ -3,6 +3,7 @@ import mc from 'merge-change';
 import cookie from 'js-cookie';
 import { State } from '../state';
 import { WaitingStore } from '../waiting-store';
+import type { Patch } from '../types';
 import type {
   I18nDictionary,
   I18nState,
@@ -13,7 +14,7 @@ import type {
   I18nNumberOptions,
   I18nTranslation,
   I18nDump,
-} from './types.ts';
+} from './types';
 import { flat } from '../utils';
 
 /**
@@ -34,7 +35,7 @@ export class I18n {
 
   constructor(
     protected depends: {
-      env: ImportMetaEnv;
+      env: Env;
       config?: Patch<I18nConfig>;
       dictionary: I18nDictionary;
       initState?: I18nState;

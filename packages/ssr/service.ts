@@ -8,6 +8,7 @@ import { fileURLToPath } from 'url';
 import { URLPattern } from 'urlpattern-polyfill';
 import type { ICacheStore, TCache } from '../cache-store';
 import type { ViteDev } from '../vite-dev';
+import type { Patch } from '../types';
 import { getHeadersValues, parseAcceptEncoding, parseControls } from './lib/parse-head';
 import { RenderQueue } from './lib/queue';
 import { render, type RenderParams } from './lib/render';
@@ -25,7 +26,7 @@ export class Ssr {
   constructor(
     protected depends: {
       cacheStore: ICacheStore;
-      env: ImportMetaEnv;
+      env: Env;
       vite: ViteDev;
       configs?: Patch<SsrOptions>;
     },
@@ -172,7 +173,7 @@ export class Ssr {
     }
   };
 
-  protected defaultConfig(env: ImportMetaEnv): SsrOptions {
+  protected defaultConfig(env: Env): SsrOptions {
     return {
       // Если отключить, то будет всегда отдаваться SPA
       enabled: true,
@@ -182,8 +183,8 @@ export class Ssr {
         prod: '../../dist/client/index.html',
       },
       clientAppFile: {
-        dev: '../src/client-app',
-        prod: '../../dist/server/client-app.js',
+        dev: '../src/index.tsx',
+        prod: '../../dist/server/index.js',
       },
       // Правила рендера и кэширования страниц.
       // Используется первое правило, удовлетворяющие шаблону url

@@ -1,5 +1,5 @@
 import { isPlainObject } from '../is-plain-object';
-
+import type { PartialDeep } from '../../types';
 /**
  * Возвращает новый объект, в котором не будет совпадений со вторым объектом
  * @param objectSrc {Object} Исходный объект

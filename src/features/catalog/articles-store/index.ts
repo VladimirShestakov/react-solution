@@ -1,9 +1,10 @@
 import { z } from 'zod';
 import mc from 'merge-change';
-import { FindQuery } from 'react-solution/http-client';
-import { exclude } from 'react-solution/utils';
-import { DataParamsState, type DefaultConfig } from 'react-solution/data-params-state';
-import type { RouterService } from 'react-solution/router';
+import { FindQuery } from 'react-solution';
+import { exclude } from 'react-solution';
+import { DataParamsState, type DefaultConfig } from 'react-solution';
+import type { Patch } from 'react-solution';
+import type { RouterService } from 'react-solution';
 import type { ArticlesApi } from '@src/features/catalog/articles-api';
 import type { TArticleData, TArticleParams } from './types.ts';
 
@@ -13,7 +14,7 @@ import type { TArticleData, TArticleParams } from './types.ts';
 export class ArticlesStore extends DataParamsState<TArticleData, TArticleParams> {
   constructor(
     protected override depends: {
-      env: ImportMetaEnv;
+      env: Env;
       config?: Patch<DefaultConfig>;
       router: RouterService;
       articlesApi: ArticlesApi;

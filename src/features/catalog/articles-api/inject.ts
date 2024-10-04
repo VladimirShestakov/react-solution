@@ -1,6 +1,6 @@
-import { HTTP_CLIENT } from 'react-solution/http-client';
-import { injectClass } from 'react-solution/container';
-import { optionalToken } from 'react-solution/token';
+import { HTTP_CLIENT } from 'react-solution';
+import { injectClass } from 'react-solution';
+import { optionalToken } from 'react-solution';
 import { ArticlesApi } from './index.ts';
 import { ARTICLES_API, ARTICLES_API_CFG } from './token.ts';
 

@@ -1,4 +1,4 @@
-import { Token } from './token.ts';
+import { Token } from './token';
 
 export type TokenKey<Type = any> = string & { _: Type };
 

@@ -1,4 +1,4 @@
-import type { DefaultParams } from 'react-solution/data-params-state';
+import type { DefaultParams } from 'react-solution';
 
 export type TArticleItem = {
   _id: string;

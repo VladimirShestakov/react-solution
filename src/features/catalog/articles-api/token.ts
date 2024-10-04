@@ -1,4 +1,5 @@
-import { newToken } from 'react-solution/token';
+import { newToken } from 'react-solution';
+import type { Patch } from 'react-solution';
 import type { ArticlesApi } from './index.ts';
 import type { ArticlesApiConfig } from './types.ts';
 

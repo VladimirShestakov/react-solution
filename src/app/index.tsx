@@ -1,7 +1,7 @@
 import React, { lazy, memo, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { ModalsContainer } from 'react-solution/modals';
+import { ModalsContainer } from 'react-solution';
 import Loading from '@src/app/loading';
 import Protected from '@src/features/auth/components/protected';
 import ExampleCanvasPage from '@src/features/example-canvas/page';

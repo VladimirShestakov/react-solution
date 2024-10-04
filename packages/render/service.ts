@@ -4,7 +4,8 @@ import { type ReactNode } from 'react';
 import { type Container } from '../container';
 import { type DumpService } from '../dump';
 import { WaitingStore } from '../waiting-store';
-import { type RenderConfig, RenderDump, type RenderValues } from './types.ts';
+import type { Patch } from '../types';
+import { type RenderConfig, RenderDump, type RenderValues } from './types';
 // import { renderToPipeableStream } from 'react-dom/server';
 
 export class RenderService {
@@ -22,7 +23,7 @@ export class RenderService {
 
   constructor(
     protected depends: {
-      env: ImportMetaEnv;
+      env: Env;
       container: Container;
       dump?: DumpService;
       config?: Patch<RenderConfig>;

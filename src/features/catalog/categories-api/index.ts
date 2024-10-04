@@ -1,4 +1,4 @@
-import { ApiCrudEndpoint } from 'react-solution/http-client';
+import { ApiCrudEndpoint } from 'react-solution';
 import type { CategoriesApiConfig } from './types.ts';
 
 export class CategoriesApi extends ApiCrudEndpoint<CategoriesApiConfig> {

@@ -2,7 +2,8 @@ import mc from 'merge-change';
 import { parse } from 'zipson';
 import { type Container } from '../container';
 import { type Token } from '../token';
-import { type DumpConfig } from './types.ts';
+import type { Patch } from '../types';
+import type { DumpConfig } from './types';
 
 export class DumpService {
   protected data: Map<string, any> = new Map();
@@ -13,7 +14,7 @@ export class DumpService {
 
   constructor(
     protected depends: {
-      env: ImportMetaEnv;
+      env: Env;
       container: Container;
       config?: Patch<DumpConfig>;
     },
@@ -25,7 +26,8 @@ export class DumpService {
     }
 
     if (!depends.env.SSR && window.initialData) {
-      const dump = parse(window.initialData);
+      const w: Window = window;
+      const dump = parse(w.initialData);
       this.set(dump);
     }
   }

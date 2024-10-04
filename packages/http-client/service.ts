@@ -1,6 +1,7 @@
 import mc from 'merge-change';
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import type { HttpClientOptions } from './types';
+import type { Patch } from '../types';
 
 export class HttpClient {
   protected config: HttpClientOptions;

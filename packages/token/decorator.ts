@@ -1,4 +1,4 @@
-import type { TokenInterface, TokenKey } from './types.ts';
+import type { TokenInterface, TokenKey } from './types';
 
 /**
  * Декоратор токена

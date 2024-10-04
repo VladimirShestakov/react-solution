@@ -1,9 +1,9 @@
 import { memo } from 'react';
 import { useParams } from 'react-router-dom';
-import { useService } from 'react-solution/container';
-import { useInit } from 'react-solution/render';
-import useRefreshKey from 'react-solution/router/use-refresh-key';
-import { useI18n } from 'react-solution/i18n';
+import { useService } from 'react-solution';
+import { useInit } from 'react-solution';
+import { useRefreshKey } from 'react-solution';
+import { useI18n } from 'react-solution';
 import Head from '@src/ui/layout/head';
 import MainMenu from '@src/features/navigation/components/main-menu';
 import PageLayout from '@src/ui/layout/page-layout';

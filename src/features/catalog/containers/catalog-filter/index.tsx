@@ -1,6 +1,6 @@
 import { memo, useCallback, useMemo, useSyncExternalStore } from 'react';
-import { useTranslate } from 'react-solution/i18n';
-import { useService } from 'react-solution/container';
+import { useTranslate } from 'react-solution';
+import { useService } from 'react-solution';
 import SideLayout from '@src/ui/layout/side-layout';
 import Select from '@src/ui/elements/select';
 import Input from '@src/ui/elements/input';

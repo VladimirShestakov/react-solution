@@ -1,14 +1,15 @@
 import React from 'react';
 import { HelmetProvider, HelmetServerState } from 'react-helmet-async';
 import {
+  Container,
   commonClient,
   envClient,
-  Container,
   ContainerProvider,
   RouterProvider,
   RENDER_SERVICE,
   ROUTER_SERVICE,
   type RenderService,
+  type Patch,
 } from 'react-solution';
 import { authFeature } from '@src/features/auth/injections.ts';
 import { catalogFeature } from '@src/features/catalog/injections.ts';
@@ -25,9 +26,7 @@ import config from './config.ts';
  * На клиенте приложение создаётся в единственном экземпляре в файле index.ts
  * @param envPatch Патч на переменные окружения. Используется при SSR, чтобы подставить параметры запроса
  */
-export default async function clientApp(
-  envPatch: Patch<ImportMetaEnv> = {},
-): Promise<RenderService> {
+export default async function clientApp(envPatch: Patch<Env> = {}): Promise<RenderService> {
   // Все используемые сервисы, модули, ресурсы и прочее регистрируется в контейнере DI.
   const container = new Container()
     // Переменные окружения для фронта
@@ -79,4 +78,13 @@ export default async function clientApp(
   });
 
   return render;
+}
+
+/**
+ * Запуск рендера в браузере.
+ */
+if (!import.meta.env.SSR) {
+  clientApp().then(render => {
+    render.start();
+  });
 }

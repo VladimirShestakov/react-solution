@@ -1,7 +1,7 @@
-import { PROXY_CFG } from 'react-solution/proxy';
-import { CACHE_STORE_CFG } from 'react-solution/cache-store';
-import { SSR_CGF } from 'react-solution/ssr';
-import { config } from 'react-solution/configs';
+import { PROXY_CFG } from 'react-solution/server';
+import { CACHE_STORE_CFG } from 'react-solution/server';
+import { SSR_CGF } from 'react-solution/server';
+import { config } from 'react-solution';
 import proxyConfig from '../proxy.config';
 import { APP_CFG } from './app/token.ts';
 
@@ -42,8 +42,8 @@ export default [
     },
     // Файл клиентского приложения, которое рендерить
     clientAppFile: {
-      dev: './src/client-app.tsx',
-      prod: './dist/server/client-app.js',
+      dev: './src/index.tsx',
+      prod: './dist/server/index.js',
     },
     // Правила рендера и кэширования страниц.
     // Используется первое правило, удовлетворяющие шаблону url

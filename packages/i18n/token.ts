@@ -1,6 +1,7 @@
 import { newToken } from '../token';
-import type { I18n } from './service.ts';
-import type { I18nDictionary, I18nConfig, I18nState } from './types.ts';
+import type { Patch } from '../types';
+import type { I18n } from './service';
+import type { I18nDictionary, I18nConfig, I18nState } from './types';
 
 /**
  * Токен на сервис i18n

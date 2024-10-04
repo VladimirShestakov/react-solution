@@ -1,2 +1,2 @@
-export * from './service.ts';
-export * from './types.ts';
+export * from './service';
+export * from './types';

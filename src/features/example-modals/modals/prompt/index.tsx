@@ -1,6 +1,6 @@
 import { memo, ReactNode, useCallback, useState } from 'react';
-import { useTranslate } from 'react-solution/i18n';
-import type { ModalWithClose } from 'react-solution/modals';
+import { useTranslate } from 'react-solution';
+import type { ModalWithClose } from 'react-solution';
 import ModalLayout from '@src/ui/layout/modal-layout';
 import SideLayout from '@src/ui/layout/side-layout';
 

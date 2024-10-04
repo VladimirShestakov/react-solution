@@ -1,2 +1,2 @@
-export * from './endpoint.ts';
-export * from './types.ts';
+export * from './endpoint';
+export * from './types';

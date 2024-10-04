@@ -1,6 +1,7 @@
 import { newToken } from '../token';
-import type { RenderService } from './service.ts';
-import type { RenderConfig } from './types.ts';
+import type { Patch } from '../types';
+import type { RenderService } from './service';
+import type { RenderConfig } from './types';
 
 export const RENDER_SERVICE = newToken<RenderService>('@react-solution/render/service');
 

@@ -6,7 +6,7 @@ import typedVariables from 'dotenv-parse-variables';
 import proxyConfig from './proxy.config';
 
 export default defineConfig(params => {
-  const env = typedVariables(loadEnv(params.mode, process.cwd(), '')) as ImportMetaEnv;
+  const env = typedVariables(loadEnv(params.mode, process.cwd(), '')) as Env;
   return {
     root: 'src',
     base: env.BASE_URL,

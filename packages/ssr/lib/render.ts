@@ -2,10 +2,11 @@ import React from 'react';
 import { renderToPipeableStream } from 'react-dom/server';
 import { stringify } from 'zipson';
 import { BufferedStream } from './buffered-stream';
+import { type RootFabric } from '../../render';
 
 export type RenderParams = {
   key: string;
-  env: ImportMetaEnv;
+  env: Env;
   url: string;
   headers: Record<string, string | undefined | string[]>;
   cookies: Record<string, string>;

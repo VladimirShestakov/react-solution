@@ -1,6 +1,6 @@
-import { I18N_CFG } from 'react-solution/i18n';
-import { config } from 'react-solution/configs';
-import { HTTP_CLIENT_CFG } from 'react-solution/http-client';
+import { I18N_CFG } from 'react-solution';
+import { config } from 'react-solution';
+import { HTTP_CLIENT_CFG } from 'react-solution';
 import { SESSION_STORE_CFG } from '@src/features/auth/session-store/token.ts';
 
 export default [

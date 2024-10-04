@@ -1,5 +1,5 @@
 import type { Token } from '../token';
-import { useContainer } from './use-container.ts';
+import { useContainer } from './use-container';
 
 /**
  * Хук для выборки сервиса из DI контейнера по токену.

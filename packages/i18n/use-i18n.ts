@@ -1,7 +1,7 @@
 import { useSyncExternalStore } from 'react';
 import { useService } from '../container';
-import { I18N } from './token.ts';
-import type { I18nPath, I18nTranslateOptions, useI18nReturn } from './types.ts';
+import { I18N } from './token';
+import type { I18nPath, I18nTranslateOptions, useI18nReturn } from './types';
 
 /**
  * Хук возвращает функцию для локализации текстов, текущую локаль, доступные локали и функцию смены локали.

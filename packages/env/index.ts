@@ -1,2 +1,3 @@
-export * from './client.ts';
-export * from './token.ts';
+export * from './client';
+export * from './token';
+export * from './types';

@@ -1,8 +1,8 @@
 import { Events } from '../events';
 import { WaitingStore, type TWaitKey, WaitStatus } from '../waiting-store';
 import mc from 'merge-change';
-import { CONTAINER } from './token.ts';
-import { isInjectClass, isInjectFabric, isInjectValue } from './utils.ts';
+import { CONTAINER } from './token';
+import { isInjectClass, isInjectFabric, isInjectValue } from './utils';
 import { type ContainerEvents, type Inject, InjectArray } from './types';
 import { type TokenInterface, type TypesFromTokens, type TokenKey } from '../token';
 

@@ -1,4 +1,4 @@
-export * from './service.ts';
-export * from './inject.ts';
-export * from './token.ts';
-export type * from './types.ts';
+export * from './service';
+export * from './inject';
+export * from './token';
+export type * from './types';

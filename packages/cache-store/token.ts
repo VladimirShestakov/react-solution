@@ -1,5 +1,6 @@
 import { newToken } from '../token';
-import type { ICacheStore, TCacheConfig } from './types.ts';
+import type { ICacheStore, TCacheConfig } from './types';
+import type { Patch } from '../types';
 
 export const CACHE_STORE = newToken<ICacheStore>('@react-solution/cache-store/service');
 

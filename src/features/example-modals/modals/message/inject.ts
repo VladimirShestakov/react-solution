@@ -1,4 +1,4 @@
-import { injectValue } from 'react-solution/container';
+import { injectValue } from 'react-solution';
 import MessageModal from './index.tsx';
 import { MESSAGE_MODAL } from './token.ts';
 

@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { useI18n } from 'react-solution/i18n';
+import { useI18n } from 'react-solution';
 import PageLayout from '@src/ui/layout/page-layout';
 import Head from '@src/ui/layout/head';
 import MainMenu from '@src/features/navigation/components/main-menu';

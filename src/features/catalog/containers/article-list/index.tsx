@@ -1,6 +1,6 @@
 import { memo, useCallback, useSyncExternalStore } from 'react';
-import { useServicesMap } from 'react-solution/container';
-import { ROUTER_SERVICE } from 'react-solution/router';
+import { useServicesMap } from 'react-solution';
+import { ROUTER_SERVICE } from 'react-solution';
 import Pagination from '@src/ui/navigation/pagination';
 import Spinner from '@src/ui/elements/spinner';
 import { ARTICLES_STORE } from '../../articles-store/token.ts';

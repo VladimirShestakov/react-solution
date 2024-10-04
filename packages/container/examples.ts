@@ -86,7 +86,7 @@
 //   token: SSR,
 //   fabric: (dep: {
 //     cacheStore: CacheStore,
-//     env: ImportMetaEnv,
+//     env: Env,
 //     vite: ViteDevService,
 //     configs: SsrOptions
 //   }) => {
@@ -115,7 +115,7 @@
 //   token: SSR,
 //   fabric: (dep: {
 //     cacheStore: CacheStore,
-//     env: ImportMetaEnv,
+//     env: Env,
 //     vite: ViteDevService,
 //     configs: SsrOptions
 //   }) => {

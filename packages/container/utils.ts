@@ -1,4 +1,4 @@
-import type { FunctionWithDepends, InjectClass, InjectFabric, InjectValue } from './types.ts';
+import type { FunctionWithDepends, InjectClass, InjectFabric, InjectValue } from './types';
 
 export function injectClass<Type, ExtType extends Type, Deps>(
   inject: InjectClass<Type, ExtType, Deps>,

@@ -2,6 +2,7 @@ import httpProxy from 'http-proxy';
 import Server from 'http-proxy';
 import mc from 'merge-change';
 import * as http from 'node:http';
+import type { Patch } from '../types';
 import type { ProxyOptions } from './types';
 
 export class Proxy {

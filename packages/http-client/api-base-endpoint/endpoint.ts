@@ -1,5 +1,6 @@
 import mc from 'merge-change';
 import type { AxiosRequestConfig, AxiosResponse } from 'axios';
+import type { Patch } from '../../types';
 import type { HttpClient } from '../types';
 import type { ApiBaseEndpointOptions } from './types';
 

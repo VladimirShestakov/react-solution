@@ -3,7 +3,7 @@ import { Token, type TypesFromTokens, type TokenInterface } from '../token';
 /**
  * Реэкспорт типа на контейнер
  */
-export type { Container as ContainerType } from './container.ts';
+export type { Container as ContainerType } from './container';
 
 interface InjectBase<Type, ExtType extends Type> {
   token: TokenInterface<Type>;

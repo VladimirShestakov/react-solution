@@ -1,3 +1,3 @@
-export * from './constants.ts';
-export * from './waiting-store.ts';
-export * from './types.ts';
+export * from './constants';
+export * from './waiting-store';
+export * from './types';

@@ -1,4 +1,5 @@
-import { newToken } from 'react-solution/token';
+import { newToken } from 'react-solution';
+import type { Patch } from 'react-solution';
 import type { CategoriesStore } from './index.ts';
 import type { CategoriesStoreConfig } from './types.ts';
 

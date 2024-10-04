@@ -1,7 +1,7 @@
 import type { Token } from '../token';
 import { WaitStatus } from '../waiting-store';
 import { useEffect, useState } from 'react';
-import { useContainer } from './use-container.ts';
+import { useContainer } from './use-container';
 
 /**
  * Хук для выборки сервиса из DI контейнера по токену с признаками ожидания/успеха/ошибки.

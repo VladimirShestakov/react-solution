@@ -1,5 +1,5 @@
 import { createNoise2D } from 'simplex-noise';
-import { randomItem, roundRange } from 'react-solution/utils';
+import { randomItem, roundRange } from 'react-solution';
 import Figure from '@src/features/example-canvas/components/draw/core/elements/figure';
 import leafsImages from './img/export';
 

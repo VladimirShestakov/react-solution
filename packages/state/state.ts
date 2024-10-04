@@ -1,4 +1,5 @@
 import mc from 'merge-change';
+import type { Patch } from '../types';
 import { StateConfig } from './types';
 
 /**

@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useTranslate } from 'react-solution/i18n';
+import { useTranslate } from 'react-solution';
 import { MenuItem } from '@src/ui/navigation/menu/types';
 import SideLayout from '@src/ui/layout/side-layout';
 import Menu from '@src/ui/navigation/menu';

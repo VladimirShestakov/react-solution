@@ -1,4 +1,4 @@
-import type { I18nState } from './types.ts';
+import type { I18nState } from './types';
 
 /**
  * Проверка на TI18nState

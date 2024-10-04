@@ -1,7 +1,8 @@
 import { BrowserHistory, createBrowserHistory, createMemoryHistory, MemoryHistory } from 'history';
 import mc from 'merge-change';
 import qs from 'qs';
-import type { RouterConfig } from './types.ts';
+import type { Patch } from '../types';
+import type { RouterConfig, HTTPStatus } from './types';
 
 export class RouterService {
   readonly history: MemoryHistory | BrowserHistory;
@@ -10,7 +11,7 @@ export class RouterService {
 
   constructor(
     protected depends: {
-      env: ImportMetaEnv;
+      env: Env;
       config?: Patch<RouterConfig>;
     },
   ) {

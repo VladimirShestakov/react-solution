@@ -2,8 +2,8 @@ import { injectFabric } from '../container';
 import { CACHE_STORE } from '../cache-store';
 import { ENV } from '../env';
 import { VITE_DEV } from '../vite-dev';
-import { SSR, SSR_CGF } from './token.ts';
-import { Ssr } from './service.ts';
+import { SSR, SSR_CGF } from './token';
+import { Ssr } from './service';
 
 export const ssr = injectFabric({
   token: SSR,

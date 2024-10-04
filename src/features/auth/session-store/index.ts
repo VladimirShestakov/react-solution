@@ -1,6 +1,7 @@
-import { type HttpClient, ApiError } from 'react-solution/http-client';
-import { State } from 'react-solution/state';
+import { type HttpClient, ApiError } from 'react-solution';
+import { State } from 'react-solution';
 import mc from 'merge-change';
+import type { Patch } from 'react-solution';
 import type { SignInBody } from '../users-api/types.ts';
 import type { UsersApi } from '../users-api';
 import type { SessionStoreConfig, SessionStoreData } from './types.ts';
@@ -14,7 +15,7 @@ export class SessionStore {
 
   constructor(
     protected depends: {
-      env: ImportMetaEnv;
+      env: Env;
       httpClient: HttpClient;
       usersApi: UsersApi;
       config?: Patch<SessionStoreConfig>;

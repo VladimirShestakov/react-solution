@@ -1,8 +1,8 @@
 import { memo, ReactNode, useCallback } from 'react';
-import { useService } from 'react-solution/container';
-import { useTranslate } from 'react-solution/i18n';
-import { MODALS } from 'react-solution/modals';
-import type { ModalWithClose } from 'react-solution/modals';
+import { useService } from 'react-solution';
+import { useTranslate } from 'react-solution';
+import { MODALS } from 'react-solution';
+import type { ModalWithClose } from 'react-solution';
 import ModalLayout from '@src/ui/layout/modal-layout';
 import SideLayout from '@src/ui/layout/side-layout';
 import { CASCADE_MODAL } from './token.ts';

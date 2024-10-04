@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import { useService } from '../container';
 import { ROUTER_SERVICE } from '../router';
-import type { NavigateSSRProps } from './types.ts';
+import type { NavigateSSRProps } from './types';
 
 /**
  * Аналог компонента Navigate, но умеющий работать при SSR, чтобы отдать клиенту 301 с Location

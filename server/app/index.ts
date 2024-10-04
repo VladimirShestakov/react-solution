@@ -4,9 +4,8 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import cookieParser from 'cookie-parser';
 import type { Express, Request, Response } from 'express';
-import type { Proxy } from 'react-solution/proxy';
-import type { Ssr } from 'react-solution/ssr';
-import type { ViteDev } from 'react-solution/vite-dev';
+import type { Patch } from 'react-solution';
+import type { Proxy, Ssr, ViteDev } from 'react-solution/server';
 import type { AppConfig } from './types.ts';
 
 export class App {
@@ -15,7 +14,7 @@ export class App {
 
   constructor(
     protected depends: {
-      env: ImportMetaEnv;
+      env: Env;
       proxy: Proxy;
       config: Patch<AppConfig>;
       vite: ViteDev;
