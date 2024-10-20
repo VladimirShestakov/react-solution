@@ -14,7 +14,7 @@ import configs from './config.ts';
 
 try {
   // Подключение используемых сервисов в контейнер управления зависимостями
-  const services = new Container()
+  const solutions = new Container()
     // Переменные окружения для сервера
     .set(envServer())
     // Настройки для всех сервисов
@@ -30,7 +30,7 @@ try {
     // Приложение, определяющее основной ход работ
     .set(app);
 
-  const appInstance = await services.get(APP);
+  const appInstance = await solutions.get(APP);
   await appInstance.start();
 } catch (e) {
   console.error(e);

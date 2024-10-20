@@ -1,6 +1,6 @@
 import { memo, useMemo, useSyncExternalStore } from 'react';
 import { Link } from 'react-router-dom';
-import { useService } from 'react-solution';
+import { useSolution } from 'react-solution';
 import { ROUTER_SERVICE } from 'react-solution';
 import Tree from '@src/ui/elements/tree';
 import Spinner from '@src/ui/elements/spinner';
@@ -8,16 +8,16 @@ import { ARTICLES_STORE } from '../../articles-store/token.ts';
 import { CATEGORIES_STORE } from '../../categories-store/token.ts';
 
 function CategoryTree() {
-  const router = useService(ROUTER_SERVICE);
+  const router = useSolution(ROUTER_SERVICE);
 
-  const categories = useService(CATEGORIES_STORE);
+  const categories = useSolution(CATEGORIES_STORE);
   const categoriesState = useSyncExternalStore(
     categories.state.subscribe,
     categories.state.get,
     categories.state.get,
   );
 
-  const articles = useService(ARTICLES_STORE);
+  const articles = useSolution(ARTICLES_STORE);
   const articlesState = useSyncExternalStore(
     articles.state.subscribe,
     articles.state.get,

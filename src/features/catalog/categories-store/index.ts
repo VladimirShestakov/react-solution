@@ -10,7 +10,10 @@ import type { CategoriesStoreConfig, CategoriesStoreData } from './types.ts';
  */
 export class CategoriesStore {
   readonly state: State<CategoriesStoreData>;
-  protected config: CategoriesStoreConfig;
+  protected config: CategoriesStoreConfig = {
+    log: true,
+    name: 'Categories state',
+  };
 
   constructor(
     protected depends: {
@@ -18,7 +21,7 @@ export class CategoriesStore {
       config?: Patch<CategoriesStoreConfig>;
     },
   ) {
-    this.config = mc.merge(this.defaultConfig(), depends.config ?? {});
+    this.config = mc.merge(this.config, depends.config );
     this.state = new State<CategoriesStoreData>(this.defaultState(), {
       log: this.config.log,
       name: this.config.name,
@@ -31,16 +34,6 @@ export class CategoriesStore {
       roots: [],
       wait: false,
       errors: null,
-    };
-  }
-
-  /**
-   * Конфигурация по умолчанию
-   */
-  defaultConfig(): CategoriesStoreConfig {
-    return {
-      log: true,
-      name: 'Categories state',
     };
   }
 

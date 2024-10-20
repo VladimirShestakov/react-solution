@@ -1,7 +1,7 @@
 import { FormEvent, memo, useCallback, useState, useSyncExternalStore } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslate } from 'react-solution';
-import { useService } from 'react-solution';
+import { useSolution } from 'react-solution';
 import { SESSION_STORE } from '../../session-store/token.ts';
 import Field from '@src/ui/elements/field';
 import Input from '@src/ui/elements/input';
@@ -11,7 +11,7 @@ function LoginForm() {
   const t = useTranslate();
   const location = useLocation();
   const navigate = useNavigate();
-  const session = useService(SESSION_STORE);
+  const session = useSolution(SESSION_STORE);
   const sessionState = useSyncExternalStore(
     session.state.subscribe,
     session.state.get,

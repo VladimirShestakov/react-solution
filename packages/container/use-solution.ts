@@ -1,5 +1,6 @@
+import { useContext } from 'react';
 import type { Token } from '../token';
-import { useContainer } from './use-container';
+import { SolutionsContext } from './provider.tsx';
 
 /**
  * Хук для выборки сервиса из DI контейнера по токену.
@@ -8,10 +9,10 @@ import { useContainer } from './use-container';
  * @throws
  * @example
  * ```ts
- *  const i18n = useService(I18N_TOKEN)
+ *  const i18n = useSolution(I18N_TOKEN)
  * ```
  *
  */
-export function useService<Type>(token: Token<Type>): Type {
-  return useContainer().getWithSuspense(token);
+export function useSolution<Type>(token: Token<Type>): Type {
+  return useContext(SolutionsContext).getWithSuspense(token);
 }

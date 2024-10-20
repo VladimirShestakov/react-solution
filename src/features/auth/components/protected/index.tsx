@@ -1,6 +1,6 @@
 import { memo, ReactNode, useEffect, useSyncExternalStore } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useService } from 'react-solution';
+import { useSolution } from 'react-solution';
 import { useInit } from 'react-solution';
 import { SESSION_STORE } from '../../session-store/token.ts';
 
@@ -12,7 +12,7 @@ interface Props {
 function Protected({ children, redirect }: Props) {
   const navigate = useNavigate();
   const location = useLocation();
-  const session = useService(SESSION_STORE);
+  const session = useSolution(SESSION_STORE);
   const sessionState = useSyncExternalStore(
     session.state.subscribe,
     session.state.get,

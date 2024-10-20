@@ -1,5 +1,6 @@
+import { useContext } from 'react';
 import { type Token, type TypesFromTokens } from '../token';
-import { useContainer } from './use-container';
+import { SolutionsContext } from './provider.tsx';
 
 /**
  * Хук для выбора множества сервисов из DI по указанной карте токенов (Map)
@@ -8,11 +9,11 @@ import { useContainer } from './use-container';
  * @throws
  * @example
  * ```ts
- *  const { i18n, store } = useServicesMap({i18n: I18N_TOKEN, store: STORE_TOKEN})
+ *  const { i18n, store } = useSolutionMap({i18n: I18N_TOKEN, store: STORE_TOKEN})
  * ```
  */
-export function useServicesMap<Deps extends Record<string, Token>>(
+export function useSolutionMap<Deps extends Record<string, Token>>(
   depends: Deps,
 ): TypesFromTokens<Deps> {
-  return useContainer().getMappedWithSuspense(depends);
+  return useContext(SolutionsContext).getMappedWithSuspense(depends);
 }

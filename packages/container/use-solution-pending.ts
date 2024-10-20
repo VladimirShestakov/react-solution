@@ -1,7 +1,7 @@
 import type { Token } from '../token';
 import { WaitStatus } from '../waiting-store';
-import { useEffect, useState } from 'react';
-import { useContainer } from './use-container';
+import { useContext, useEffect, useState } from 'react';
+import { SolutionsContext } from './provider.tsx';
 
 /**
  * Хук для выборки сервиса из DI контейнера по токену с признаками ожидания/успеха/ошибки.
@@ -14,7 +14,7 @@ import { useContainer } from './use-container';
  * Если будет ошибка подготовки сервиса, то он не вернется, но будет признак isError = true
  * @example
  * ```ts
- *  const i18n = useServicePending(I18N_TOKEN)
+ *  const i18n = useSolutionPending(I18N_TOKEN)
  *  console.log(i18n.service)
  *  console.log(i18n.isSuccess)
  *  console.log(i18n.isWaiting)
@@ -26,13 +26,13 @@ import { useContainer } from './use-container';
  *
  * ```
  */
-export function useServicePending<Type>(token: Token<Type>): {
+export function useSolutionPending<Type>(token: Token<Type>): {
   service: Type | undefined;
   isSuccess: boolean;
   isWaiting: boolean;
   isError: boolean;
 } {
-  const container = useContainer();
+  const container = useContext(SolutionsContext);
   let service: Type | undefined = undefined;
   // Попытка получить сервис синхронно
   try {

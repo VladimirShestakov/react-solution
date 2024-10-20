@@ -15,3 +15,4 @@ export * from './types';
 export * from './utils';
 export * from './waiting-store';
 export * from './common-client';
+export * from './meta-dom';

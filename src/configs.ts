@@ -3,7 +3,7 @@ import { config } from 'react-solution';
 import { HTTP_CLIENT_CFG } from 'react-solution';
 import { SESSION_STORE_CFG } from '@src/features/auth/session-store/token.ts';
 
-export default [
+export const configs = [
   config(HTTP_CLIENT_CFG, ({ env }) => ({
     // Обычно хост на апи относительный и используется прокси для устранения CORS
     // Но в режиме рендера на сервере необходимо указать полный адрес к АПИ

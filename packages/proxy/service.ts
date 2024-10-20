@@ -6,7 +6,10 @@ import type { Patch } from '../types';
 import type { ProxyOptions } from './types';
 
 export class Proxy {
-  protected config: ProxyOptions;
+  protected config: ProxyOptions = {
+    enabled: true,
+    routes: {},
+  };
   protected proxyServer: Server<http.IncomingMessage, http.ServerResponse>;
 
   constructor(
@@ -14,7 +17,7 @@ export class Proxy {
       config: Patch<ProxyOptions>;
     },
   ) {
-    this.config = mc.merge(this.defaultConfig(), depends.config);
+    this.config = mc.merge(this.config, depends.config);
     // Прокси на внешний сервер по конфигу (обычно для апи)
     this.proxyServer = httpProxy.createProxyServer({ /*timeout: 5000, */ proxyTimeout: 5000 });
     this.proxyServer.on('error', function (err, req, res) {
@@ -23,14 +26,6 @@ export class Proxy {
       res.end(err.toString());
     });
   }
-
-  protected defaultConfig(): ProxyOptions {
-    return {
-      enabled: true,
-      routes: {},
-    };
-  }
-
   isEnabled(): boolean {
     return this.config.enabled;
   }

@@ -1,3 +1,3 @@
-import type { RenderService } from './service.ts';
+import type { Container } from '../container';
 
-export type RootFabric = (envPartial: Partial<Env>) => Promise<RenderService>;
+export type SolutionsFactory = (envPartial: Partial<Env>) => Promise<Container>;

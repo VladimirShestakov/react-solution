@@ -29,6 +29,7 @@ export class DumpService {
       const w: Window = window;
       const dump = parse(w.initialData);
       this.set(dump);
+      console.log(dump)
     }
   }
 

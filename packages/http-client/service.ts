@@ -4,22 +4,18 @@ import type { HttpClientOptions } from './types';
 import type { Patch } from '../types';
 
 export class HttpClient {
-  protected config: HttpClientOptions;
   protected axios: AxiosInstance;
+  protected config: HttpClientOptions = {
+    baseURL: '',
+  };
 
   constructor(
     protected depends: {
       config?: Patch<HttpClientOptions>;
     },
   ) {
-    this.config = mc.merge(this.defaultConfig(), depends.config ?? {});
+    this.config = mc.merge(this.config, depends.config ?? {});
     this.axios = axios.create(this.config);
-  }
-
-  protected defaultConfig(): HttpClientOptions {
-    return {
-      baseURL: '',
-    };
   }
 
   /**

@@ -6,8 +6,12 @@ import type { RouterConfig, HTTPStatus } from './types';
 
 export class RouterService {
   readonly history: MemoryHistory | BrowserHistory;
-  protected httpStatus: HTTPStatus[] = [{ status: 200 }];
-  protected config: RouterConfig;
+  // protected httpStatus: HTTPStatus[] = [{ status: 200 }];
+  protected config: RouterConfig = {
+    type: this.depends.env.SSR ? 'memory' : 'browser',
+    basename: this.depends.env.BASE_URL,
+    initialEntries: this.depends.env.REQUEST ? [this.depends.env.REQUEST.url] : undefined,
+  };
 
   constructor(
     protected depends: {
@@ -15,7 +19,7 @@ export class RouterService {
       config?: Patch<RouterConfig>;
     },
   ) {
-    this.config = mc.merge(this.defaultConfig(), depends.config ?? {});
+    this.config = mc.merge(this.config, depends.config);
     switch (this.config.type) {
       case 'memory':
         this.history = createMemoryHistory(this.config);
@@ -25,14 +29,6 @@ export class RouterService {
         this.history = createBrowserHistory(this.config);
         break;
     }
-  }
-
-  defaultConfig(): RouterConfig {
-    return {
-      type: this.depends.env.SSR ? 'memory' : 'browser',
-      basename: this.depends.env.BASE_URL,
-      initialEntries: this.depends.env.req ? [this.depends.env.req.url] : undefined,
-    };
   }
 
   get basename() {
@@ -76,6 +72,7 @@ export class RouterService {
    * @returns {*}
    */
   getSearchParams(): any {
+    // @todo Проверить this.history.location.search может быть пустым, так как в store параметры устанавливаются напрямую в window.location
     return qs.parse(this.history.location.search, { ignoreQueryPrefix: true, comma: true }) || {};
   }
 
@@ -107,21 +104,6 @@ export class RouterService {
       window.history.pushState({}, '', url);
     } else {
       window.history.replaceState({}, '', url);
-    }
-  }
-
-  setHttpStatus(status: number, location?: string): void {
-    console.log('setHttpStatus', status);
-    this.httpStatus.unshift({ status, location });
-  }
-
-  getHttpStatus(): HTTPStatus {
-    return this.httpStatus[0];
-  }
-
-  resetHttpStatus(): void {
-    if (this.httpStatus.length > 1) {
-      this.httpStatus.shift();
     }
   }
 }

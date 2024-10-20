@@ -1,6 +1,12 @@
-import { memo } from 'react';
+import React, { memo, useEffect, useId } from 'react';
 import { useParams } from 'react-router-dom';
-import { useService } from 'react-solution';
+import {
+  Head as HeadMeta, HttpLocation,
+  HttpStatus,
+  RENDER_SERVICE,
+  TitleTemplate,
+  useSolution,
+} from 'react-solution';
 import { useInit } from 'react-solution';
 import { useRefreshKey } from 'react-solution';
 import { useI18n } from 'react-solution';
@@ -18,8 +24,8 @@ import { ARTICLES_STORE } from '../articles-store/token.ts';
 import { CATEGORIES_STORE } from '../categories-store/token.ts';
 
 function CatalogPage() {
-  const categories = useService(CATEGORIES_STORE);
-  const articles = useService(ARTICLES_STORE);
+  const categories = useSolution(CATEGORIES_STORE);
+  const articles = useSolution(ARTICLES_STORE);
 
   const { locale, t } = useI18n();
   const { categoryId } = useParams<{ categoryId: string }>();
@@ -48,6 +54,15 @@ function CatalogPage() {
 
   return (
     <PageLayout>
+      <HeadMeta>
+        <title data-some={'10'}>{`Каталог! -{data-some}-{data-other}-`}</title>
+        <link rel="icon" type="image/x-icon" href="/catalog/favicon.ico" />
+        <TitleTemplate some={100}>{`Template {some}`}</TitleTemplate>
+        <HttpStatus>200</HttpStatus>
+      </HeadMeta>
+      <HeadMeta>
+        <title data-other={'5550'}/>
+      </HeadMeta>
       <Head title="React Solution">
         <LocaleSelect />
       </Head>

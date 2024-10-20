@@ -1,5 +1,5 @@
 import { memo, ReactNode, useCallback } from 'react';
-import { useService } from 'react-solution';
+import { useSolution } from 'react-solution';
 import { useTranslate } from 'react-solution';
 import { MODALS } from 'react-solution';
 import type { ModalWithClose } from 'react-solution';
@@ -16,7 +16,7 @@ export interface CascadeModalProps extends ModalWithClose<void> {
 function CascadeModal(props: CascadeModalProps): ReactNode {
   const t = useTranslate();
   const { level = 1 } = props;
-  const modals = useService(MODALS);
+  const modals = useSolution(MODALS);
   const openCascade = useCallback(() => {
     modals.open(CASCADE_MODAL, {
       title: t('example-modals.cascade.title'),

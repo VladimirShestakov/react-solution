@@ -17,7 +17,20 @@ import type {
  */
 export class CacheStore implements ICacheStore {
   protected items: Map<string, TCache>;
-  protected config: TCacheConfig;
+  protected config: TCacheConfig = {
+    // Подпись для валидации кэша после обновления приложения или запуска в разном режиме
+    // При деплое подставляется хэш комита
+    signature: `some`,
+    // Максимальное количество страниц (кэшей) в оперативной памяти
+    // Если кэша нет в пяти, то подгружается в память с диска
+    // При достижении лимита первые (старые) записи освобождаются из памяти.
+    maxItems: 50,
+    // Сжимать кэш в gzip.
+    compress: true,
+    // Директория для файлов кэша
+    dir: './cache',
+  };
+
   // Упорядоченные ключи items, чтобы освобождать память в порядке очереди
   protected itemsOrder: string[];
   protected listeners: Map<string, TCacheReadeCallback[]>;
@@ -27,26 +40,10 @@ export class CacheStore implements ICacheStore {
       config: Patch<TCacheConfig>;
     },
   ) {
-    this.config = mc.merge(this.defaultConfig(), depends.config);
+    this.config = mc.merge(this.config, depends.config);
     this.items = new Map();
     this.itemsOrder = [];
     this.listeners = new Map();
-  }
-
-  protected defaultConfig(): TCacheConfig {
-    return {
-      // Подпись для валидации кэша после обновления приложения или запуска в разном режиме
-      // При деплое подставляется хэш комита
-      signature: `some`,
-      // Максимальное количество страниц (кэшей) в оперативной памяти
-      // Если кэша нет в пяти, то подгружается в память с диска
-      // При достижении лимита первые (старые) записи освобождаются из памяти.
-      maxItems: 50,
-      // Сжимать кэш в gzip.
-      compress: true,
-      // Директория для файлов кэша
-      dir: './cache',
-    };
   }
 
   /**

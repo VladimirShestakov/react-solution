@@ -10,7 +10,10 @@ import type { AppConfig } from './types.ts';
 
 export class App {
   protected app: Express;
-  protected config: AppConfig;
+  protected config: AppConfig = {
+    host: 'localhost',
+    port: 8050,
+  };
 
   constructor(
     protected depends: {
@@ -22,14 +25,7 @@ export class App {
     },
   ) {
     this.app = express();
-    this.config = mc.merge(this.defaultConfig(), depends.config);
-  }
-
-  protected defaultConfig(): AppConfig {
-    return {
-      host: 'localhost',
-      port: 8050,
-    };
+    this.config = mc.merge(this.config, depends.config);
   }
 
   async start() {

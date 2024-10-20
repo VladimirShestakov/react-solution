@@ -1,7 +1,7 @@
-import React, { lazy, memo, Suspense } from 'react';
+import React, { lazy, memo, Suspense, useEffect, useId } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { ModalsContainer } from 'react-solution';
+import { Head, ModalsContainer } from 'react-solution';
 import Loading from '@src/app/loading';
 import Protected from '@src/features/auth/components/protected';
 import ExampleCanvasPage from '@src/features/example-canvas/page';
@@ -21,14 +21,29 @@ const NotFound = lazy(() => import('@src/app/not-found'));
 const ExampleModals = lazy(() => import('@src/features/example-modals/page'));
 const ExampleI18n = lazy(() => import('@src/features/example-i18n/page'));
 
-function App() {
+declare global {
+  interface HTMLTitleElement {
+    values: Record<string, string | number>;
+  }
+}
+
+export const App = memo(() => {
   return (
     <>
-      <Helmet>
+      {/*<Head>*/}
+      {/*  <title data-article={''}>{`React Solution!!! {article} {mykey}`}</title>*/}
+      {/*  <base href={'/11'} />*/}
+      {/*  <style>{`.some {}`}</style>*/}
+      {/*  <script>{`const x = 10;`}</script>*/}
+      {/*  <html lang="en-En" />*/}
+      {/*  /!*<title>React Solution!</title>*!/*/}
+      {/*  /!*<meta name="description" content="React solution" />*!/*/}
+      {/*</Head>*/}
+      <Head>
         <html lang="en" />
         <title>React Solution!</title>
         <meta name="description" content="React solution" />
-      </Helmet>
+      </Head>
       <Suspense fallback={<Loading />}>
         <Routes>
           <Route path="/" index element={<Main />} />
@@ -52,6 +67,4 @@ function App() {
       </Suspense>
     </>
   );
-}
-
-export default memo(App);
+});

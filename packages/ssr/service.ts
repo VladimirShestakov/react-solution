@@ -1,17 +1,17 @@
-import type { Request, Response } from 'express';
 import fs from 'fs';
-import mc from 'merge-change';
 import gzip from 'node-gzip';
+import mc from 'merge-change';
 import path from 'node:path';
 import uniqid from 'uniqid';
 import { fileURLToPath } from 'url';
 import { URLPattern } from 'urlpattern-polyfill';
-import type { ICacheStore, TCache } from '../cache-store';
-import type { ViteDev } from '../vite-dev';
-import type { Patch } from '../types';
-import { getHeadersValues, parseAcceptEncoding, parseControls } from './lib/parse-head';
 import { RenderQueue } from './lib/queue';
+import { getHeadersValues, parseAcceptEncoding, parseControls } from './lib/parse-head';
 import { render, type RenderParams } from './lib/render';
+import type { Request, Response } from 'express';
+import type { ICacheStore, TCache } from '../cache-store';
+import type { Patch } from '../types';
+import type { ViteDev } from '../vite-dev';
 import type { SsrOptions, TRenderRule, TSSRResponse } from './types';
 
 export class Ssr {
@@ -19,9 +19,39 @@ export class Ssr {
   protected rules: TRenderRule[];
   protected ETagSPA: string;
   protected renderQueue: RenderQueue | undefined;
-  protected config: SsrOptions;
   protected clientApp: any;
   protected template: string;
+  protected config: SsrOptions = {
+    // Если отключить, то будет всегда отдаваться SPA
+    enabled: true,
+    workers: 1,
+    template: {
+      dev: '../../src/index.html',
+      prod: '../../dist/client/index.html',
+    },
+    clientAppFile: {
+      dev: '../src/index.tsx',
+      prod: '../../dist/server/index.js',
+    },
+    // Правила рендера и кэширования страниц.
+    // Используется первое правило, удовлетворяющие шаблону url
+    rules: [
+      {
+        // Все адреса
+        url: '/*',
+        ssr: true,
+        // Ждём рендер в DEV режиме
+        ssrWait: false,
+        // Отправлять старый кэш вместо spa (если нет ssrWait)
+        ssrSendAged: true,
+        // Срок кэша на сервере в секундах. По истечении выполняется перерендер.
+        cacheAge: 60 * 15, // 15 минут.
+        // Из-за локали в куках используем max-age=0, чтобы браузер всегда узнавал у сервера валидность кэша.
+        // Иначе при смене языка и переходе по ссылкам сайта браузер может отобразить свой кэш на старом языке.
+        control: `public, max-age=${0}, s-maxage=${0}`,
+      },
+    ],
+  };
 
   constructor(
     protected depends: {
@@ -31,8 +61,7 @@ export class Ssr {
       configs?: Patch<SsrOptions>;
     },
   ) {
-    this.config = mc.merge(this.defaultConfig(this.depends.env), this.depends.configs ?? {});
-
+    this.config = mc.merge(this.config, this.depends.configs);
     this.renderQueue = this.depends.env.PROD
       ? new RenderQueue(
           this.depends.cacheStore,
@@ -40,9 +69,7 @@ export class Ssr {
           this.config.workers,
         )
       : undefined;
-
     this.ETagSPA = uniqid();
-
     this.rules = this.config.rules.map(rule => ({
       patterns: (Array.isArray(rule.url) ? rule.url : [rule.url]).map(
         url => new URLPattern(url, 'http://test'),
@@ -56,7 +83,6 @@ export class Ssr {
       ssrWait: Boolean(rule.ssrWait),
       ssrSendAged: Boolean(rule.ssrSendAged),
     }));
-
     // HTML шаблон, куда вставим рендер
     this.template = fs.readFileSync(
       this.depends.env.DEV
@@ -66,43 +92,13 @@ export class Ssr {
     );
   }
 
-  async init(): Promise<this> {
+  public async init(): Promise<this> {
     // React приложение для ренедра в режиме разработки (компилируется исходники через Vite)
     // В прод режиме приложение будет загружено из воркера
     this.clientApp = this.depends.vite.isEnabled()
       ? await this.depends.vite.ssrLoadModule(this.config.clientAppFile.dev)
       : undefined;
     return this;
-  }
-
-  private relativeFilePath(rootFilePath: string): string {
-    const __dirname = path.dirname(fileURLToPath(import.meta.url)) + '/lib';
-    const fileName = path.resolve(process.cwd(), rootFilePath);
-    return './' + path.relative(__dirname, fileName);
-  }
-
-  async sendSPA(req: Request, res: Response, rule: TRenderRule, params: RenderParams) {
-    const response: TSSRResponse = {
-      status: 200,
-      headers: {
-        'Content-Type': 'text/html; charset=utf-8',
-        'Cache-Control': 'public,max-age=0,must-revalidate',
-        ETag: this.ETagSPA,
-      },
-      body: undefined,
-    };
-    if (req.headers['if-none-match'] === this.ETagSPA) {
-      // 304 SPA (у браузера есть кэша SPA страницы)
-      console.log('- send 304 SPA');
-      response.status = 304;
-    } else {
-      // 200 SPA (клиент ещё не получал SPA или SPA "новый")
-      console.log(`- send ${rule.spaHttpStatus} SPA`);
-      response.status = rule.spaHttpStatus;
-      response.body = params.template;
-    }
-    res.writeHead(response.status, response.headers);
-    res.end(response.body);
   }
 
   // Запросы на рендер страницы
@@ -173,73 +169,28 @@ export class Ssr {
     }
   };
 
-  protected defaultConfig(env: Env): SsrOptions {
-    return {
-      // Если отключить, то будет всегда отдаваться SPA
-      enabled: true,
-      workers: 1,
-      template: {
-        dev: '../../src/index.html',
-        prod: '../../dist/client/index.html',
+  protected async sendSPA(req: Request, res: Response, rule: TRenderRule, params: RenderParams) {
+    const response: TSSRResponse = {
+      status: 200,
+      headers: {
+        'Content-Type': 'text/html; charset=utf-8',
+        'Cache-Control': 'public,max-age=0,must-revalidate',
+        ETag: this.ETagSPA,
       },
-      clientAppFile: {
-        dev: '../src/index.tsx',
-        prod: '../../dist/server/index.js',
-      },
-      // Правила рендера и кэширования страниц.
-      // Используется первое правило, удовлетворяющие шаблону url
-      rules: [
-        {
-          // Все адреса
-          url: '/*',
-          ssr: true,
-          // Ждём рендер в DEV режиме
-          ssrWait: false,
-          // Отправлять старый кэш вместо spa (если нет ssrWait)
-          ssrSendAged: true,
-          // Срок кэша на сервере в секундах. По истечении выполняется перерендер.
-          cacheAge: 60 * 15, // 15 минут.
-          // Из-за локали в куках используем max-age=0, чтобы браузер всегда узнавал у сервера валидность кэша.
-          // Иначе при смене языка и переходе по ссылкам сайта браузер может отобразить свой кэш на старом языке.
-          control: `public, max-age=${0}, s-maxage=${0}`,
-        },
-      ],
+      body: undefined,
     };
-  }
-
-  protected getRuleByUrl(
-    url: string,
-    headers: Record<string, string | undefined | string[]>,
-  ): TRenderRule {
-    const result: TRenderRule = (() => {
-      for (const rule of this.rules) {
-        for (const pattern of rule.patterns) {
-          if (pattern.test(url, 'http://test')) {
-            console.log('- render rule:', pattern.pathname);
-            return { ...rule };
-          }
-        }
-      }
-      console.log('- render rule: default');
-      return {
-        patterns: [new URLPattern('/*', 'http://test')],
-        ssr: this.config.enabled,
-        cacheAge: 60,
-        control: new Map(),
-        controlSrc: '',
-        vary: [] as string[],
-        spaHttpStatus: 200,
-        ssrWait: false,
-        ssrSendAged: false,
-      };
-    })();
-
-    // Требуется ожидание рендера вне зависимости от правила ренлера
-    if (headers['x-ssr-wait'] === 'true') result.ssrWait = true;
-    // Если ожидание рендера, то нельзя отправлять старый рендер
-    if (result.ssrWait) result.ssrSendAged = false;
-
-    return result;
+    if (req.headers['if-none-match'] === this.ETagSPA) {
+      // 304 SPA (у браузера есть кэша SPA страницы)
+      console.log('- send 304 SPA');
+      response.status = 304;
+    } else {
+      // 200 SPA (клиент ещё не получал SPA или SPA "новый")
+      console.log(`- send ${rule.spaHttpStatus} SPA`);
+      response.status = rule.spaHttpStatus;
+      response.body = params.template;
+    }
+    res.writeHead(response.status, response.headers);
+    res.end(response.body);
   }
 
   protected async sendCache(
@@ -296,5 +247,46 @@ export class Ssr {
     }
     res.writeHead(response.status, response.headers);
     res.end(response.body);
+  }
+
+  protected getRuleByUrl(
+    url: string,
+    headers: Record<string, string | undefined | string[]>,
+  ): TRenderRule {
+    const result: TRenderRule = (() => {
+      for (const rule of this.rules) {
+        for (const pattern of rule.patterns) {
+          if (pattern.test(url, 'http://test')) {
+            console.log('- render rule:', pattern.pathname);
+            return { ...rule };
+          }
+        }
+      }
+      console.log('- render rule: default');
+      return {
+        patterns: [new URLPattern('/*', 'http://test')],
+        ssr: this.config.enabled,
+        cacheAge: 60,
+        control: new Map(),
+        controlSrc: '',
+        vary: [] as string[],
+        spaHttpStatus: 200,
+        ssrWait: false,
+        ssrSendAged: false,
+      };
+    })();
+
+    // Требуется ожидание рендера вне зависимости от правила ренлера
+    if (headers['x-ssr-wait'] === 'true') result.ssrWait = true;
+    // Если ожидание рендера, то нельзя отправлять старый рендер
+    if (result.ssrWait) result.ssrSendAged = false;
+
+    return result;
+  }
+
+  protected relativeFilePath(rootFilePath: string): string {
+    const __dirname = path.dirname(fileURLToPath(import.meta.url)) + '/lib';
+    const fileName = path.resolve(process.cwd(), rootFilePath);
+    return './' + path.relative(__dirname, fileName);
   }
 }

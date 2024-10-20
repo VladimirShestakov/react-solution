@@ -1,4 +1,4 @@
-import { useServicesMap } from '../container';
+import { useSolutionMap } from '../container';
 import { ENV } from '../env';
 import { RENDER_SERVICE } from '../render';
 import { useEffect } from 'react';
@@ -20,7 +20,7 @@ export function useInit(
   deps: unknown[] = [],
   options: UseInitOptions = {},
 ) {
-  const { env, render } = useServicesMap({ env: ENV, render: RENDER_SERVICE });
+  const { env, render } = useSolutionMap({ env: ENV, render: RENDER_SERVICE });
 
   // Suspense используется только на сервере для ожидания инициализации перед итоговым рендером
   if (env.SSR && options.ssr) {

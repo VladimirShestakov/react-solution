@@ -1,3 +1,5 @@
-import { AxiosRequestConfig } from 'axios';
+import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 
-export type ApiBaseEndpointOptions = AxiosRequestConfig;
+export type ApiBaseEndpointConfig<D = any> = AxiosRequestConfig<D>;
+
+export type ApiBaseEndpointResponse<T = any, D = any> = AxiosResponse<T, D>

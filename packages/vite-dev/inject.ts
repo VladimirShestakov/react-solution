@@ -1,11 +1,11 @@
-import { injectFabric } from '../container';
+import { injectFactory } from '../container';
 import { ENV } from '../env';
 import { VITE_DEV } from './token';
 import { ViteDev } from './service';
 
-export const viteDev = injectFabric({
+export const viteDev = injectFactory({
   token: VITE_DEV,
-  fabric: async depends => {
+  factory: async depends => {
     return new ViteDev(depends).init();
   },
   depends: {

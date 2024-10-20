@@ -1,4 +1,4 @@
-// import { injectClass, injectFabric } from './utils';
+// import { injectClass, injectFactory } from './utils';
 // import {
 //   CACHE_STORE,
 //   CACHE_STORE_CFG,
@@ -25,9 +25,9 @@
 //     config: nestedToken(CONFIGS, CACHE_STORE_CFG),
 //   },
 // });
-// injectFabric({
+// injectFactory({
 //   token: CACHE_STORE_I, // <----
-//   fabric: (dep: { config: TCacheConfig }) => {
+//   factory: (dep: { config: TCacheConfig }) => {
 //     return new CacheStore(dep);
 //   },
 //   depends: {
@@ -43,9 +43,9 @@
 //     config: nestedToken(CONFIGS, CACHE_STORE_CFG),
 //   },
 // });
-// injectFabric({
+// injectFactory({
 //   token: CACHE_STORE, // <----
-//   fabric: (dep: { config: TCacheConfig }) => {
+//   factory: (dep: { config: TCacheConfig }) => {
 //     return new CacheStore(dep);
 //   },
 //   depends: {
@@ -61,9 +61,9 @@
 //     config: nestedToken(CONFIGS, CACHE_STORE_CFG),
 //   },
 // });
-// injectFabric({
+// injectFactory({
 //   token: CACHE_STORE_EXT, // <----
-//   fabric: (dep: { config: TCacheConfig }) => {
+//   factory: (dep: { config: TCacheConfig }) => {
 //     return new CacheStore(dep);
 //   },
 //   depends: {
@@ -82,9 +82,9 @@
 //     configs: nestedToken(CONFIGS, SSR_CGF),
 //   }
 // });
-// injectFabric({
+// injectFactory({
 //   token: SSR,
-//   fabric: (dep: {
+//   factory: (dep: {
 //     cacheStore: CacheStore,
 //     env: Env,
 //     vite: ViteDevService,
@@ -111,9 +111,9 @@
 //     configs: nestedToken(CONFIGS, SSR_CGF),
 //   }
 // });
-// injectFabric({
+// injectFactory({
 //   token: SSR,
-//   fabric: (dep: {
+//   factory: (dep: {
 //     cacheStore: CacheStore,
 //     env: Env,
 //     vite: ViteDevService,

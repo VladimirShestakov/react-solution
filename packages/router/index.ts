@@ -1,5 +1,5 @@
 export * from './inject';
-export * from './navigate-ssr';
+export * from './navigate-ssr.tsx';
 export * from './provider';
 export * from './service';
 export * from './token';

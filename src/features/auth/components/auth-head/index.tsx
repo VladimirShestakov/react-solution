@@ -1,6 +1,6 @@
 import { memo, useCallback, useSyncExternalStore } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useService } from 'react-solution';
+import { useSolution } from 'react-solution';
 import { useTranslate } from 'react-solution';
 import { SESSION_STORE } from '../../session-store/token.ts';
 import SideLayout from '@src/ui/layout/side-layout';
@@ -9,7 +9,7 @@ function AuthHead() {
   const t = useTranslate();
   const navigate = useNavigate();
   const location = useLocation();
-  const session = useService(SESSION_STORE);
+  const session = useSolution(SESSION_STORE);
   const sessionState = useSyncExternalStore(
     session.state.subscribe,
     session.state.get,

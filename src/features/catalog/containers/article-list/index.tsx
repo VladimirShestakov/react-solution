@@ -1,12 +1,12 @@
 import { memo, useCallback, useSyncExternalStore } from 'react';
-import { useServicesMap } from 'react-solution';
+import { useSolutionMap } from 'react-solution';
 import { ROUTER_SERVICE } from 'react-solution';
 import Pagination from '@src/ui/navigation/pagination';
 import Spinner from '@src/ui/elements/spinner';
 import { ARTICLES_STORE } from '../../articles-store/token.ts';
 
 function ArticleList() {
-  const { articles, router } = useServicesMap({
+  const { articles, router } = useSolutionMap({
     articles: ARTICLES_STORE,
     router: ROUTER_SERVICE,
   });

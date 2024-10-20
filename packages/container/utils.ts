@@ -1,4 +1,4 @@
-import type { FunctionWithDepends, InjectClass, InjectFabric, InjectValue } from './types';
+import type { FunctionWithDepends, InjectClass, InjectFactory, InjectValue } from './types';
 
 export function injectClass<Type, ExtType extends Type, Deps>(
   inject: InjectClass<Type, ExtType, Deps>,
@@ -6,9 +6,9 @@ export function injectClass<Type, ExtType extends Type, Deps>(
   return inject;
 }
 
-export function injectFabric<Type, ExtType extends Type, Deps>(
-  inject: InjectFabric<Type, ExtType, Deps>,
-): InjectFabric<Type, ExtType, Deps> {
+export function injectFactory<Type, ExtType extends Type, Deps>(
+  inject: InjectFactory<Type, ExtType, Deps>,
+): InjectFactory<Type, ExtType, Deps> {
   return inject;
 }
 
@@ -30,16 +30,16 @@ export function isInjectClass<Type, ExtType extends Type, Deps>(
   );
 }
 
-export function isInjectFabric<Type, ExtType extends Type, Deps>(
-  inject: InjectFabric<Type, ExtType, Deps> | unknown,
-): inject is InjectFabric<Type, ExtType, Deps> {
+export function isInjectFactory<Type, ExtType extends Type, Deps>(
+  inject: InjectFactory<Type, ExtType, Deps> | unknown,
+): inject is InjectFactory<Type, ExtType, Deps> {
   return Boolean(
     inject &&
       typeof inject === 'object' &&
       'token' in inject &&
       'depends' in inject &&
-      'fabric' in inject &&
-      typeof inject.fabric === 'function',
+      'factory' in inject &&
+      typeof inject.factory === 'function',
   );
 }
 
@@ -50,12 +50,12 @@ export function isInjectValue<Type, ExtType extends Type = Type>(
 }
 
 export function isInject<Type, ExtType extends Type, Deps>(
-  inject: InjectClass<Type, ExtType, Deps> | InjectFabric<Type, ExtType, Deps> | unknown,
-): inject is InjectFabric<Type, ExtType, Deps> | InjectClass<Type, ExtType, Deps> {
-  return isInjectClass(inject) || isInjectFabric(inject) || isInjectValue(inject);
+  inject: InjectClass<Type, ExtType, Deps> | InjectFactory<Type, ExtType, Deps> | unknown,
+): inject is InjectFactory<Type, ExtType, Deps> | InjectClass<Type, ExtType, Deps> {
+  return isInjectClass(inject) || isInjectFactory(inject) || isInjectValue(inject);
 }
 
-export function isFabric<Type, Deps>(
+export function isFactory<Type, Deps>(
   value: FunctionWithDepends<Type, Deps> | unknown,
 ): value is FunctionWithDepends<Type, Deps> {
   return Boolean(value && typeof value === 'function');

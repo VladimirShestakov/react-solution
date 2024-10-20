@@ -11,7 +11,12 @@ import type { SessionStoreConfig, SessionStoreData } from './types.ts';
  */
 export class SessionStore {
   readonly state;
-  protected config: SessionStoreConfig;
+  protected config: SessionStoreConfig = {
+    log: true,
+    name: 'Sessions state',
+    tokenHeader: 'X-Token',
+    saveToLocalStorage: !this.depends.env.SSR,
+  };
 
   constructor(
     protected depends: {
@@ -21,7 +26,7 @@ export class SessionStore {
       config?: Patch<SessionStoreConfig>;
     },
   ) {
-    this.config = mc.merge(this.defaultConfig(), depends.config ?? {});
+    this.config = mc.merge(this.config, depends.config);
     this.state = new State<SessionStoreData>(this.defaultState(), {
       log: this.config.log,
       name: this.config.name,
@@ -35,18 +40,6 @@ export class SessionStore {
       waiting: true,
       errors: null,
       exists: false,
-    };
-  }
-
-  /**
-   * Конфигурация по умолчанию
-   */
-  defaultConfig(): SessionStoreConfig {
-    return {
-      log: true,
-      name: 'Sessions state',
-      tokenHeader: 'X-Token',
-      saveToLocalStorage: !this.depends.env.SSR,
     };
   }
 

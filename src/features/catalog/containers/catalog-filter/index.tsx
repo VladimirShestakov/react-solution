@@ -1,6 +1,6 @@
 import { memo, useCallback, useMemo, useSyncExternalStore } from 'react';
 import { useTranslate } from 'react-solution';
-import { useService } from 'react-solution';
+import { useSolution } from 'react-solution';
 import SideLayout from '@src/ui/layout/side-layout';
 import Select from '@src/ui/elements/select';
 import Input from '@src/ui/elements/input';
@@ -8,7 +8,7 @@ import { ARTICLES_STORE } from '../../articles-store/token.ts';
 
 function CatalogFilter() {
   const t = useTranslate();
-  const articles = useService(ARTICLES_STORE);
+  const articles = useSolution(ARTICLES_STORE);
   const articlesState = useSyncExternalStore(
     articles.state.subscribe,
     articles.state.get,

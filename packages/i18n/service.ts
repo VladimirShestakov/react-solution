@@ -242,8 +242,8 @@ export class I18n {
    * Автоопределение локали по HTTP заголовку accept-language
    */
   detectLocale() {
-    return this.depends.env.SSR && this.depends.env.req
-      ? (this.depends.env.req.headers['accept-language'] as string) // на сервере
+    return this.depends.env.SSR && this.depends.env.REQUEST
+      ? (this.depends.env.REQUEST.headers['accept-language'] as string) // на сервере
       : navigator.languages.join(','); // в браузере
   }
 
@@ -252,7 +252,7 @@ export class I18n {
    */
   restoreLocale() {
     if (this.depends.env.SSR) {
-      return this.depends.env.req ? (this.depends.env.req.cookies['locale'] as string) : undefined;
+      return this.depends.env.REQUEST ? (this.depends.env.REQUEST.cookies['locale'] as string) : undefined;
     } else {
       return cookie.get('locale') as string;
     }

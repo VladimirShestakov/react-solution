@@ -1,10 +1,5 @@
 import { Token, type TypesFromTokens, type TokenInterface } from '../token';
 
-/**
- * Реэкспорт типа на контейнер
- */
-export type { Container as ContainerType } from './container';
-
 interface InjectBase<Type, ExtType extends Type> {
   token: TokenInterface<Type>;
   merge?: boolean; // @todo Возможно нужно только для InjectValue
@@ -27,8 +22,8 @@ export interface InjectClass<Type, ExtType extends Type, Deps> extends InjectBas
  * Указывается токен, функция и токены зависимости, которые будут переданы в первый аргумент функции
  * Функция может быть асинхронной.
  */
-export interface InjectFabric<Type, ExtType extends Type, Deps> extends InjectBase<Type, ExtType> {
-  fabric: FunctionWithDepends<ExtType, TypesFromTokens<Deps>>;
+export interface InjectFactory<Type, ExtType extends Type, Deps> extends InjectBase<Type, ExtType> {
+  factory: FunctionWithDepends<ExtType, TypesFromTokens<Deps>>;
   depends: Deps;
 }
 
@@ -41,7 +36,7 @@ export interface InjectValue<Type, ExtType extends Type> extends InjectBase<Type
 
 export type Inject<Type = any, ExtType extends Type = any, Deps = any> =
   | InjectClass<Type, ExtType, Deps>
-  | InjectFabric<Type, ExtType, Deps>
+  | InjectFactory<Type, ExtType, Deps>
   | InjectValue<Type, ExtType>;
 
 export type InjectArray = Inject[] | InjectArray[];

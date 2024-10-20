@@ -2,11 +2,9 @@ import { ApiBaseEndpoint, queryParams } from 'react-solution';
 import type { UsersApiConfig, SignInBody } from './types.ts';
 
 export class UsersApi extends ApiBaseEndpoint<UsersApiConfig> {
-  protected override defaultConfig(): UsersApiConfig {
-    return {
-      url: '/api/v1/users',
-    };
-  }
+  override config: UsersApiConfig = {
+    url: '/api/v1/users',
+  };
 
   /**
    * Выбор одного юзера по токену (текущего авторизованного)

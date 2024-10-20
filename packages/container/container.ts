@@ -1,10 +1,18 @@
 import { Events } from '../events';
 import { WaitingStore, type TWaitKey, WaitStatus } from '../waiting-store';
 import mc from 'merge-change';
-import { CONTAINER } from './token';
-import { isInjectClass, isInjectFabric, isInjectValue } from './utils';
-import { type ContainerEvents, type Inject, InjectArray } from './types';
-import { type TokenInterface, type TypesFromTokens, type TokenKey } from '../token';
+import { isInjectClass, isInjectFactory, isInjectValue } from './utils';
+import {
+  type ContainerEvents,
+  type Inject,
+  InjectArray,
+  InjectClass,
+  InjectFactory,
+  InjectValue,
+} from './types';
+import { type TokenInterface, type TypesFromTokens, type TokenKey, newToken } from '../token';
+
+export const CONTAINER = newToken<Container>('@react-solution/container');
 
 export class Container {
   readonly events: Events<ContainerEvents> = new Events();
@@ -18,14 +26,22 @@ export class Container {
     this.set({ token: CONTAINER, value: this });
   }
 
+  set<Type, ExtType extends Type, Deps>(inject: InjectFactory<Type, ExtType, Deps>): this
+  set<Type, ExtType extends Type, Deps>(inject: InjectClass<Type, ExtType, Deps>): this
+  set<Type, ExtType extends Type>(inject: InjectValue<Type, ExtType>): this
+  set(inject: InjectArray): this
+
   /**
    * Инъекция сервиса
    * @param inject Инъекция в виде конструктора, функции или значения
    */
-  set(...inject: InjectArray): this {
+  set<Type, ExtType extends Type, Deps>(inject: InjectArray | Inject<Type, ExtType, Deps>): this {
+    if (!Array.isArray(inject)) {
+      inject = [inject];
+    }
     inject.forEach(item => {
       if (Array.isArray(item)) {
-        this.set(...item);
+        this.set(item);
       } else {
         if (this.injects.has(item.token.key)) {
           this.injects.get(item.token.key)?.push({ ...item });
@@ -36,6 +52,18 @@ export class Container {
     });
 
     return this;
+  }
+
+  setValue<Type, ExtType extends Type>(inject: InjectValue<Type, ExtType>): this {
+    return this.set(inject)
+  }
+
+  setFactory<Type, ExtType extends Type, Deps>(inject: InjectFactory<Type, ExtType, Deps>): this {
+    return this.set(inject)
+  }
+
+  setClass<Type, ExtType extends Type, Deps>(inject: InjectClass<Type, ExtType, Deps>): this {
+    return this.set(inject)
   }
 
   /**
@@ -87,8 +115,8 @@ export class Container {
           nextValue = inject.value;
           break;
         }
-        case isInjectFabric(inject): {
-          nextValue = await inject.fabric(await this.getMapped(inject.depends));
+        case isInjectFactory(inject): {
+          nextValue = await inject.factory(await this.getMapped(inject.depends));
           break;
         }
         case isInjectClass(inject): {

@@ -9,7 +9,10 @@ import type { ProfileStoreConfig, ProfileStoreData } from './types.ts';
  */
 export class ProfileStore {
   readonly state;
-  protected config: ProfileStoreConfig;
+  protected config: ProfileStoreConfig = {
+    log: true,
+    name: 'Profile state',
+  };
 
   constructor(
     protected depends: {
@@ -17,7 +20,7 @@ export class ProfileStore {
       config?: Patch<ProfileStoreConfig>;
     },
   ) {
-    this.config = mc.merge(this.defaultConfig(), depends.config ?? {});
+    this.config = mc.merge(this.config, depends.config);
     this.state = new State<ProfileStoreData>(this.defaultState(), {
       log: this.config.log,
       name: this.config.name,
@@ -28,16 +31,6 @@ export class ProfileStore {
     return {
       data: null,
       waiting: false, // признак ожидания загрузки
-    };
-  }
-
-  /**
-   * Конфигурация по умолчанию
-   */
-  defaultConfig(): ProfileStoreConfig {
-    return {
-      log: true,
-      name: 'Profile state',
     };
   }
 

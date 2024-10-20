@@ -1,6 +1,5 @@
 import { Navigate } from 'react-router-dom';
-import { useService } from '../container';
-import { ROUTER_SERVICE } from '../router';
+import { HttpLocation, HttpStatus } from '../meta-dom';
 import type { NavigateSSRProps } from './types';
 
 /**
@@ -12,10 +11,14 @@ export function NavigateSSR({
   state,
   relative,
   httpStatus = 301,
-}: NavigateSSRProps): null {
+}: NavigateSSRProps) {
   if (import.meta.env.SSR) {
-    if (typeof to === 'string') useService(ROUTER_SERVICE).setHttpStatus(httpStatus, to);
-    return null;
+    if (typeof to === 'string') {
+      return <>
+        <HttpLocation>{to}</HttpLocation>
+        <HttpStatus>{httpStatus}</HttpStatus>
+      </>
+    }
   } else {
     return Navigate({ to, replace, state, relative });
   }

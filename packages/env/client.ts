@@ -1,5 +1,5 @@
 import mc from 'merge-change';
-import { injectValue } from '../container';
+import { InjectValue, injectValue } from '../container';
 import { ENV } from './token';
 import type { Patch } from '../types';
 

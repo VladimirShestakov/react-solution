@@ -2,21 +2,20 @@ import React from 'react';
 import { type Container } from './container';
 
 /**
- * Контекст для DI контейнера
+ * Контекст для DI контейнера React-Solution.
  */
-export const ContainerContext = React.createContext<Container>({} as Container);
+export const SolutionsContext = React.createContext<Container>({} as Container);
 
 /**
- * React провайдер для DI контейнера
- * Подключает контекст к приложению для доступа к сервисам.
- * Провайдер не обрабатывает изменения в services.
+ * React провайдер DI контейнера React-Solution.
+ * Подключает контекст к приложению для доступа к контейнеру решений.
  */
-export function ContainerProvider({
-  container,
+export function SolutionsProvider({
+  solutions,
   children,
 }: {
-  container: Container;
+  solutions: Container;
   children: React.ReactNode;
 }) {
-  return <ContainerContext.Provider value={container}>{children}</ContainerContext.Provider>;
+  return <SolutionsContext.Provider value={solutions}>{children}</SolutionsContext.Provider>;
 }

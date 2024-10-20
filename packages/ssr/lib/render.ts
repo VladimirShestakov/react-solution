@@ -1,8 +1,5 @@
 import React from 'react';
-import { renderToPipeableStream } from 'react-dom/server';
-import { stringify } from 'zipson';
-import { BufferedStream } from './buffered-stream';
-import { type RootFabric } from '../../render';
+import { RENDER_SERVICE, type SolutionsFactory } from '../../render';
 
 export type RenderParams = {
   key: string;
@@ -29,95 +26,23 @@ export type RenderError = {
   error: Error;
 };
 
-// Таймаут на случай зацикливания (на крайний случай).
-// Должен быть больше чем любые таймауты в приложении, например больше таймаутов на HTTP запросы.
-const TIMEOUT_RENDER = 600000;
-
-export async function render(clientApp: RootFabric, params: RenderParams): Promise<RenderResult> {
+export async function render(clientApp: SolutionsFactory, params: RenderParams): Promise<RenderResult> {
   // Fix for react render;
   React.useLayoutEffect = React.useEffect;
 
   // Получаем React приложение для рендера
-  const renderService = await clientApp({
+  // Параметры запроса передаются как переменные окружения
+  const clientSolutions = await clientApp({
     ...params.env,
-    req: {
+    REQUEST: {
       url: params.url,
       headers: params.headers,
       cookies: params.cookies,
     },
   });
 
-  const appHtml = await new Promise<string>((resolve, reject) => {
-    console.log('- render start', params.url);
+  const renderService = await clientSolutions.get(RENDER_SERVICE);
+  const renderResult = await renderService.ssr(params.template);
 
-    let renderError: Error;
-    const stream = new BufferedStream();
-    const { pipe, abort } = renderToPipeableStream(renderService.getReactElement(), {
-      onAllReady: () => {
-        pipe(stream);
-      },
-      onError: error => {
-        renderError = error as Error;
-      },
-    });
-
-    // Таймаут на случай долгого ожидания рендера
-    const renderTimeout: NodeJS.Timeout = setTimeout(() => {
-      console.log('- render timeout');
-      abort();
-    }, TIMEOUT_RENDER);
-
-    stream.on('finish', () => {
-      if (renderTimeout) clearTimeout(renderTimeout);
-      if (renderError) {
-        console.log('- render errors', renderError);
-        reject(renderError);
-      } else {
-        resolve(stream.buffer);
-      }
-    });
-  });
-
-  const injections = renderService.getServerValues();
-  const dump = renderService.getRenderDump();
-  const dumpStr = JSON.stringify(stringify(dump));
-
-  // Итоговый рендер HTML со всеми инъекциями в шаблон
-  const html = params.template
-    .replace(/<html([^>]*)>/iu, (match, attr) => {
-      const newAttr = injections?.htmlAttributes ? injections.htmlAttributes(attr) : attr;
-      return newAttr ? `<html ${newAttr}>` : `<html>`;
-    })
-    .replace(/<body[^>]*>/iu, (match, attr) => {
-      const newAttr = injections?.bodyAttributes ? injections.bodyAttributes(attr) : attr;
-      return newAttr ? `<body ${newAttr}>` : `<body>`;
-    })
-    .replace(/<title[^>]*>([^<]*)<\/title>/iu, (match, value) => {
-      const newValue = injections?.title ? injections.title(value) : value;
-      if (newValue.startsWith('<title')) {
-        return newValue;
-      } else {
-        return `<title>${newValue}</title>`;
-      }
-    })
-    .replace('</head>', (injections?.head ? injections.head() : '') + '</head>')
-    .replace('</body>', (injections?.body ? injections.body() : '') + '</body>')
-    .replace('<div id="root">', match => {
-      return match + appHtml;
-    })
-    // Состояние сервисов, с которым выполнился рендер
-    .replace('<head>', match => {
-      return match + `<script type="module">window.initialData=${dumpStr}</script>`;
-    });
-
-  const httpStatus = injections?.httpStatus?.() || { status: 200 };
-
-  console.log('- render success', httpStatus);
-
-  return {
-    html,
-    status: httpStatus.status,
-    location: httpStatus.location,
-    params,
-  };
+  return { ...renderResult, params };
 }

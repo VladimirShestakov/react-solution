@@ -24,7 +24,7 @@ declare global {
     // Базовый URL приложения, обычно "/"
     BASE_URL: string;
     // Информация о запросе при SSR (проставит сервер при получении клиентского приложения)
-    req?: {
+    REQUEST?: {
       url: string;
       headers: Record<string, string | undefined | string[]>;
       cookies: Record<string, string>;
