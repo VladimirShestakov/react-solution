@@ -1,17 +1,9 @@
-import { replaceInner } from '../../utils';
-import { MetaDomService } from '../service.ts';
+import { replaceInner } from '../../../utils';
+import { Meta } from '../index';
 
 describe('meta-dom', () => {
   test('parse html', () => {
-    const service = new MetaDomService({
-      env: {
-        SSR: true,
-        DEV: true,
-        PROD: false,
-        MODE: 'development',
-        BASE_URL: '/',
-      },
-    });
+    const service = new Meta();
 
     const template = `
       <!doctype html>
@@ -53,7 +45,11 @@ describe('meta-dom', () => {
     const result = [];
     for (const key of service.getKeys()) {
       const element = service.get(key)!;
-      result.push(element.getStringParts()!.full);
+      if (element.type === 'html' || element.type === 'head' || element.type === 'body') {
+        result.push(element.getStringParts()!.open);
+      } else {
+        result.push(element.getStringParts()!.full);
+      }
     }
 
     expect(result).toEqual([
@@ -75,19 +71,12 @@ describe('meta-dom', () => {
         '            window.$RefreshSig$ = () => (type) => type;\n' +
         '            window.__vite_plugin_react_preamble_installed__ = true;\n' +
         '          </script>',
-      '<script type="module" src="/@vite/client"/>',
-      '<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>',
+      '<script type="module" src="/@vite/client"></script>',
+      '<meta http-equiv="Content-type" content="text/html; charset=utf-8" />',
       '<title>App</title>',
-      '<link rel="icon" type="image/x-icon" href="/images/favicon.ico"/>',
-      '<base href="/"/>',
-      '<script type="module" src="index.tsx"/>',
+      '<link rel="icon" type="image/x-icon" href="/images/favicon.ico" />',
+      '<base href="/" />',
+      '<script type="module" src="index.tsx"></script>',
     ]);
-
-    const headStart = template.indexOf('<head');
-    const headEnd = template.indexOf('</head>');
-
-    const html = replaceInner(template, /<head([^>]*)>/iu, /<\/head>/ui, 'MY\n')
-
-    console.log({headStart, headEnd, html})
   });
 });

@@ -2,7 +2,6 @@ import { dumpService } from './dump';
 import { envClient } from './env';
 import { httpClient } from './http-client';
 import { i18nService } from './i18n';
-import { metaDomService } from './meta-dom';
 import { modalsService } from './modals';
 import { renderService } from './render';
 import { routerService } from './router';
@@ -14,7 +13,6 @@ export const commonSolutions = (envPatch: Patch<Env> = {}) =>[
   routerService,
   dumpService,
   renderService,
-  metaDomService,
   httpClient,
   modalsService,
   i18nService,

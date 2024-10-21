@@ -38,3 +38,7 @@ export const HTML_TAGS_UNIQUE_ATTR: Record<string, string[]> = {
 };
 
 export const ELEMENTS_WITH_TEXT = new Set(['title', 'style', 'script']);
+
+export const ELEMENTS_WITH_TEMPLATE = new Set(['title']);
+
+export const ELEMENTS_WITH_MERGE_ATTR = new Set(['title']);

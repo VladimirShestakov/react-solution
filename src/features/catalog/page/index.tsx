@@ -1,10 +1,8 @@
-import React, { memo, useEffect, useId } from 'react';
+import React, { memo } from 'react';
 import { useParams } from 'react-router-dom';
 import {
-  Head as HeadMeta, HttpLocation,
+  Head as HeadMeta,
   HttpStatus,
-  RENDER_SERVICE,
-  TitleTemplate,
   useSolution,
 } from 'react-solution';
 import { useInit } from 'react-solution';
@@ -57,11 +55,10 @@ function CatalogPage() {
       <HeadMeta>
         <title data-some={'10'}>{`Каталог! -{data-some}-{data-other}-`}</title>
         <link rel="icon" type="image/x-icon" href="/catalog/favicon.ico" />
-        <TitleTemplate some={100}>{`Template {some}`}</TitleTemplate>
         <HttpStatus>200</HttpStatus>
       </HeadMeta>
       <HeadMeta>
-        <title data-other={'5550'}/>
+        <title data-other={'5550'}></title>
       </HeadMeta>
       <Head title="React Solution">
         <LocaleSelect />

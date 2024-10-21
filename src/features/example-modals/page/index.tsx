@@ -1,5 +1,5 @@
-import React, { memo, useCallback, useEffect, useId, useRef, useState } from 'react';
-import { RENDER_SERVICE, useTranslate } from 'react-solution';
+import React, { memo, useCallback } from 'react';
+import { useTranslate } from 'react-solution';
 import { useSolution } from 'react-solution';
 import { MODALS } from 'react-solution';
 import Head from '@src/ui/layout/head';
@@ -63,39 +63,12 @@ function PageAsModal(props: PageAsModalProps) {
     }, [props.close]),
   };
 
-  const render = useSolution(RENDER_SERVICE);
-  const titleKey = useId();
-  const titleKey2 = useId();
-  // useEffect(() => {
-  //   render.setTitle({ _key: titleKey2, template: 'Привет ! {article} {other}', other: 'Не модалки' });
-  //   render.setTitle({ _key: titleKey, template: 'React ! {article}', article: 'Модалки' });
-  //
-  //   return () => {
-  //     render.setTitle({ _key: titleKey });
-  //     render.setTitle({ _key: titleKey2 });
-  //   };
-  // }, []);
-
-  const [value, setValue] = useState(0);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setValue((prevValue) => prevValue + 5);
-    }, 1000)
-  }, [value]);
-
   return (
     <PageLayout>
       <HeadMeta>
         <title>Модалки!</title>
         <base href={'/345345353'} />
         <link rel="icon" type="image/x-icon" href="/test/test/favicon.ico" />
-
-      </HeadMeta>
-      <HeadMeta>
-        <style rel="stylesheet/css">{`
-          body { padding: ${value}px }
-        `}</style>
       </HeadMeta>
 
       <Head title="React Solution">

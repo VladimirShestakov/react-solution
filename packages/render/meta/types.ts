@@ -1,5 +1,3 @@
-export type MetaDomConfig = object;
-
 export type VirtualElementProps = Record<string, string | undefined>;
 
 export type VirtualElementVariant = {

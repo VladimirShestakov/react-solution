@@ -1,8 +1,8 @@
 import { escape } from 'html-escaper';
 import { parse, HTMLElement } from 'node-html-parser';
-import mc from 'merge-change';
-import type { Patch } from '../types';
 import {
+  ELEMENTS_WITH_MERGE_ATTR,
+  ELEMENTS_WITH_TEMPLATE,
   ELEMENTS_WITH_TEXT,
   HTML_PROPS,
   HTML_TAGS,
@@ -10,40 +10,23 @@ import {
   HTML_TAGS_UNIQUE_ATTR,
   type HtmlPropsType,
 } from './constants.ts';
-import { MetaDomConfig, VirtualElementPlain, VirtualElementProps } from './types';
+import { VirtualElementPlain, VirtualElementProps } from './types';
 import { VirtualElement } from './virtual-element.ts';
 
-export class MetaDomService {
-  // Настройки
-  protected config: MetaDomConfig = {};
+export class Meta {
   // Виртуальные элементы со всеми вариантами
   protected elements: Map<string, VirtualElement> = new Map();
   // Ключи изменившихся элементов
   protected changed: Set<string> = new Set();
   // Связка DOM элемента с виртуальным
   protected domMap: Map<string, Element> = new Map();
+  // Режим синхронизации с DOM
+  protected syncWithDom: boolean = false;
 
-  constructor(
-    protected depends: {
-      env: Env;
-      config?: Patch<MetaDomConfig>;
-    },
-  ) {
-    this.config = mc.merge(this.config, depends.config || {});
-    this.initFromDocument();
-  }
-
-  reset(){
+  reset() {
     this.elements = new Map();
     this.changed = new Set();
     this.domMap = new Map();
-  }
-
-  /**
-   * Признак исполнения на сервере
-   */
-  isSSR() {
-    return this.depends.env.SSR;
   }
 
   /**
@@ -75,12 +58,9 @@ export class MetaDomService {
       if (this.elements.has(key)) {
         if (this.elements.get(key)!.setVariant(owner, props, priority)) changed = true;
       } else {
-        const virtual = new VirtualElement(key, type, props, owner, priority);
-        if (virtual && virtual.type === 'title') {
-          virtual.merge = true;
-          virtual.templated = true;
-          virtual.emptyTextIsUndefined = true;
-        }
+        const merge = ELEMENTS_WITH_MERGE_ATTR.has(type);
+        const template = ELEMENTS_WITH_TEMPLATE.has(type);
+        const virtual = new VirtualElement(key, type, props, owner, priority, merge, template);
         this.elements.set(key, virtual);
         changed = true;
       }
@@ -177,20 +157,19 @@ export class MetaDomService {
    * Учитываются только те элементы, которые можно идентифицировать.
    */
   initFromDocument() {
-    if (!this.depends.env.SSR) {
-      // html
-      this.setFromDOMElement(document.documentElement);
-      // head
-      this.setFromDOMElement(document.head);
-      // body
-      this.setFromDOMElement(document.body);
-      // base, title, meta, link, style, script, noscript and all other...
-      const head = document.head;
-      for (let i = 0; i < head.children.length; i++) {
-        const element = head.children.item(i);
-        if (element) {
-          this.setFromDOMElement(element);
-        }
+    this.syncWithDom = true;
+    // html
+    this.setFromDOMElement(document.documentElement);
+    // head
+    this.setFromDOMElement(document.head);
+    // body
+    this.setFromDOMElement(document.body);
+    // base, title, meta, link, style, script, noscript and all other...
+    const head = document.head;
+    for (let i = 0; i < head.children.length; i++) {
+      const element = head.children.item(i);
+      if (element) {
+        this.setFromDOMElement(element);
       }
     }
   }
@@ -239,7 +218,7 @@ export class MetaDomService {
    * Обновление DOM
    */
   patchDOM() {
-    if (!this.isSSR()) {
+    if (this.syncWithDom) {
       for (const key of this.changed) {
         const virtual = this.elements.get(key);
         let real = this.domMap.get(key);
@@ -289,7 +268,7 @@ export class MetaDomService {
       }
       this.changed.clear();
     }
-    console.log(this)
+    console.log(this);
   }
 
   /**
@@ -314,46 +293,4 @@ export class MetaDomService {
 
     return undefined;
   }
-
-  // testForSSR() {
-  //   const result = [];
-  //   for (const element of this.elements) {
-  //     result.push(this.getString(element[0]));
-  //   }
-  //
-  //   return result;
-  // }
-
-  // setTitle(params: TitleParams) {
-  //   if ('_delete' in params) {
-  //     this.title.delete(params._key);
-  //   } else {
-  //     this.title.set(params._key, params);
-  //   }
-  //
-  //   // Формирование итогового заголовка
-  //   const all_params = Array.from(this.title.values()).sort((a , b) => {
-  //     return (a.order || 0) - (b.order || 0);
-  //   })
-  //   const merged_params: Record<string, string> = mc.merge({}, ...all_params)
-  //
-  //   //console.log(merged_params)
-  //
-  //   if (!this.depends.env.SSR) {
-  //
-  //
-  //
-  //     const element = document.createElement('title');
-  //     const t = format(merged_params.template || '', merged_params);
-  //     element.textContent = t;
-  //     //console.log(t)
-  //     const list = document.head.getElementsByTagName('title');
-  //     if (list.length > 0) {
-  //       document.head.replaceChild(element, list.item(0)!);
-  //       for (let i = 1; i < list.length; i++) list.item(i)!.remove();
-  //     } else {
-  //       document.head.prepend(element);
-  //     }
-  //   }
-  // }
 }

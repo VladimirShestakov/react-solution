@@ -1,13 +1,21 @@
 import mc from 'merge-change';
-import { parse } from 'zipson';
 import { type Container } from '../container';
 import { type Token } from '../token';
 import type { Patch } from '../types';
 import type { DumpConfig } from './types';
 
+/**
+ * Сервис для сбора и раздачи дампа (состояния)
+ * Следит за созданием сервисов в контейнере, чтобы сразу передать им имеющеюся дамп по токену сервиса.
+ * DumpService может получить дамп от всех активных сервисов. Ключом для дампа будет токен сервиса.
+ * DumpService может отправить имеющиеся дампы всем активным сервисам.
+ * Сервис должен реализовывать методы setDump и getDump, чтобы его "видел" DumpService.
+ *
+ * Сервис не отвечает за хранение и получение дампа из внешнего хранилище.
+ * Начальный дамп устанавливается, например, сервисом рендера в целях синхронизации состояния после рендера на сервере.
+ */
 export class DumpService {
   protected data: Map<string, any> = new Map();
-  // Настройки
   protected config: DumpConfig = {
     autoSendDump: true,
   };
@@ -23,13 +31,6 @@ export class DumpService {
     if (this.config.autoSendDump) {
       this.depends.container.events.on('onCreate', this.send);
       // @todo Как-то отписываться от события
-    }
-
-    if (!depends.env.SSR && window.initialData) {
-      const w: Window = window;
-      const dump = parse(w.initialData);
-      this.set(dump);
-      console.log(dump)
     }
   }
 
@@ -51,8 +52,13 @@ export class DumpService {
     return JSON.stringify(Object.fromEntries(this.data));
   }
 
+  /**
+   * Передать дамп сервису.
+   * Используется при автоматической передаче дампа.
+   * @param token Токен сервиса
+   * @param value Дамп
+   */
   protected send = <Type extends object>({ token, value }: { token: Token<Type>; value: Type }) => {
-    //console.log('send', token);
     if ((value as any) !== this) {
       if (value && 'setDump' in value && typeof value.setDump === 'function') {
         const dump = this.data.get(token.key);

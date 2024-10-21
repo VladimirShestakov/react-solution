@@ -1,6 +1,5 @@
 import { CONTAINER, injectClass } from '../container';
 import { DUMP_SERVICE } from '../dump';
-import { META_DOM_SERVICE } from '../meta-dom';
 import { optionalToken } from '../token';
 import { ENV } from '../env';
 import { RenderService } from './service';
@@ -13,7 +12,6 @@ export const renderService = injectClass({
     env: ENV,
     container: CONTAINER,
     dump: optionalToken(DUMP_SERVICE),
-    meta: optionalToken(META_DOM_SERVICE),
     config: optionalToken(RENDER_CFG),
     children: optionalToken(RENDER_COMPONENT)
   },

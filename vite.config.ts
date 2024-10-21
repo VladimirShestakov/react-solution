@@ -17,7 +17,7 @@ export default defineConfig(params => {
     },
     ssr: {
       // Названия пакетов, которые нужно добавить в сборку при SSR вместо импорта из node_modules
-      noExternal: ['react-helmet-async'],
+      noExternal: [],
     },
     resolve: {
       alias: {

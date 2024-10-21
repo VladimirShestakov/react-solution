@@ -1,11 +1,9 @@
 import mc from 'merge-change';
 import shallowequal from 'shallowequal';
-import { b } from 'vite/dist/node/types.d-aGj9QkWt';
-import { replaceTemplate } from '../utils';
+import { replaceTemplate } from '../../utils';
 import { HTML_TAGS_SELF_CLOSE } from './constants.ts';
 import { VirtualElementProps, VirtualElementString, VirtualElementVariant } from './types.ts';
 import { escape } from 'html-escaper';
-import format from 'string-template';
 
 export class VirtualElement {
   // Идентификатор элемента
@@ -16,15 +14,10 @@ export class VirtualElement {
   readonly variants: Map<string, VirtualElementVariant> = new Map();
   // Расчётный финальный вариант
   protected finalVariant?: VirtualElementVariant;
-  //
-  // protected options = {
-  //   merge: false,
-  //   templated: false
-  // }
-
-  public merge: boolean = false;
-  public templated: boolean = false;
-  public emptyTextIsUndefined: boolean = false;
+  // Объединять атрибут всех вариантов
+  readonly merge: boolean = false;
+  // textContent использовать как шаблон
+  readonly templated: boolean = false;
 
   constructor(
     key: string,
@@ -32,10 +25,14 @@ export class VirtualElement {
     props: VirtualElementProps,
     owner: string,
     priority: number = 1,
+    merge: boolean = false,
+    templated: boolean = false,
   ) {
     this.key = key;
     this.type = type;
     this.variants.set(owner, { props, priority });
+    this.merge = merge;
+    this.templated = templated;
   }
 
   /**
@@ -46,7 +43,7 @@ export class VirtualElement {
    * @param priority
    */
   setVariant(owner: string, props: VirtualElementProps, priority: number = 1): boolean {
-    if (('textContent' in props) && !props.textContent) {
+    if ('textContent' in props && !props.textContent) {
       delete props.textContent;
     }
     if (this.variants.has(owner)) {
@@ -108,7 +105,6 @@ export class VirtualElement {
 
   /**
    * Возвращает строковое представление элемента и дополнительные сведения о нём
-   * Название, атрибуты и вложенный текст экранируются.
    */
   getStringParts() {
     const variant = this.getVariantFinal();

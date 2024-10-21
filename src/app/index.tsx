@@ -1,6 +1,5 @@
-import React, { lazy, memo, Suspense, useEffect, useId } from 'react';
+import React, { lazy, memo, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
 import { Head, ModalsContainer } from 'react-solution';
 import Loading from '@src/app/loading';
 import Protected from '@src/features/auth/components/protected';
@@ -30,15 +29,6 @@ declare global {
 export const App = memo(() => {
   return (
     <>
-      {/*<Head>*/}
-      {/*  <title data-article={''}>{`React Solution!!! {article} {mykey}`}</title>*/}
-      {/*  <base href={'/11'} />*/}
-      {/*  <style>{`.some {}`}</style>*/}
-      {/*  <script>{`const x = 10;`}</script>*/}
-      {/*  <html lang="en-En" />*/}
-      {/*  /!*<title>React Solution!</title>*!/*/}
-      {/*  /!*<meta name="description" content="React solution" />*!/*/}
-      {/*</Head>*/}
       <Head>
         <html lang="en" />
         <title>React Solution!</title>

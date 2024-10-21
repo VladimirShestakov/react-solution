@@ -5,3 +5,4 @@ export * from './types';
 export * from './types.root';
 export * from './use-init';
 export * from './use-uninit';
+export * from './components';
