@@ -1,5 +1,6 @@
 import { CONTAINER, injectClass } from '../container';
 import { DUMP_SERVICE } from '../dump';
+import { LOG_SERVICE } from '../log';
 import { optionalToken } from '../token';
 import { ENV } from '../env';
 import { RenderService } from './service';
@@ -11,8 +12,9 @@ export const renderService = injectClass({
   depends: {
     env: ENV,
     container: CONTAINER,
+    logger: LOG_SERVICE,
     dump: optionalToken(DUMP_SERVICE),
     config: optionalToken(RENDER_CFG),
-    children: optionalToken(RENDER_COMPONENT)
+    children: optionalToken(RENDER_COMPONENT),
   },
 });

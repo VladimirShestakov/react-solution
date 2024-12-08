@@ -9,7 +9,7 @@ export function HeadItem({
   priority = 1,
 }: {
   children: number | string;
-  type: string
+  type: string;
   priority?: number;
 }) {
   const render = useSolution(RENDER_SERVICE);

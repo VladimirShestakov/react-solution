@@ -1,7 +1,4 @@
-export type CategoriesStoreConfig = {
-  log?: boolean;
-  name?: string;
-};
+export type CategoriesStoreConfig = object;
 
 export interface CategoriesStoreData {
   items: CategoryItem[];

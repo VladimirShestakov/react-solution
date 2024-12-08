@@ -13,6 +13,7 @@ import type { ICacheStore, TCache } from '../cache-store';
 import type { Patch } from '../types';
 import type { ViteDev } from '../vite-dev';
 import type { SsrOptions, TRenderRule, TSSRResponse } from './types';
+import type { LogInterface } from '../log';
 
 export class Ssr {
   protected data: Record<string, any> = {};
@@ -59,13 +60,16 @@ export class Ssr {
       env: Env;
       vite: ViteDev;
       configs?: Patch<SsrOptions>;
+      logger: LogInterface;
     },
   ) {
     this.config = mc.merge(this.config, this.depends.configs);
+    this.depends.logger = this.depends.logger.named('ssr');
     this.renderQueue = this.depends.env.PROD
       ? new RenderQueue(
           this.depends.cacheStore,
           this.relativeFilePath(this.config.clientAppFile.prod),
+          this.depends.logger,
           this.config.workers,
         )
       : undefined;
@@ -141,7 +145,7 @@ export class Ssr {
     }
     // SSR - Требуется ожидание рендера (включен, но кэша ещё нет)
     else if (rule.ssr && rule.ssrWait) {
-      console.log('- waiting render');
+      this.depends.logger.log('- waiting render');
       this.depends.cacheStore.onReady(params.key, async cache => {
         await this.sendCache(req, res, cache, rule, params);
       });
@@ -181,11 +185,11 @@ export class Ssr {
     };
     if (req.headers['if-none-match'] === this.ETagSPA) {
       // 304 SPA (у браузера есть кэша SPA страницы)
-      console.log('- send 304 SPA');
+      this.depends.logger.log('- send 304 SPA');
       response.status = 304;
     } else {
       // 200 SPA (клиент ещё не получал SPA или SPA "новый")
-      console.log(`- send ${rule.spaHttpStatus} SPA`);
+      this.depends.logger.log(`- send ${rule.spaHttpStatus} SPA`);
       response.status = rule.spaHttpStatus;
       response.body = params.template;
     }
@@ -219,11 +223,11 @@ export class Ssr {
       })
     ) {
       // SSR 304 (у браузера есть валидный кэш)
-      console.log('- send 304 SSR Cache');
+      this.depends.logger.log('- send 304 SSR Cache');
       response.status = 304;
     } else {
       // SSR Cache (отдаём рендер из кэша)
-      console.log(`- send ${cache.status} SSR Cache`);
+      this.depends.logger.log(`- send ${cache.status} SSR Cache`);
       response.status = cache.status;
       // Если редирект, то тело не отправляем
       if (cache.location) {
@@ -257,12 +261,12 @@ export class Ssr {
       for (const rule of this.rules) {
         for (const pattern of rule.patterns) {
           if (pattern.test(url, 'http://test')) {
-            console.log('- render rule:', pattern.pathname);
+            this.depends.logger.log('- render rule:', pattern.pathname);
             return { ...rule };
           }
         }
       }
-      console.log('- render rule: default');
+      this.depends.logger.log('- render rule: default');
       return {
         patterns: [new URLPattern('/*', 'http://test')],
         ssr: this.config.enabled,

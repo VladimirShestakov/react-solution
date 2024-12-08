@@ -1,7 +1,5 @@
-import { type HttpClient, ApiError } from 'react-solution';
-import { State } from 'react-solution';
+import { type HttpClient, ApiError, type LogInterface, State, type Patch } from 'react-solution';
 import mc from 'merge-change';
-import type { Patch } from 'react-solution';
 import type { SignInBody } from '../users-api/types.ts';
 import type { UsersApi } from '../users-api';
 import type { SessionStoreConfig, SessionStoreData } from './types.ts';
@@ -12,8 +10,6 @@ import type { SessionStoreConfig, SessionStoreData } from './types.ts';
 export class SessionStore {
   readonly state;
   protected config: SessionStoreConfig = {
-    log: true,
-    name: 'Sessions state',
     tokenHeader: 'X-Token',
     saveToLocalStorage: !this.depends.env.SSR,
   };
@@ -24,13 +20,12 @@ export class SessionStore {
       httpClient: HttpClient;
       usersApi: UsersApi;
       config?: Patch<SessionStoreConfig>;
+      logger: LogInterface;
     },
   ) {
     this.config = mc.merge(this.config, depends.config);
-    this.state = new State<SessionStoreData>(this.defaultState(), {
-      log: this.config.log,
-      name: this.config.name,
-    });
+    this.depends.logger = this.depends.logger.named(this.constructor.name);
+    this.state = new State<SessionStoreData>(this.defaultState(), this.depends.logger);
   }
 
   defaultState(): SessionStoreData {

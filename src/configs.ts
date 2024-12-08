@@ -1,4 +1,4 @@
-import { I18N_CFG } from 'react-solution';
+import { I18N_CFG, LOG_CFG } from 'react-solution';
 import { config } from 'react-solution';
 import { HTTP_CLIENT_CFG } from 'react-solution';
 import { SESSION_STORE_CFG } from '@src/features/auth/session-store/token.ts';
@@ -13,14 +13,22 @@ export const configs = [
   })),
 
   config(I18N_CFG, {
-    log: false,
     locale: 'ru-RU', // локаль по умолчанию если не будет определена автоматически
     auto: true,
     remember: true,
   }),
 
   config(SESSION_STORE_CFG, {
-    log: false,
     tokenHeader: 'X-Token',
+  }),
+
+  config(LOG_CFG, {
+    // По умолчанию для всех
+    enabled: true,
+    // Включение именованных логгеров
+    'articles-state': true,
+    'categories-state': true,
+    // Принудительное отключение для всех (так как в именованных disable не переопределен)
+    disable: false,
   }),
 ];

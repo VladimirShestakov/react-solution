@@ -1,13 +1,8 @@
 /**
  * HTTP server for render
  */
-import { Container } from 'react-solution';
-import { envServer } from 'react-solution/server';
-import { cacheStore } from 'react-solution/server';
-import { ssr } from 'react-solution/server';
-import { proxy } from 'react-solution/server';
-import { viteDev } from 'react-solution/server';
-
+import { Container, logService } from 'react-solution';
+import { envServer, cacheStore, ssr, proxy, viteDev } from 'react-solution/server';
 import { app } from './app/inject.ts';
 import { APP } from './app/token.ts';
 import configs from './config.ts';
@@ -19,6 +14,8 @@ try {
     .set(envServer())
     // Настройки для всех сервисов
     .set(configs)
+    // Сервис логирования
+    .set(logService)
     // Сервис проксирования к АПИ (для локальной отладки prod сборки)
     .set(proxy)
     // Сервис кэширования SSR

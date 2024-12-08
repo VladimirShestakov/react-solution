@@ -1,6 +1,6 @@
 import mc from 'merge-change';
+import { css, type LogInterface } from '../log';
 import type { Patch } from '../types';
-import { StateConfig } from './types';
 
 /**
  * Состояние по паттерну наблюдателя (Observable)
@@ -11,7 +11,7 @@ export class State<StateType> {
 
   constructor(
     protected initState: StateType,
-    protected config: StateConfig,
+    protected logger?: LogInterface,
   ) {
     this.data = initState;
   }
@@ -27,15 +27,15 @@ export class State<StateType> {
    * @param [description] Описание действия для логирования
    */
   set = (newState: StateType, description = 'Установка') => {
-    if (this.config.log) {
-      console.group(
-        `%c${this.config.name || 'Unknown state'} %c${description}`,
-        `color: ${'#777'}; font-weight: normal`,
-        `color: ${'#333'}; font-weight: bold`,
+    if (this.logger) {
+      this.logger.group(
+        `%c${this.logger.getName() || this.constructor.name} %c${description}`,
+        css({ color: '#777', 'font-weight': 'normal' }),
+        css({ color: '#333', 'font-weight': 'bold' }),
       );
-      console.log(`%c${'prev:'}`, `color: ${'#d77332'}`, this.data);
-      console.log(`%c${'next:'}`, `color: ${'#2fa827'}`, newState);
-      console.groupEnd();
+      this.logger.log(`%c${'prev:'}`, css({ color: '#d77332' }), this.data);
+      this.logger.log(`%c${'next:'}`, css({ color: '#2fa827' }), newState);
+      this.logger.groupEnd();
     }
     this.data = newState;
     this.notify();

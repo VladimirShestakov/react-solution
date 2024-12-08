@@ -1,6 +1,7 @@
 import acceptLang from 'accept-language-parser';
 import mc from 'merge-change';
 import cookie from 'js-cookie';
+import type { LogInterface } from '../log';
 import { State } from '../state';
 import { WaitingStore } from '../waiting-store';
 import type { Patch } from '../types';
@@ -27,7 +28,6 @@ export class I18n {
   protected waiting: WaitingStore = new WaitingStore();
   // Настройки
   protected config: I18nConfig = {
-    log: true,
     locale: 'ru-RU', // локаль по умолчанию если не будет определена автоматически
     auto: true,
     remember: true,
@@ -39,9 +39,11 @@ export class I18n {
       config?: Patch<I18nConfig>;
       dictionary: I18nDictionary;
       initState?: I18nState;
+      logger?: LogInterface;
     },
   ) {
     this.config = mc.merge(this.config, depends.config || {});
+    this.depends.logger = this.depends.logger?.named(this.constructor.name);
     this.state = new State(
       depends.initState ?? {
         // Доступные локали определяются по переданному словарю.
@@ -51,10 +53,7 @@ export class I18n {
         // Словари по умолчанию не загружены
         dictionary: {} as I18nDictionaryInner,
       },
-      {
-        log: this.config.log,
-        name: 'I18nService',
-      },
+      this.depends.logger,
     );
   }
 
@@ -252,7 +251,9 @@ export class I18n {
    */
   restoreLocale() {
     if (this.depends.env.SSR) {
-      return this.depends.env.REQUEST ? (this.depends.env.REQUEST.cookies['locale'] as string) : undefined;
+      return this.depends.env.REQUEST
+        ? (this.depends.env.REQUEST.cookies['locale'] as string)
+        : undefined;
     } else {
       return cookie.get('locale') as string;
     }

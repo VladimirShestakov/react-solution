@@ -1,9 +1,14 @@
 import type { ReactNode } from 'react';
 import { renderToPipeableStream } from 'react-dom/server';
+import { LogInterface } from '../../log';
 
-export async function asyncRender(reactNode: ReactNode, timeout: number = 6000) {
+export async function asyncRender(
+  reactNode: ReactNode,
+  logger: LogInterface,
+  timeout: number = 6000,
+) {
   if (import.meta.env.SSR) {
-    const { BufferedStream } = await import('./buffered-stream.ts')
+    const { BufferedStream } = await import('./buffered-stream.ts');
 
     return new Promise<string>((resolve, reject) => {
       let renderError: Error;
@@ -21,14 +26,14 @@ export async function asyncRender(reactNode: ReactNode, timeout: number = 6000) 
 
       // Таймаут на случай долгого ожидания рендера
       const renderTimeout: NodeJS.Timeout = setTimeout(() => {
-        console.log('- render timeout');
+        logger.log('- render timeout');
         abort();
       }, timeout);
 
       stream.on('finish', () => {
         if (renderTimeout) clearTimeout(renderTimeout);
         if (renderError) {
-          console.log('- render errors', renderError);
+          logger.log('- render errors', renderError);
           reject(renderError);
         } else {
           resolve(stream.buffer);

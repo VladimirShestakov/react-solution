@@ -268,7 +268,6 @@ export class Meta {
       }
       this.changed.clear();
     }
-    console.log(this);
   }
 
   /**

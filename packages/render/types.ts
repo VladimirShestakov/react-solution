@@ -16,6 +16,6 @@ export type SsrResult = {
   html: string;
   status: number;
   location?: string;
-}
+};
 
-export * from './meta/types'
+export * from './meta/types';

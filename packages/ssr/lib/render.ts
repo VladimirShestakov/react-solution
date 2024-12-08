@@ -26,7 +26,10 @@ export type RenderError = {
   error: Error;
 };
 
-export async function render(clientApp: SolutionsFactory, params: RenderParams): Promise<RenderResult> {
+export async function render(
+  clientApp: SolutionsFactory,
+  params: RenderParams,
+): Promise<RenderResult> {
   // Fix for react render;
   React.useLayoutEffect = React.useEffect;
 

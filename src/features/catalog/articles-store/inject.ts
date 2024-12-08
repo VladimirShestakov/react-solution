@@ -1,4 +1,4 @@
-import { injectClass } from 'react-solution';
+import { injectClass, LOG_SERVICE } from 'react-solution';
 import { optionalToken } from 'react-solution';
 import { ENV } from 'react-solution';
 import { ROUTER_SERVICE } from 'react-solution';
@@ -14,5 +14,6 @@ export const articlesStore = injectClass({
     articlesApi: ARTICLES_API,
     router: ROUTER_SERVICE,
     config: optionalToken(ARTICLES_STORE_CFG),
+    logger: LOG_SERVICE,
   },
 });

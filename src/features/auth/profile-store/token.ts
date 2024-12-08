@@ -1,5 +1,5 @@
 import { newToken } from 'react-solution';
-import type { Patch } from 'react-solution'
+import type { Patch } from 'react-solution';
 import type { ProfileStore } from './index.ts';
 import type { ProfileStoreConfig } from './types.ts';
 

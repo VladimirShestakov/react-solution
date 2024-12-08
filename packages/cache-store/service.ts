@@ -215,7 +215,7 @@ export class CacheStore implements ICacheStore {
       });
       await writeFile(dataPath, cache.html, { flag: 'w' });
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   }
 

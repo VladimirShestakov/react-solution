@@ -8,5 +8,5 @@ export * from './is-function';
 export * from './list-to-tree';
 export * from './random-item';
 export * from './round-range';
-export * from './replace-inner.ts'
-export * from './replace-template.ts'
+export * from './replace-inner.ts';
+export * from './replace-template.ts';

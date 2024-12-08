@@ -2,6 +2,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { Worker } from 'worker_threads';
 import type { ICacheStore } from '../../cache-store';
+import type { LogInterface } from '../../log';
 import type { RenderError, RenderParams, RenderResult } from './render';
 
 export type WorkerInfo = {
@@ -16,20 +17,25 @@ export class RenderQueue {
   private readonly workerFile: string;
   private clientAppFile: string;
   private workersCount: number;
+  private logger: LogInterface;
 
   /**
    * @param cacheStore Хранилище для результата рендера
    * @param clientAppFile
    * @param workersCount Количество воркеров для распараллеливания рендера
+   * @param logger
    */
-  constructor(cacheStore: ICacheStore, clientAppFile: string, workersCount: number = 4) {
+  constructor(
+    cacheStore: ICacheStore,
+    clientAppFile: string,
+    logger: LogInterface,
+    workersCount: number = 4,
+  ) {
     this.cacheStore = cacheStore;
     this.clientAppFile = clientAppFile;
+    this.logger = logger;
     this.workersCount = workersCount;
-    this.workerFile = path.resolve(
-      path.dirname(fileURLToPath(import.meta.url)),
-      './queue-worker',
-    );
+    this.workerFile = path.resolve(path.dirname(fileURLToPath(import.meta.url)), './queue-worker');
     const cnt = Math.max(1, this.workersCount);
     for (let i = 0; i < cnt; i++) {
       this.makeWorker();
@@ -76,10 +82,10 @@ export class RenderQueue {
       }
     });
     w.worker.on('error', error => {
-      console.log('- worker error', error);
+      this.logger.log('- worker error', error);
     });
     w.worker.on('exit', code => {
-      console.log('- worker exit', code);
+      this.logger.log('- worker exit', code);
     });
     this.workers.push(w);
   }

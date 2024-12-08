@@ -10,7 +10,4 @@ export interface ProfileStoreData {
   waiting: boolean;
 }
 
-export interface ProfileStoreConfig {
-  log?: boolean;
-  name?: string;
-}
+export type ProfileStoreConfig = object;

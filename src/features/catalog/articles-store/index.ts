@@ -1,23 +1,30 @@
 import { z } from 'zod';
 import mc from 'merge-change';
-import { FindQuery } from 'react-solution';
+import type { FindQuery, LogInterface, Patch } from 'react-solution';
 import { exclude } from 'react-solution';
 import { DataParamsState, type DefaultConfig } from 'react-solution';
-import type { Patch } from 'react-solution';
 import type { RouterService } from 'react-solution';
 import type { ArticlesApi } from '@src/features/catalog/articles-api';
-import type { TArticleData, TArticleParams } from './types.ts';
+import { TArticleData, TArticleParams } from './types.ts';
 
 /**
  * Детальная информация о пользователе
  */
 export class ArticlesStore extends DataParamsState<TArticleData, TArticleParams> {
+  override defaultConfig() {
+    return {
+      ...super.defaultConfig(),
+      queryParamsGroup: 'articles',
+    };
+  }
+
   constructor(
     protected override depends: {
       env: Env;
       config?: Patch<DefaultConfig>;
       router: RouterService;
       articlesApi: ArticlesApi;
+      logger: LogInterface;
     },
   ) {
     super(depends);

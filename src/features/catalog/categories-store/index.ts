@@ -1,5 +1,5 @@
 import mc from 'merge-change';
-import { State } from 'react-solution';
+import { type LogInterface, State } from 'react-solution';
 import { listToTree } from 'react-solution';
 import type { Patch } from 'react-solution';
 import type { CategoriesApi } from '../categories-api';
@@ -10,22 +10,18 @@ import type { CategoriesStoreConfig, CategoriesStoreData } from './types.ts';
  */
 export class CategoriesStore {
   readonly state: State<CategoriesStoreData>;
-  protected config: CategoriesStoreConfig = {
-    log: true,
-    name: 'Categories state',
-  };
+  protected config: CategoriesStoreConfig;
 
   constructor(
     protected depends: {
       categoriesApi: CategoriesApi;
       config?: Patch<CategoriesStoreConfig>;
+      logger: LogInterface;
     },
   ) {
-    this.config = mc.merge(this.config, depends.config );
-    this.state = new State<CategoriesStoreData>(this.defaultState(), {
-      log: this.config.log,
-      name: this.config.name,
-    });
+    this.config = mc.merge(this.config, depends.config);
+    this.depends.logger = this.depends.logger.named(this.constructor.name);
+    this.state = new State<CategoriesStoreData>(this.defaultState(), this.depends.logger);
   }
 
   defaultState(): CategoriesStoreData {

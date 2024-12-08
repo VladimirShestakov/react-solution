@@ -26,10 +26,10 @@ export class Container {
     this.set({ token: CONTAINER, value: this });
   }
 
-  set<Type, ExtType extends Type, Deps>(inject: InjectFactory<Type, ExtType, Deps>): this
-  set<Type, ExtType extends Type, Deps>(inject: InjectClass<Type, ExtType, Deps>): this
-  set<Type, ExtType extends Type>(inject: InjectValue<Type, ExtType>): this
-  set(inject: InjectArray): this
+  set<Type, ExtType extends Type, Deps>(inject: InjectFactory<Type, ExtType, Deps>): this;
+  set<Type, ExtType extends Type, Deps>(inject: InjectClass<Type, ExtType, Deps>): this;
+  set<Type, ExtType extends Type>(inject: InjectValue<Type, ExtType>): this;
+  set(inject: InjectArray): this;
 
   /**
    * Инъекция сервиса
@@ -55,15 +55,15 @@ export class Container {
   }
 
   setValue<Type, ExtType extends Type>(inject: InjectValue<Type, ExtType>): this {
-    return this.set(inject)
+    return this.set(inject);
   }
 
   setFactory<Type, ExtType extends Type, Deps>(inject: InjectFactory<Type, ExtType, Deps>): this {
-    return this.set(inject)
+    return this.set(inject);
   }
 
   setClass<Type, ExtType extends Type, Deps>(inject: InjectClass<Type, ExtType, Deps>): this {
-    return this.set(inject)
+    return this.set(inject);
   }
 
   /**

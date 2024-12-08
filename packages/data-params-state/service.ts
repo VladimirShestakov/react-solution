@@ -1,3 +1,4 @@
+import { type LogInterface } from '../log';
 import type { RouterService } from '../router';
 import { z } from 'zod';
 import mc from 'merge-change';
@@ -19,13 +20,15 @@ export abstract class DataParamsState<
       env: Env;
       config?: Patch<Config>;
       router: RouterService;
+      logger: LogInterface;
     },
   ) {
     this.config = mc.merge(this.defaultConfig(), depends.config ?? {});
-    this.state = new State<TDataParamsState<Data, Params>>(this.defaultState(), {
-      log: this.config.log,
-      name: this.config.name,
-    });
+    this.depends.logger = depends.logger.named(this.constructor.name);
+    this.state = new State<TDataParamsState<Data, Params>>(
+      this.defaultState(),
+      this.depends.logger,
+    );
   }
 
   defaultState(): TDataParamsState<Data, Params> {
@@ -46,8 +49,7 @@ export abstract class DataParamsState<
    */
   defaultConfig(): Config {
     return {
-      log: true,
-      name: 'dataParamsState',
+      queryParamsGroup: '',
       rememberParams: true,
     } as Config;
   }
@@ -166,7 +168,9 @@ export abstract class DataParamsState<
     // Исключение параметров, у которых значение по умолчанию
     const searchParams = exclude(params, this.defaultState().params) as PartialDeep<Params>;
     // Параметры группируются под именем модуля
-    return { [this.config.name]: searchParams };
+    return this.config.queryParamsGroup
+      ? { [this.config.queryParamsGroup]: searchParams }
+      : searchParams;
   }
 
   /**
@@ -183,7 +187,9 @@ export abstract class DataParamsState<
    */
   protected restoreParams(): PartialDeep<Params> {
     // Распарсенные параметры берутся по названию модуля состояния, так группировались по его имени
-    const searchParams = this.depends.router.getSearchParams()[this.config.name];
+    const searchParams = this.config.queryParamsGroup
+      ? this.depends.router.getSearchParams()[this.config.queryParamsGroup]
+      : this.depends.router.getSearchParams();
     // После успешной валидации в searchParams останутся только допустимые параметры
     const validateParams = this.paramsSchema().safeParse(searchParams);
     if (!validateParams.success) {

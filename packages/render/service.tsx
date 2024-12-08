@@ -4,6 +4,7 @@ import { type ReactNode } from 'react';
 import { stringify, parse } from 'zipson';
 import { type Container, SolutionsProvider } from '../container';
 import { type DumpService } from '../dump';
+import type { LogInterface } from '../log';
 import type { Patch } from '../types';
 import { replaceInner } from '../utils';
 import { WaitingStore } from '../waiting-store';
@@ -32,16 +33,17 @@ export class RenderService {
       dump?: DumpService;
       config?: Patch<RenderConfig>;
       children?: ReactNode;
+      logger: LogInterface;
     },
   ) {
     this.config = mc.merge(this.config, depends.config || {});
-
+    this.depends.logger = this.depends.logger.named('render-service');
     if (!this.isSSR() && depends.dump && window.initialData) {
       this.hydrate = true;
       const w: Window = window;
       const dump = parse(w.initialData);
       depends.dump.set(dump);
-      console.log('initialData', dump)
+      this.depends.logger.log('initialData', dump);
     }
 
     this.children = (
@@ -86,7 +88,11 @@ export class RenderService {
     this.meta.initFromHtml(template);
 
     // Рендер (асинхронный с поддержкой suspense)
-    const appHtml = await asyncRender(this.children, this.config.renderTimeout);
+    const appHtml = await asyncRender(
+      this.children,
+      this.depends.logger,
+      this.config.renderTimeout,
+    );
 
     // Дамп состояния, с которым выпален рендер
     const dump = this.depends.dump ? Object.fromEntries(this.depends.dump.collect()) : {};
@@ -131,7 +137,7 @@ export class RenderService {
       return match + appHtml;
     });
 
-    console.log('- render success', result.status);
+    this.depends.logger.log('- render success', result.status);
 
     return result;
   }
@@ -156,7 +162,7 @@ export class RenderService {
   /**
    * Выполняется рендер на сервере
    */
-  isSSR(){
+  isSSR() {
     return this.depends.env.SSR;
   }
 

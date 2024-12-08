@@ -1,4 +1,4 @@
-import { injectClass } from 'react-solution';
+import { injectClass, LOG_SERVICE } from 'react-solution';
 import { optionalToken } from 'react-solution';
 import { ProfileStore } from './index.ts';
 import { USERS_API } from '../users-api/token.ts';
@@ -10,5 +10,6 @@ export const profileStore = injectClass({
   depends: {
     usersApi: USERS_API,
     config: optionalToken(PROFILE_STORE_CFG),
+    logger: LOG_SERVICE,
   },
 });

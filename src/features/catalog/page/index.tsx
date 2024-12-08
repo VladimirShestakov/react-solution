@@ -1,10 +1,6 @@
 import React, { memo } from 'react';
 import { useParams } from 'react-router-dom';
-import {
-  Head as HeadMeta,
-  HttpStatus,
-  useSolution,
-} from 'react-solution';
+import { Head as HeadMeta, HttpStatus, useSolution } from 'react-solution';
 import { useInit } from 'react-solution';
 import { useRefreshKey } from 'react-solution';
 import { useI18n } from 'react-solution';

@@ -1,6 +1,6 @@
 export interface DefaultConfig {
-  name: string;
-  log: boolean;
+  // Ключ для группировки query-параметров в url адресе
+  queryParamsGroup: string;
   // Запоминать параметры
   rememberParams: boolean;
 }

@@ -13,8 +13,6 @@ export interface SessionStoreData {
 }
 
 export interface SessionStoreConfig {
-  log?: boolean;
-  name?: string;
   tokenHeader: string;
   saveToLocalStorage: boolean;
 }

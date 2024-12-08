@@ -1,5 +1,5 @@
 import mc from 'merge-change';
-import { State } from 'react-solution';
+import { type LogInterface, State } from 'react-solution';
 import type { Patch } from 'react-solution';
 import type { UsersApi } from '../users-api';
 import type { ProfileStoreConfig, ProfileStoreData } from './types.ts';
@@ -9,22 +9,18 @@ import type { ProfileStoreConfig, ProfileStoreData } from './types.ts';
  */
 export class ProfileStore {
   readonly state;
-  protected config: ProfileStoreConfig = {
-    log: true,
-    name: 'Profile state',
-  };
+  protected config: ProfileStoreConfig = {};
 
   constructor(
     protected depends: {
       usersApi: UsersApi;
       config?: Patch<ProfileStoreConfig>;
+      logger: LogInterface;
     },
   ) {
     this.config = mc.merge(this.config, depends.config);
-    this.state = new State<ProfileStoreData>(this.defaultState(), {
-      log: this.config.log,
-      name: this.config.name,
-    });
+    this.depends.logger = this.depends.logger.named(this.constructor.name);
+    this.state = new State<ProfileStoreData>(this.defaultState(), this.depends.logger);
   }
 
   defaultState(): ProfileStoreData {
