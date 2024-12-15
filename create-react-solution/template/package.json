@@ -1,14 +1,8 @@
 {
-  "workspaces": [
-    "./create-react-solution",
-    "./react-solution",
-    "./server",
-    "./src"
-  ],
+  "name": "template-project",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
-  "author": "Vladimir Shestakov boolive@yandex.ru",
-  "license": "ISC",
   "scripts": {
     "start": "vite",
     "build": "vite build",
@@ -22,10 +16,16 @@
     "check:lint:fix": "eslint --fix",
     "check:types": "tsc --noEmit",
     "check:prettier": "prettier . --check",
-    "check:prettier:fix": "prettier . --write",
-    "build:react-solution": "cross-env VITE_CJS_TRACE=true vite build -c vite.react-solution.config.ts",
-    "publish:react-solution": "cd ./dist/react-solution && npm publish",
-    "publish:create-react-solution": "cd ./create-react-solution && npm publish"
+    "check:prettier:fix": "prettier . --write"
+  },
+  "workspaces": [
+    "./packages",
+    "./server",
+    "./src"
+  ],
+  "dependencies": {
+    "react-solution": "4.2.0",
+    "merge-change": "^1.8.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.11.0",

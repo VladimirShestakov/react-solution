@@ -9,12 +9,12 @@ export default defineConfig(params => {
   return {
     plugins: [
       noBundlePlugin({
-        root: 'packages',
+        root: 'react-solution',
       }),
       viteStaticCopy({
         targets: [
-          //{ src: 'packages/types/', dest: '' },
-          { src: 'packages/package.json', dest: '' },
+          //{ src: 'react-solution/types/', dest: '' },
+          { src: 'react-solution/package.json', dest: '' },
           { src: 'README.md', dest: '' },
           { src: 'LICENSE', dest: '' },
         ],
@@ -24,13 +24,13 @@ export default defineConfig(params => {
       manifest: false,
       minify: false,
       ssr: true,
-      outDir: 'dist/packages',
+      outDir: 'dist/react-solution',
       emptyOutDir: true,
 
       lib: {
         entry: {
-          index: path.resolve(__dirname, 'packages/index.ts'),
-          server: path.resolve(__dirname, 'packages/server.ts'),
+          index: path.resolve(__dirname, 'react-solution/index.ts'),
+          server: path.resolve(__dirname, 'react-solution/server.ts'),
         },
         formats: ['es', 'cjs'],
       },
@@ -46,8 +46,8 @@ export default defineConfig(params => {
           typescript({
             sourceMap: false,
             declaration: true,
-            outDir: 'dist/packages',
-            rootDir: './packages',
+            outDir: 'dist/react-solution',
+            rootDir: './react-solution',
           }),
         ],
       },

@@ -29,7 +29,7 @@ function Input(props: Props) {
   };
 
   // Обновление стейта, если передан новый value
-  if (!import.meta.env.SSR) {
+  if (!process.env.SSR) {
     useLayoutEffect(() => setValue(props.value), [props.value]);
   }
 

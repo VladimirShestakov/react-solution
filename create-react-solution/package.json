@@ -1,0 +1,26 @@
+{
+  "name": "create-react-solution",
+  "version": "1.1.1",
+  "description": "Create new project with React-Solution framework",
+  "bin": {
+    "create-react-solution": "./index.js"
+  },
+  "files": [
+    "index.js",
+    "template"
+  ],
+  "scripts": {
+    "start": "cross-env NODE_OPTIONS=\"--import=./register.js\" node ./index.ts"
+  },
+  "type": "module",
+  "author": "Vladimir Shestakov boolive@yandex.ru",
+  "license": "ISC",
+  "dependencies": {
+    "picocolors": "^1.1.1",
+    "prompts": "^2.4.2",
+    "merge-change": "^1.8.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.5"
+  }
+}

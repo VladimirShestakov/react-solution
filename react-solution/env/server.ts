@@ -14,8 +14,8 @@ export const envServer = (envPatch: Patch<Env> = {}) =>
         MODE: process.env.NODE_ENV || 'development',
         PROD: !process.env.NODE_ENV || process.env.NODE_ENV === 'production',
         DEV: Boolean(process.env.NODE_ENV && process.env.NODE_ENV !== 'production'),
-        ...typedVariables(loadEnvVite(process.env.NODE_ENV || 'production', process.cwd(), '')),
       } as Env,
+      typedVariables(loadEnvVite(process.env.NODE_ENV || 'production', process.cwd(), '')),
       envPatch,
     ),
   });

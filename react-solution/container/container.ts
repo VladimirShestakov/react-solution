@@ -168,7 +168,7 @@ export class Container {
    */
   getWithSuspense<Type>(token: TokenInterface<Type>): Type {
     if (!this.waiting.has(token.key)) {
-      // Запоминаем promise создания экземпляра
+      // Если экземпляра ещё нет, то запоминаем promise создания/выборки экземпляра
       this.waiting.add(token.key, this.createValue(token));
     }
     // Кидаем promise, если ещё в ожидании

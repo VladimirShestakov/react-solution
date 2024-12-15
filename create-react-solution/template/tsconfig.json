@@ -1,11 +1,9 @@
 {
   "include": [
     "typings/**/*",
-    "react-solution/**/*",
     "src/**/*",
     "server/**/*",
     "vite.config.ts",
-    "vite.react-solution.config.ts",
     "server.config.ts"
   ],
   "exclude": ["node_modules"],

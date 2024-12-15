@@ -14,10 +14,6 @@ export default defineConfig(params => {
       outDir: params.isSsrBuild ? '../dist/server' : '../dist/client',
       emptyOutDir: true,
       cssCodeSplit: false,
-      minify: false,
-    },
-    esbuild: {
-      keepNames: true,
     },
     ssr: {
       // Названия пакетов, которые нужно добавить в сборку при SSR вместо импорта из node_modules

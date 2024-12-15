@@ -5,7 +5,7 @@ import './style.css';
 function Draw() {
   const dom = useRef<HTMLDivElement>(null);
   const core = useMemo(() => {
-    if (!import.meta.env.SSR) return new Core();
+    if (!process.env.SSR) return new Core();
   }, []);
 
   useEffect(() => {

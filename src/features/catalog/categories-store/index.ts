@@ -10,7 +10,7 @@ import type { CategoriesStoreConfig, CategoriesStoreData } from './types.ts';
  */
 export class CategoriesStore {
   readonly state: State<CategoriesStoreData>;
-  protected config: CategoriesStoreConfig;
+  protected config: CategoriesStoreConfig = {};
 
   constructor(
     protected depends: {

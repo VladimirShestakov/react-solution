@@ -7,7 +7,7 @@ export async function asyncRender(
   logger: LogInterface,
   timeout: number = 6000,
 ) {
-  if (import.meta.env.SSR) {
+  if (process.env.SSR) {
     const { BufferedStream } = await import('./buffered-stream.ts');
 
     return new Promise<string>((resolve, reject) => {
