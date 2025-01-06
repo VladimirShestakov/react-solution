@@ -32,7 +32,7 @@ export default defineConfig(params => {
           index: path.resolve(__dirname, 'react-solution/index.ts'),
           server: path.resolve(__dirname, 'react-solution/server.ts'),
         },
-        formats: ['es', 'cjs'],
+        formats: ['es'],
       },
       rollupOptions: {
         treeshake: 'smallest',

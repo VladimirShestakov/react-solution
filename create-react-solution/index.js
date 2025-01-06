@@ -87,11 +87,11 @@ try {
         }
       },
     },
-    {
-      message: 'Do you need Server-side rendering (SSR)?',
-      name: 'addSSR',
-      type: 'confirm',
-    },
+    // {
+    //   message: 'Do you need Server-side rendering (SSR)?',
+    //   name: 'addSSR',
+    //   type: 'confirm',
+    // },
   ], {
     onCancel: () => {
       throw new Error(colors.red('✖') + ' Operation cancelled');

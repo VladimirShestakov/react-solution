@@ -21,8 +21,7 @@ export const configs = [
     // По умолчанию для всех
     enabled: true,
     // Включение именованных логгеров
-    'articles-state': true,
-    'categories-state': true,
+    'example-name': true,
     // Принудительное отключение для всех (так как в именованных disable не переопределен)
     disable: false,
   }),

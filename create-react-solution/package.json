@@ -1,6 +1,6 @@
 {
   "name": "create-react-solution",
-  "version": "1.1.1",
+  "version": "4.2.3",
   "description": "Create new project with React-Solution framework",
   "bin": {
     "create-react-solution": "./index.js"

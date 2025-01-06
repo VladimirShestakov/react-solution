@@ -1,20 +1,21 @@
 import React from 'react';
-import { Patch } from 'react-solution';
 import {
   Container,
-  commonSolutions,
   RouterProvider,
+  envClient,
   RENDER_COMPONENT,
   RENDER_SERVICE,
   ROUTER_SERVICE,
+  dumpService,
+  httpClient,
+  i18nService,
+  logService,
+  modalsService,
+  renderService,
+  routerService,
+  type Patch,
 } from 'react-solution';
 
-import { authFeature } from '@src/features/auth/injections.ts';
-import { catalogFeature } from '@src/features/catalog/injections.ts';
-import { exampleI18nFeature } from '@src/features/example-i18n/injections.ts';
-import { exampleModalsFeature } from '@src/features/example-modals/injections.ts';
-import { mainFeature } from '@src/features/main/injections.ts';
-import { navigationFeature } from '@src/features/navigation/injections.ts';
 import { configs } from './configs.ts';
 import { App } from '@src/app';
 
@@ -25,18 +26,16 @@ import { App } from '@src/app';
 async function getSolutions(envPatch: Patch<Env> = {}): Promise<Container> {
   return (
     new Container()
-      // Настройки для всех сервисов
+      .set(envClient(envPatch))
       .set(configs)
-      // Общие сервисы
-      .set(commonSolutions(envPatch))
-      // Фичи проекта
-      .set(authFeature)
-      .set(exampleI18nFeature)
-      .set(exampleModalsFeature)
-      .set(catalogFeature)
-      .set(mainFeature)
-      .set(navigationFeature)
-      // React компонент для рендера
+      .set(renderService)
+      .set(routerService)
+      .set(modalsService)
+      .set(httpClient)
+      .set(i18nService)
+      .set(logService)
+      .set(dumpService)
+      // Инъекция React компонента для сервиса рендера
       .set({
         token: RENDER_COMPONENT,
         depends: { router: ROUTER_SERVICE },
@@ -52,13 +51,14 @@ async function getSolutions(envPatch: Patch<Env> = {}): Promise<Container> {
 /**
  * Запуск рендера в браузере.
  */
-if (!process.env.SSR) {
+if (!import.meta.env.SSR) {
   (async () => {
     const solutions = await getSolutions();
     const render = await solutions.get(RENDER_SERVICE);
     render.start();
   })();
 }
+
 /**
  * Экспорт функции для SSR.
  */

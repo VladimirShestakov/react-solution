@@ -5,6 +5,9 @@ import type { ICacheStore } from '../../cache-store';
 import type { LogInterface } from '../../log';
 import type { RenderError, RenderParams, RenderResult } from './render';
 
+// Импорт для включения файла в сборку
+import('./queue-worker');
+
 export type WorkerInfo = {
   worker: Worker;
   busy: boolean;

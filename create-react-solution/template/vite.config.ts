@@ -24,9 +24,6 @@ export default defineConfig(params => {
         '@src': path.resolve(__dirname, './src'),
       },
     },
-    define: {
-      'process.env.SSR': JSON.stringify(params.isSsrBuild),
-    },
     plugins: [
       reactPlugin({
         include: '**/*.{jsx,tsx}',

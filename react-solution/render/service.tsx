@@ -8,7 +8,6 @@ import type { LogInterface } from '../log';
 import type { Patch } from '../types';
 import { replaceInner } from '../utils';
 import { WaitingStore } from '../waiting-store';
-import { asyncRender } from './lib/async-render.ts';
 import { Meta } from './meta';
 import { type RenderConfig, RenderDump, SsrResult } from './types';
 import { HTML_TAGS } from './meta/constants.ts';
@@ -47,7 +46,7 @@ export class RenderService {
     }
 
     this.children = (
-      <SolutionsProvider solutions={depends.container}>
+      <SolutionsProvider solutions={this.depends.container}>
         {this.depends.children || 'Не установлен React элемент в сервис рендера!'}
       </SolutionsProvider>
     );
@@ -72,12 +71,14 @@ export class RenderService {
   }
 
   /**
-   * Рендер на сервере в html шаблон.
-   * Используется потоковый рендер для поддержки Suspense, но поток не отправляется клиенту.
-   * Возвращается HTML корневого компонента.
-   * Рендер, вероятно, изменит состояние других сервисов, поэтому должен использоваться для целевой задачи (SSR), а не как утилита
+   * Рендер приложения в HTML документ.
+   * Функция рендера передаётся в аргументах (обычно используется для SSR с особенностями серверного окружения)
+   * Рендер, вероятно, изменит состояние приложения, так как будут исполнены React компоненты (this.children)
    */
-  async ssr(template: string): Promise<SsrResult> {
+  async renderHtml(
+    template: string,
+    renderReact: (children: ReactNode, timeout: number) => Promise<string>,
+  ): Promise<SsrResult> {
     // Итоговый HTML и HTTP статусы
     const result: SsrResult = {
       html: template,
@@ -88,11 +89,7 @@ export class RenderService {
     this.meta.initFromHtml(template);
 
     // Рендер (асинхронный с поддержкой suspense)
-    const appHtml = await asyncRender(
-      this.children,
-      this.depends.logger,
-      this.config.renderTimeout,
-    );
+    const appHtml = await renderReact(this.children, this.config.renderTimeout);
 
     // Дамп состояния, с которым выпален рендер
     const dump = this.depends.dump ? Object.fromEntries(this.depends.dump.collect()) : {};
