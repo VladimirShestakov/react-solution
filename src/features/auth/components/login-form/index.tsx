@@ -1,6 +1,6 @@
-import { FormEvent, memo, useCallback, useState, useSyncExternalStore } from 'react';
+import { FormEvent, memo, useCallback, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useTranslate } from 'react-solution';
+import { useExternalState, useTranslate } from 'react-solution';
 import { useSolution } from 'react-solution';
 import { SESSION_STORE } from '../../session-store/token.ts';
 import Field from '@src/ui/elements/field';
@@ -12,11 +12,7 @@ function LoginForm() {
   const location = useLocation();
   const navigate = useNavigate();
   const session = useSolution(SESSION_STORE);
-  const sessionState = useSyncExternalStore(
-    session.state.subscribe,
-    session.state.get,
-    session.state.get,
-  );
+  const sessionState = useExternalState(session.state);
 
   const [data, setData] = useState<SignInBody>({
     login: '',

@@ -1,20 +1,16 @@
 {
   "name": "@react-solution/server",
   "private": true,
-  "version": "3.0.4",
   "description": "Example server on React Solution for SSR",
   "main": "index.ts",
-  "scripts": {
-    "start": "cross-env NODE_OPTIONS=\"--import=./register.js\" node ./index.ts"
-  },
   "type": "module",
   "author": "Vladimir Shestakov boolive@yandex.ru",
   "license": "ISC",
   "dependencies": {
-    "react-solution": "*",
     "cookie-parser": "^1.4.6",
     "express": "^4.21.0",
-    "merge-change": "*"
+    "merge-change": "*",
+    "react-solution": "*"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.7",

@@ -1,5 +1,5 @@
-import { memo, useCallback, useMemo, useSyncExternalStore } from 'react';
-import { useTranslate } from 'react-solution';
+import { memo, useCallback, useMemo } from 'react';
+import { useExternalState, useTranslate } from 'react-solution';
 import { useSolution } from 'react-solution';
 import SideLayout from '@src/ui/layout/side-layout';
 import Select from '@src/ui/elements/select';
@@ -9,11 +9,7 @@ import { ARTICLES_STORE } from '../../articles-store/token.ts';
 function CatalogFilter() {
   const t = useTranslate();
   const articles = useSolution(ARTICLES_STORE);
-  const articlesState = useSyncExternalStore(
-    articles.state.subscribe,
-    articles.state.get,
-    articles.state.get,
-  );
+  const articlesState = useExternalState(articles.state);
 
   const callbacks = {
     // Сортировка

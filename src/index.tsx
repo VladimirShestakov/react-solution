@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Container,
   RouterProvider,
@@ -18,6 +17,12 @@ import {
 
 import { configs } from './configs.ts';
 import { App } from '@src/app';
+import { authFeature } from '@src/features/auth/injections.ts';
+import { exampleI18nFeature } from '@src/features/example-i18n/injections.ts';
+import { exampleModalsFeature } from '@src/features/example-modals/injections.ts';
+import { catalogFeature } from '@src/features/catalog/injections.ts';
+import { mainFeature } from '@src/features/main/injections.ts';
+import { navigationFeature } from '@src/features/navigation/injections.ts';
 
 /**
  * Создание DI контейнера для клиентского приложения (с настройками, сервисами, фичами...).
@@ -35,6 +40,13 @@ async function getSolutions(envPatch: Patch<Env> = {}): Promise<Container> {
       .set(i18nService)
       .set(logService)
       .set(dumpService)
+      // Фичи проекта
+      .set(authFeature)
+      .set(exampleI18nFeature)
+      .set(exampleModalsFeature)
+      .set(catalogFeature)
+      .set(mainFeature)
+      .set(navigationFeature)
       // Инъекция React компонента для сервиса рендера
       .set({
         token: RENDER_COMPONENT,

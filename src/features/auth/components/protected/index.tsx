@@ -1,6 +1,6 @@
-import { memo, ReactNode, useEffect, useSyncExternalStore } from 'react';
+import { memo, ReactNode, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useSolution } from 'react-solution';
+import { useExternalState, useSolution } from 'react-solution';
 import { useInit } from 'react-solution';
 import { SESSION_STORE } from '../../session-store/token.ts';
 
@@ -13,11 +13,7 @@ function Protected({ children, redirect }: Props) {
   const navigate = useNavigate();
   const location = useLocation();
   const session = useSolution(SESSION_STORE);
-  const sessionState = useSyncExternalStore(
-    session.state.subscribe,
-    session.state.get,
-    session.state.get,
-  );
+  const sessionState = useExternalState(session.state);
 
   useInit(async () => {
     // Вызывается даже если есть сессиия в целях её акутализации

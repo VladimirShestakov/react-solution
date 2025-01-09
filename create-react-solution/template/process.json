@@ -1,15 +1,15 @@
 {
   "apps": [
     {
-      "name": "SSR",
-      "script": "server/index.ts",
+      "name": "ssr",
+      "script": "./server/index.ts",
       "instances": "1",
       "exec_mode": "cluster",
       "watch": false,
-      "node_args": "",
+      "interpreter": "node",
+      "interpreter_args": "--import ./server/register.js",
       "env": {
-        "NODE_ENV": "production",
-        "NODE_OPTION": "--loader ts-node/esm"
+        "NODE_ENV": "production"
       }
     }
   ]

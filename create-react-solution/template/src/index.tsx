@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Container,
   RouterProvider,
@@ -17,13 +16,14 @@ import {
 } from 'react-solution';
 
 import { configs } from './configs.ts';
+import { App } from '@src/app';
 
 /**
- * Создание DI контейнера с сервисами, фичами, настройками и прочими зависимостями.
+ * Создание DI контейнера с сервисами, фичами, настройками и прочими зависимостями приложения.
  * DI контейнер является точкой доступа ко всем возможностями приложения.
  * @param envPatch Патч на переменные окружения для возможности подставить параметры запроса при SSR
  */
-async function getSolutions(envPatch: Patch<Env> = {}): Promise<Container> {
+export default async function createSolutions(envPatch: Patch<Env> = {}): Promise<Container> {
   return new Container()
     .set(envClient(envPatch))
     .set(configs)
@@ -34,14 +34,13 @@ async function getSolutions(envPatch: Patch<Env> = {}): Promise<Container> {
     .set(i18nService)
     .set(logService)
     .set(dumpService)
-    // Инъекция React компонента для сервиса рендера
     .set({
       token: RENDER_COMPONENT,
       depends: { router: ROUTER_SERVICE },
       factory: ({ router }) => {
         return (
           <RouterProvider router={router}>
-            <div>Привет!</div>
+            <App/>
           </RouterProvider>
         );
       },
@@ -50,16 +49,12 @@ async function getSolutions(envPatch: Patch<Env> = {}): Promise<Container> {
 
 /**
  * Запуск рендера в браузере.
+ * Рендер на сервере реализуется в ./server сервисом ssr
  */
 if (!import.meta.env.SSR) {
   (async () => {
-    const solutions = await getSolutions();
+    const solutions = await createSolutions();
     const render = await solutions.get(RENDER_SERVICE);
     render.start();
   })();
 }
-
-/**
- * Экспорт функции для SSR.
- */
-export default getSolutions;

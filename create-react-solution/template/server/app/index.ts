@@ -52,9 +52,8 @@ export class App {
       this.app.use(this.depends.vite.middlewares!);
     }
 
-    // Если url на файл, то отдаём 404, чтобы не рендерить приложение из-за него
-    // Если файл есть, то запрос обработался бы через express.static или в nginx
-    this.app.get(/\.[a-z0-9]+$/u, (req: Request, res: Response) => {
+    // Некоторые запросы игнорируем, например запрос на несуществующую favicon.ico, чтобы предотвратить рендер
+    this.app.get(/\.(ico)+$/u, (req: Request, res: Response) => {
       res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });
       res.end('Not Found');
     });

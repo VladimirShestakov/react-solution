@@ -1,6 +1,4 @@
-import { I18N_CFG, LOG_CFG } from 'react-solution';
-import { config } from 'react-solution';
-import { HTTP_CLIENT_CFG } from 'react-solution';
+import { config, I18N_CFG, LOG_CFG, HTTP_CLIENT_CFG } from 'react-solution';
 
 export const configs = [
   config(HTTP_CLIENT_CFG, ({ env }) => ({

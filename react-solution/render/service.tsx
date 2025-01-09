@@ -1,6 +1,6 @@
 import mc from 'merge-change';
 import { createRoot, hydrateRoot } from 'react-dom/client';
-import { type ReactNode } from 'react';
+import { type ReactNode, Suspense } from 'react';
 import { stringify, parse } from 'zipson';
 import { type Container, SolutionsProvider } from '../container';
 import { type DumpService } from '../dump';
@@ -47,7 +47,9 @@ export class RenderService {
 
     this.children = (
       <SolutionsProvider solutions={this.depends.container}>
-        {this.depends.children || 'Не установлен React элемент в сервис рендера!'}
+        <Suspense>
+          {this.depends.children || 'Не установлен React элемент в сервис рендера!'}
+        </Suspense>
       </SolutionsProvider>
     );
   }

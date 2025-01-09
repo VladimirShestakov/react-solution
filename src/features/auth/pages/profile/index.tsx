@@ -1,5 +1,5 @@
-import { memo, useSyncExternalStore } from 'react';
-import { useSolution } from 'react-solution';
+import { memo } from 'react';
+import { useExternalState, useSolution } from 'react-solution';
 import { useInit } from 'react-solution';
 import { useTranslate } from 'react-solution';
 import LocaleSelect from '@src/features/example-i18n/components/locale-select';
@@ -13,11 +13,7 @@ import { PROFILE_STORE } from '../../profile-store/token.ts';
 
 function ProfilePage() {
   const profile = useSolution(PROFILE_STORE);
-  const profileState = useSyncExternalStore(
-    profile.state.subscribe,
-    profile.state.get,
-    profile.state.get,
-  );
+  const profileState = useExternalState(profile.state);
 
   useInit(() => {
     profile.load();

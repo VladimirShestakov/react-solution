@@ -1,5 +1,5 @@
-import { memo, useCallback, useSyncExternalStore } from 'react';
-import { useSolutionMap } from 'react-solution';
+import { memo, useCallback } from 'react';
+import { useExternalState, useSolutionMap } from 'react-solution';
 import { ROUTER_SERVICE } from 'react-solution';
 import Pagination from '@src/ui/navigation/pagination';
 import Spinner from '@src/ui/elements/spinner';
@@ -12,11 +12,7 @@ function ArticleList() {
   });
 
   //тест
-  const articlesState = useSyncExternalStore(
-    articles.state.subscribe,
-    articles.state.get,
-    articles.state.get,
-  );
+  const articlesState = useExternalState(articles.state);
 
   const callbacks = {
     // Пагинация

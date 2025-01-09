@@ -1,6 +1,6 @@
-import { memo, useMemo, useSyncExternalStore } from 'react';
+import { memo, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { useSolution } from 'react-solution';
+import { useExternalState, useSolution } from 'react-solution';
 import { ROUTER_SERVICE } from 'react-solution';
 import Tree from '@src/ui/elements/tree';
 import Spinner from '@src/ui/elements/spinner';
@@ -9,20 +9,10 @@ import { CATEGORIES_STORE } from '../../categories-store/token.ts';
 
 function CategoryTree() {
   const router = useSolution(ROUTER_SERVICE);
-
   const categories = useSolution(CATEGORIES_STORE);
-  const categoriesState = useSyncExternalStore(
-    categories.state.subscribe,
-    categories.state.get,
-    categories.state.get,
-  );
-
+  const categoriesState = useExternalState(categories.state);
   const articles = useSolution(ARTICLES_STORE);
-  const articlesState = useSyncExternalStore(
-    articles.state.subscribe,
-    articles.state.get,
-    articles.state.get,
-  );
+  const articlesState = useExternalState(articles.state);
 
   const items = useMemo(() => {
     return [{ _id: '', title: 'Все' }, ...categoriesState.roots];
