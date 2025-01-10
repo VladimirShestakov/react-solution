@@ -25,7 +25,8 @@
     "check:prettier:fix": "prettier . --write",
     "build:react-solution": "cross-env VITE_CJS_TRACE=true vite build -c vite.react-solution.config.ts",
     "publish:react-solution": "cd ./dist/react-solution && npm publish",
-    "publish:create-react-solution": "cd ./create-react-solution && npm publish"
+    "publish:create-react-solution": "cd ./create-react-solution && npm publish",
+    "deploy:all": "npm run build:react-solution && npm run publish:react-solution && npm run publish:create-react-solution"
   },
   "devDependencies": {
     "@eslint/js": "^9.11.0",

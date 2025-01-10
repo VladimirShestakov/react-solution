@@ -1,4 +1,4 @@
-#!/usr/bin/env ts-node-script
+#!/usr/bin/env node
 
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -105,7 +105,7 @@ try {
   // Название проекта по имени директории
   const name = path.basename(projectPath)
   await patchJson(path.join(projectPath, 'package.json'), { name });
-  await patchJson(path.join(projectPath, 'src/package.json'), { name: `@${name}/client` });
+  // await patchJson(path.join(projectPath, 'src/package.json'), { name: `@${name}/client` });
   await patchJson(path.join(projectPath, 'server/package.json'), { name: `@${name}/server` });
 
   // SSR?

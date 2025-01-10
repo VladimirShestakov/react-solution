@@ -1,6 +1,6 @@
 {
   "name": "create-react-solution",
-  "version": "4.2.5",
+  "version": "4.2.7",
   "description": "Create new project with React-Solution framework",
   "bin": {
     "create-react-solution": "./index.js"
@@ -10,7 +10,7 @@
     "template"
   ],
   "scripts": {
-    "start": "cross-env NODE_OPTIONS=\"--import=./register.js\" node ./index.ts"
+    "start": "cross-env node ./index.js"
   },
   "type": "module",
   "author": "Vladimir Shestakov boolive@yandex.ru",
