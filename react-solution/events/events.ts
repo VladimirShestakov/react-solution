@@ -1,4 +1,4 @@
-import { EventsMap, Listener } from '../events';
+import type { EventsMap, Listener } from './types';
 
 /**
  * Эмиттер событий.
@@ -19,7 +19,9 @@ import { EventsMap, Listener } from '../events';
  * const events = new Events<SomeEventsMap>();
  *
  * events.emit('onFirst', { param1: 100, param2: 'value' })
+ *
  * ```
+ * @todo Реализовать защиту для отправку события и очистки всех событий, например нужно указать ключ, который указывается в конструкторе
  */
 export class Events<E extends EventsMap = EventsMap> {
   protected listeners: Map<keyof E & string, Map<Listener, boolean>> = new Map();

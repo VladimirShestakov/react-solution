@@ -76,18 +76,8 @@ function PageAsModal(props: PageAsModalProps) {
       </Head>
       <MainMenu />
       <h2>{t('example-modals.title')}</h2>
-      <p>
-        Модальные окна отображаются поверх текущей страницы, делая элементы страницы недоступными
-        пока окно не закроется. Управление модальными окнами осуществляется сервисом modals. Для
-        открытия окна вызывается метод open с передачей свойств окна. Свойства окна - это свойства
-        React компонента, которым реализовано окно.
-      </p>
-      <p>
-        Любой React компонент может стать окном, его достаточно прописать в импорте сервиса - в
-        файле <code>@src/services/modals/imports.ts</code>. В компонент окна автоматически
-        передаётся функция обратного вызова close, чтобы закрыть окно и передать результат. Смотрите
-        README в <code className="block">./src/services/modals/README.md</code>
-      </p>
+      <p>{t('example-modals.content.first')}</p>
+      <p>{t('example-modals.content.second')}</p>
       <p>
         <button onClick={callbacks.openMessage}>Сообщение</button>
       </p>
@@ -100,13 +90,9 @@ function PageAsModal(props: PageAsModalProps) {
       <p>
         <button onClick={callbacks.openCascade}>Каскад окон</button>
       </p>
+      <p>{t('example-modals.content.example')}</p>
       <p>
-        Пример отображения страницы в качестве модального окна. Страница отобразится ниже, так как
-        позиционируется в соответствии с нормальным потоком документа. Тогда как в разметке
-        модальных окон используется абсолютная или фиксированная позиция.
-      </p>
-      <p>
-        <button onClick={callbacks.openPage}>Открыть текущую страницу сервисом модалок</button>
+        <button onClick={callbacks.openPage}>{t('example-modals.content.openPage')}</button>
       </p>
     </PageLayout>
   );

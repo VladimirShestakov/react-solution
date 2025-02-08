@@ -5,6 +5,11 @@ import { ENV } from '../env';
 import { I18N, I18N_CFG, I18N_DICTIONARY } from './token';
 import { I18n } from './service';
 
+/**
+ * Регистрация зависимостей для сервиса I18n
+ * 
+ * @see [[./README.md]]
+ */
 export const i18nService = injectClass({
   token: I18N,
   constructor: I18n,

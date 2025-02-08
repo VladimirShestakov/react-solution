@@ -5,27 +5,29 @@ export default {
     'en-EN': 'English',
   },
   content: {
-    pLocale: `Translate dictionary texts using phrase code.
-       Pluralization is supported (translation options taking into account the plural).
-       You can use areas in the translation to insert values. Number formatting is supported, taking into account the locale.
+    pLocale: `Text translation is performed using a dictionary with phrase codes.
+      Pluralization is supported (translation variants based on plural forms).
+      It is also possible to use placeholders in translations for inserting values.
+      Number formatting is supported, considering the locale.
      `,
-    pDic: `Dictionaries in json format or js/ts modules. They can be flat or nested.
-       Dictionaries are connected statically (synchronously) or dynamically.
-       The dictionary is dynamically imported the first time it is accessed in search of a translated phrase.
-       Suspense logic is supported to wait for loading.
-       Under each locale, you can connect many named dictionaries.
-       (Each feature has its own dictionary.)
-       The name of the dictionary is taken into account in the phrase code for translation.
-       If the translation is not in the dictionary of the current locale, then the translation from the base locale is used.
-       Base locale dictionaries are also loaded the first time they are accessed.
+    pDic: `Dictionaries are represented in JSON format or as JS/TS modules.
+      They can have either a flat or nested structure. Dictionaries are connected via DI.
+      A dynamic import of a dictionary is possible when it is first accessed through a translatable phrase.
+      In this case, instead of the dictionary itself, an asynchronous dictionary loading function is imported.
+      The Suspense logic is supported to wait for the loading.
+      For each locale, multiple named dictionaries can be connected (e.g., one dictionary for each application module).
+      The dictionary name is considered in the phrase code for translation.
+      If a translation is not found in the dictionary for the current locale, the translation from the base locale is used.
      `,
-    pDetect: `By default, the locale is automatically determined from the Accept-Languages header, taking into account
-       supported locales (under which there are dictionaries). The locale set by the user will be automatically
-       is written in the cookie to restore the selection and take into account the locale when rendering on the server.
+    pDetect: `By default, the locale is automatically determined based on the Accept-Language header,
+      considering the supported locales (for which dictionaries are available).
+      The user-set locale is saved in cookies to restore the selection and take the locale into account during server-side rendering.
+      When the locale changes, dependencies in other services may be updated.
+      For example, API headers for fetching data in the correct locale.
      `,
-    pHook: `All internationalization functions are implemented by the i18n service, in react components to the current
-       the locale, the function for changing it, and the translation function can be accessed through the useI18n() hook.
-       The hook will sign the component to change the locale or load dictionaries so that the component re-renders.
+    pHook: `All internationalization functions are implemented through the i18n service.
+      In React components, the current locale, functions to change it, and translation functions can be accessed via the useI18n() hook.
+      The hook automatically subscribes the component to locale changes and dictionary loading, ensuring the component re-renders when they are updated..
      `,
   },
 };

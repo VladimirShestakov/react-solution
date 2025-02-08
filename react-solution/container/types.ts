@@ -2,9 +2,7 @@ import { Token, type TypesFromTokens, type TokenInterface } from '../token';
 
 interface InjectBase<Type, ExtType extends Type> {
   token: TokenInterface<Type>;
-  merge?: boolean; // @todo Возможно нужно только для InjectValue
-  // @todo Нужны ли в инъекции?
-  onCreate?: (value: ExtType) => void | Promise<void>;
+  merge?: boolean;
   onDelete?: (value: ExtType) => void | Promise<void>;
 }
 

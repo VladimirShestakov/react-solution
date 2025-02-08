@@ -28,7 +28,7 @@ export function useI18n(): useI18nReturn {
 }
 
 /**
- * Возвращает функцию для перевода
+ * Хук возвращает функцию для перевода
  * @throws
  */
 export function useTranslate() {

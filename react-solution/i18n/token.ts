@@ -4,7 +4,7 @@ import type { I18n } from './service';
 import type { I18nDictionary, I18nConfig, I18nState } from './types';
 
 /**
- * Токен на сервис i18n
+ * Токен на сервис I18n
  */
 export const I18N = newToken<I18n>('@project/i18n/service');
 

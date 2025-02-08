@@ -12,19 +12,44 @@ import { Meta } from './meta';
 import { type RenderConfig, RenderDump, SsrResult } from './types';
 import { HTML_TAGS } from './meta/constants.ts';
 
+/**
+ * Сервис рендеринга на React
+ */
 export class RenderService {
+  /**
+   * @hidden
+   */
   protected children?: ReactNode;
+  /**
+   * @hidden
+   */
   protected hydrate: boolean = false;
-  // Ожидания асинхронных операций в рендере
+  /**
+   * Ожидания асинхронных операций в рендере
+   */
   readonly waiting: WaitingStore = new WaitingStore();
+  /**
+   * Мета теги HTML документа
+   */
   readonly meta: Meta = new Meta();
 
-  // Настройки
+  /**
+   * Настройки
+   */
   protected config: RenderConfig = {
     domId: 'root',
     renderTimeout: 6000,
   };
 
+  /**
+   * @param depends Зависимости
+   * @param depends.env Переменные окружения
+   * @param depends.container DI контейнер
+   * @param depends.dump Сервис для управления дампом данных
+   * @param depends.config Патч настроек сервиса
+   * @param depends.children React элемент для рендеринга
+   * @param depends.logger Сервис для логирования
+   */
   constructor(
     protected depends: {
       env: Env;

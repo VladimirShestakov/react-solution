@@ -1,9 +1,8 @@
 export default {
   page: {
     title: 'Main page',
-    content:
-      'Application framework in React & Vite with server (SSR) or client (SPA) rendering. ' +
-      'Open code structure for free modification with examples of typical functions - ' +
-      'authorization, modal windows, internationalization, API integration, navigation, filtering, etc.',
+    content: `An example of a React Solution application with server-side rendering (SSR) or client-side rendering (SPA).
+      It includes the implementation of typical features: authentication, modal windows, internationalization, API integration, navigation, filtering, and more.
+    `,
   },
 };

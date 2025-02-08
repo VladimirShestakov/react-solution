@@ -27,16 +27,16 @@ import { SolutionsContext } from './provider.tsx';
  * ```
  */
 export function useSolutionPending<Type>(token: Token<Type>): {
-  service: Type | undefined;
+  instance: Type | undefined;
   isSuccess: boolean;
   isWaiting: boolean;
   isError: boolean;
 } {
   const container = useContext(SolutionsContext);
-  let service: Type | undefined = undefined;
+  let instance: Type | undefined = undefined;
   // Попытка получить сервис синхронно
   try {
-    service = container.getWithSuspense(token);
+    instance = container.getWithSuspense(token);
   } catch {
     // Значит сервис ещё не создан, при этом контейнер создаст обещание на промис
   }
@@ -45,7 +45,7 @@ export function useSolutionPending<Type>(token: Token<Type>): {
 
   useEffect(() => {
     // Ждём выполнения обещания на сервис, если сервис ещё не получен
-    if (!service)
+    if (!instance)
       container
         .get(token)
         .then(() => setStatus(container.getStatus(token)))
@@ -53,7 +53,7 @@ export function useSolutionPending<Type>(token: Token<Type>): {
   }, []);
 
   return {
-    service,
+    instance,
     isSuccess: status === WaitStatus.Success,
     isWaiting: status === WaitStatus.Waiting,
     isError: status === WaitStatus.Error,

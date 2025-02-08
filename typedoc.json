@@ -1,0 +1,23 @@
+{
+  "$schema": "https://typedoc-plugin-markdown.org/schema.json",
+  "entryPoints": [
+    "./react-solution/**",
+  ],
+  "plugin": [
+    "typedoc-plugin-markdown"
+  ],
+  "out": "./dist/docs",
+  "disableSources": true,
+  "hidePageHeader": true,
+  "hideBreadcrumbs": true,
+  "hideGroupHeadings": false,
+  "useCodeBlocks": true,
+  "parametersFormat": "table",
+  "classPropertiesFormat": "list",
+  "interfacePropertiesFormat": "table",
+  "enumMembersFormat": "table",
+  "propertyMembersFormat": "table",
+  "typeDeclarationFormat": "table",
+  "typeDeclarationVisibility": "compact",
+  "mergeReadme": false,
+}

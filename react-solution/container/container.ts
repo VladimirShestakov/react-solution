@@ -14,11 +14,48 @@ import { type TokenInterface, type TypesFromTokens, type TokenKey, newToken } fr
 
 export const CONTAINER = newToken<Container>('@react-solution/container');
 
+/**
+ * DI контейнер предназначен для управления зависимостями.
+ * В контейнере регистрируются зависимости всех программных решений приложения: модулей, компонентов, сервисов, ресурсов — любых объектов.
+ * Через контейнер предоставляется доступ ко всем программным решениям приложения.
+ * Контейнер берёт на себя обязанность создавать и инициализировать решение по первому требованию.
+ * Контейнер запоминает подготовленное решение, чтобы не создавать и не инициализировать его повторно при
+ * очередном запросе. Контейнер реализует паттерн "Одиночка".
+ */
 export class Container {
+  /**
+   * События контейнера.
+   *
+   * Контейнер отправляет события о создании экземпляра решения onCreate и его удалении `onDelete` (когда вызывается `deleteValue()`).
+   * На эти события можно подписаться.
+   *
+   * @example
+   * ```ts
+   * container.events.on('onCreate', <Type extends object>({ token, value }: { token: Token<Type>; value: Type }) => {
+   *   // обработка события
+   * }
+   * ```
+   *
+   * ```ts
+   * container.events.on('onDelete', ({ token }: { token: Token }) => {
+   *   // обработка события
+   * }
+   * ```
+   *
+   * Например, сервис `dump` отслеживает событие `onCreate`, чтобы всем инициализируемым программным
+   * решениям сразу передавать их сохраненное состояние (состояние сохраняется после рендере на сервере).
+   *
+   * Для работы с событиями используется класс `Events` из React-Solution.
+   * Для отписки от события применяется метод `events.off()`. Подробнее см. в описании класса `Events`.
+   */
   readonly events: Events<ContainerEvents> = new Events();
-  // Инъекции с информацией как создавать экземпляры сервисов (значения)
+  /**
+   * Все регистрации зависимостей
+   */
   protected injects: Map<TokenKey, Inject[]> = new Map();
-  // Ожидания на выборку (создание) сервисов. В ожиданиях хранятся и сами экземпляры (значения)
+  /**
+   * Ожидания на выборку (на создание) экземпляра. В ожидании будет храниться и созданный экземпляр.
+   */
   protected waiting: WaitingStore = new WaitingStore();
 
   constructor() {
@@ -26,14 +63,26 @@ export class Container {
     this.set({ token: CONTAINER, value: this });
   }
 
+  /**
+   * @hidden
+   */
   set<Type, ExtType extends Type, Deps>(inject: InjectFactory<Type, ExtType, Deps>): this;
+  /**
+   * @hidden
+   */
   set<Type, ExtType extends Type, Deps>(inject: InjectClass<Type, ExtType, Deps>): this;
+  /**
+   * @hidden
+   */
   set<Type, ExtType extends Type>(inject: InjectValue<Type, ExtType>): this;
+  /**
+   * @hidden
+   */
   set(inject: InjectArray): this;
 
   /**
-   * Инъекция сервиса
-   * @param inject Инъекция в виде конструктора, функции или значения
+   * Регистрация зависимостей
+   * @param inject Регистрация одного из типов InjectFactory, InjectClass, InjectValue. Или массив регистраций
    */
   set<Type, ExtType extends Type, Deps>(inject: InjectArray | Inject<Type, ExtType, Deps>): this {
     if (!Array.isArray(inject)) {
@@ -54,14 +103,23 @@ export class Container {
     return this;
   }
 
+  /**
+   * @hidden
+   */
   setValue<Type, ExtType extends Type>(inject: InjectValue<Type, ExtType>): this {
     return this.set(inject);
   }
 
+  /**
+   * @hidden
+   */
   setFactory<Type, ExtType extends Type, Deps>(inject: InjectFactory<Type, ExtType, Deps>): this {
     return this.set(inject);
   }
 
+  /**
+   * @hidden
+   */
   setClass<Type, ExtType extends Type, Deps>(inject: InjectClass<Type, ExtType, Deps>): this {
     return this.set(inject);
   }
@@ -84,7 +142,7 @@ export class Container {
   }
 
   /**
-   * Статус сервиса
+   * Статус ожидания
    * @param token
    */
   getStatus<Type>(token: TokenInterface<Type>): WaitStatus {
@@ -206,8 +264,9 @@ export class Container {
   }
 
   /**
-   * Удаление ранее созданного экземпляра сервиса.
-   * Удаляется обещание создания сервиса, где и хранится результат создания
+   * Удаление экземпляра программного решения в DI контейнере.
+   * После чего при выборке этого же решения из DI контейнера оно снова будет создаваться и инициироваться.
+   *
    * @param token
    * @todo Проработать кейсы применения.
    */
@@ -225,7 +284,10 @@ export class Container {
     }
   }
 
-  getInstances() {
+  /**
+   * @hidden
+   */
+  getInstances(): Array<[string, object]> {
     const instances: Array<[TWaitKey, any]> = [];
     for (const [key, wait] of this.waiting.entries()) {
       if (!wait.waiting && !wait.error) {
