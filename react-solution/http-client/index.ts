@@ -1,4 +1,4 @@
-export * from './inject';
+export * from './provider';
 export * from './query-params';
 export * from './service';
 export * from './token';

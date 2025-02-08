@@ -3,7 +3,7 @@ import { CONTAINER, useSolution } from '../container';
 import { MODALS } from './token';
 
 /**
- * Отображает стек открытых модальных окон
+ * Отображает открытые модальные окна
  */
 function Modals() {
   const solutions = useSolution(CONTAINER);

@@ -2,7 +2,7 @@ import { BrowserHistory, createBrowserHistory, createMemoryHistory, MemoryHistor
 import mc from 'merge-change';
 import qs from 'qs';
 import type { Patch } from '../types';
-import type { RouterConfig, HTTPStatus } from './types';
+import type { RouterConfig } from './types';
 
 export class RouterService {
   readonly history: MemoryHistory | BrowserHistory;

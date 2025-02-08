@@ -1,43 +1,46 @@
 import {
-  injectFactory,
-  injectValue,
+  factoryProvider,
+  valueProvider,
   isFactory,
   type FunctionWithDepends,
-  type InjectFactory,
-  type InjectValue,
+  type FactoryProvider,
+  type ValueProvider,
 } from '../container';
 import { ENV } from '../env';
 import { type TypesFromTokens, type TokenInterface } from '../token';
 
 /**
- * Создание пары {Токен, Значение} для инъекции в DI настроек
- * Алиас injectValue
- * @param token Токен
- * @param value Значение сопоставимое с типом токена
+ * @hidden
  */
 export function config<T, ExtT extends T>(
   token: TokenInterface<T>,
   value: ExtT,
-): InjectValue<T, ExtT>;
+): ValueProvider<T, ExtT>;
 
 /**
- * Создание пары {Токен/Функция} для инъекции в DI вычисляемых настроек.
- * Алиас injectFactory с предопределенной зависимостью на переменные окружения
- * @param token Токен
- * @param factory Функция, возвращающая значение сопоставимое с типом токена в опциональном варианте
+ * @hidden
  */
 export function config<T, ExtT extends T, Deps = { env: typeof ENV }>(
   token: TokenInterface<T>,
-  factory: FunctionWithDepends<ExtT, TypesFromTokens<Deps>>,
-): InjectFactory<T, ExtT, Deps>;
+  value: FunctionWithDepends<ExtT, TypesFromTokens<Deps>>,
+): FactoryProvider<T, ExtT, Deps>;
 
+/**
+ * Провайдер настроек.
+ * Настройки можно указать в виде значения, тип которого сопоставим с типом токена.
+ * Либо указать функцию, которая будет возвращать настройки. В аргумент функции передаются переменные
+ * окружения - их можно учесть в настройках.
+ *
+ * @param token Токен
+ * @param value Значение сопоставимое с типом токена или функция, возвращающее значение сопоставимое с токеном.
+ */
 export function config<T, ExtT extends T, Deps = { env: typeof ENV }>(
   token: TokenInterface<T>,
   value: FunctionWithDepends<ExtT, TypesFromTokens<Deps>> | ExtT,
-): InjectFactory<T, ExtT, Deps> | InjectValue<T, ExtT> {
+): FactoryProvider<T, ExtT, Deps> | ValueProvider<T, ExtT> {
   if (isFactory<ExtT, TypesFromTokens<Deps>>(value)) {
-    return injectFactory({ token, factory: value, depends: { env: ENV } as Deps });
+    return factoryProvider({ token, factory: value, depends: { env: ENV } as Deps });
   } else {
-    return injectValue({ token, value });
+    return valueProvider({ token, value });
   }
 }

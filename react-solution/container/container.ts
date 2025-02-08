@@ -1,17 +1,20 @@
 import { Events } from '../events';
 import { WaitingStore, type TWaitKey, WaitStatus } from '../waiting-store';
 import mc from 'merge-change';
-import { isInjectClass, isInjectFactory, isInjectValue } from './utils';
+import { isClassProvider, isFactoryProvider, isValueProvider } from './utils';
 import {
   type ContainerEvents,
-  type Inject,
-  InjectArray,
-  InjectClass,
-  InjectFactory,
-  InjectValue,
+  type Provider,
+  Providers,
+  ClassProvider,
+  FactoryProvider,
+  ValueProvider,
 } from './types';
 import { type TokenInterface, type TypesFromTokens, type TokenKey, newToken } from '../token';
 
+/**
+ * Токен на DI контейнер
+ */
 export const CONTAINER = newToken<Container>('@react-solution/container');
 
 /**
@@ -26,7 +29,7 @@ export class Container {
   /**
    * События контейнера.
    *
-   * Контейнер отправляет события о создании экземпляра решения onCreate и его удалении `onDelete` (когда вызывается `deleteValue()`).
+   * Контейнер отправляет события о создании экземпляра решения onCreate и его удалении `onDelete` (когда вызывается `deleteInstance()`).
    * На эти события можно подписаться.
    *
    * @example
@@ -50,52 +53,53 @@ export class Container {
    */
   readonly events: Events<ContainerEvents> = new Events();
   /**
-   * Все регистрации зависимостей
+   * Все зарегистрированные провайдеры
+   * Через провайдеры устанавливаются конкретные зависимости и логика их создания
    */
-  protected injects: Map<TokenKey, Inject[]> = new Map();
+  protected providers: Map<TokenKey, Provider[]> = new Map();
   /**
    * Ожидания на выборку (на создание) экземпляра. В ожидании будет храниться и созданный экземпляр.
    */
   protected waiting: WaitingStore = new WaitingStore();
 
   constructor() {
-    // Инъекция самого себя
-    this.set({ token: CONTAINER, value: this });
+    // Регистрация самого себя
+    this.register({ token: CONTAINER, value: this });
   }
 
   /**
    * @hidden
    */
-  set<Type, ExtType extends Type, Deps>(inject: InjectFactory<Type, ExtType, Deps>): this;
+  register<Type, ExtType extends Type, Deps>(provider: FactoryProvider<Type, ExtType, Deps>): this;
   /**
    * @hidden
    */
-  set<Type, ExtType extends Type, Deps>(inject: InjectClass<Type, ExtType, Deps>): this;
+  register<Type, ExtType extends Type, Deps>(provider: ClassProvider<Type, ExtType, Deps>): this;
   /**
    * @hidden
    */
-  set<Type, ExtType extends Type>(inject: InjectValue<Type, ExtType>): this;
+  register<Type, ExtType extends Type>(provider: ValueProvider<Type, ExtType>): this;
   /**
    * @hidden
    */
-  set(inject: InjectArray): this;
+  register(provider: Providers): this;
 
   /**
-   * Регистрация зависимостей
-   * @param inject Регистрация одного из типов InjectFactory, InjectClass, InjectValue. Или массив регистраций
+   * Регистрация зависимостей через установку провайдера в контейнер
+   * @param provider Провайдер или массив провайдеров
    */
-  set<Type, ExtType extends Type, Deps>(inject: InjectArray | Inject<Type, ExtType, Deps>): this {
-    if (!Array.isArray(inject)) {
-      inject = [inject];
+  register<Type, ExtType extends Type, Deps>(provider: Providers | Provider<Type, ExtType, Deps>): this {
+    if (!Array.isArray(provider)) {
+      provider = [provider];
     }
-    inject.forEach(item => {
+    provider.forEach(item => {
       if (Array.isArray(item)) {
-        this.set(item);
+        this.register(item);
       } else {
-        if (this.injects.has(item.token.key)) {
-          this.injects.get(item.token.key)?.push({ ...item });
+        if (this.providers.has(item.token.key)) {
+          this.providers.get(item.token.key)?.push({ ...item });
         } else {
-          this.injects.set(item.token.key, [{ ...item }]);
+          this.providers.set(item.token.key, [{ ...item }]);
         }
       }
     });
@@ -104,45 +108,24 @@ export class Container {
   }
 
   /**
-   * @hidden
-   */
-  setValue<Type, ExtType extends Type>(inject: InjectValue<Type, ExtType>): this {
-    return this.set(inject);
-  }
-
-  /**
-   * @hidden
-   */
-  setFactory<Type, ExtType extends Type, Deps>(inject: InjectFactory<Type, ExtType, Deps>): this {
-    return this.set(inject);
-  }
-
-  /**
-   * @hidden
-   */
-  setClass<Type, ExtType extends Type, Deps>(inject: InjectClass<Type, ExtType, Deps>): this {
-    return this.set(inject);
-  }
-
-  /**
-   * Выбор сервиса по токену.
-   * Если сервиса ещё не создан, то будет создан и инициализирован.
-   * Если сервиса ещё в процессе создания, то вернётся уже существующий promise, чтобы не дублировалось создание.
-   * Иначе возвращается ранее созданный сервиса.
+   * Выбор "решения" по токену.
+   * Если решение ещё не создано, то будет создано и инициализировано.
+   * Если решение ещё в процессе создания, то вернётся уже существующий promise, чтобы не дублировалось создание.
+   * Иначе возвращается ранее созданное решение.
    * @param token
    */
   async get<Type>(token: TokenInterface<Type>): Promise<Type> {
     // Экземпляра нет и ранее не было попытки выбора
     if (!this.waiting.has(token.key)) {
       // Запоминаем promise создания экземпляра
-      this.waiting.add(token.key, this.createValue(token));
+      this.waiting.add(token.key, this.resolve(token));
     }
     // Возвращаем promise создания экземпляра
     return this.waiting.getPromise(token.key);
   }
 
   /**
-   * Статус ожидания
+   * Статус ожидания решения
    * @param token
    */
   getStatus<Type>(token: TokenInterface<Type>): WaitStatus {
@@ -150,41 +133,41 @@ export class Container {
   }
 
   /**
-   * Создание экземпляра (значения).
-   * @param token Токен, по которому будет найдена инъекция и создан экземпляр
+   * Исполнение провайдера для подготовки "решения"
+   * @param token Токен, по которому будет найден провайдер, исполнен и получено решение
    * @protected
    */
-  protected async createValue<Type>(token: TokenInterface<Type>): Promise<Type> {
-    const injects = this.injects.get(token.key);
-    if (!injects || injects.length === 0) {
+  protected async resolve<Type>(token: TokenInterface<Type>): Promise<Type> {
+    const providers = this.providers.get(token.key);
+    if (!providers || providers.length === 0) {
       if (token.is('optional')) {
         return undefined as Type;
       } else {
-        throw Error(`Injection by token "${token}" not found`);
+        throw Error(`Provider by token "${token}" not found`);
       }
     }
 
     let value = undefined;
     // Создание экземпляра
-    for (const inject of injects) {
+    for (const provider of providers) {
       let nextValue;
       switch (true) {
-        case isInjectValue(inject): {
-          nextValue = inject.value;
+        case isValueProvider(provider): {
+          nextValue = provider.value;
           break;
         }
-        case isInjectFactory(inject): {
-          nextValue = await inject.factory(await this.getMapped(inject.depends));
+        case isFactoryProvider(provider): {
+          nextValue = await provider.factory(await this.getMapped(provider.depends));
           break;
         }
-        case isInjectClass(inject): {
-          nextValue = new inject.constructor(await this.getMapped(inject.depends));
+        case isClassProvider(provider): {
+          nextValue = new provider.constructor(await this.getMapped(provider.depends));
           break;
         }
         default:
-          throw Error(`Injection by token "${token}" is wrong`);
+          throw Error(`Provider by token "${token}" is wrong`);
       }
-      value = inject.merge ? mc.update(value, nextValue) : nextValue;
+      value = provider.merge ? mc.update(value, nextValue) : nextValue;
     }
 
     await this.events.emit('onCreate', { token, value });
@@ -227,7 +210,7 @@ export class Container {
   getWithSuspense<Type>(token: TokenInterface<Type>): Type {
     if (!this.waiting.has(token.key)) {
       // Если экземпляра ещё нет, то запоминаем promise создания/выборки экземпляра
-      this.waiting.add(token.key, this.createValue(token));
+      this.waiting.add(token.key, this.resolve(token));
     }
     // Кидаем promise, если ещё в ожидании
     if (this.waiting.isWaiting(token.key)) throw this.waiting.getPromise(token.key);
@@ -270,10 +253,10 @@ export class Container {
    * @param token
    * @todo Проработать кейсы применения.
    */
-  async deleteValue<Type>(token: TokenInterface<Type>): Promise<void> {
-    const injects = this.injects.get(token.key) ?? [];
-    for (const inject of injects) {
-      const onDelete = inject.onDelete;
+  async deleteInstance<Type>(token: TokenInterface<Type>): Promise<void> {
+    const providers = this.providers.get(token.key) ?? [];
+    for (const provider of providers) {
+      const onDelete = provider.onDelete;
       const isSuccess = this.waiting.isSuccess(token.key);
       const value = this.waiting.getResult(token.key);
       this.waiting.delete(token.key);
@@ -296,17 +279,4 @@ export class Container {
     }
     return instances;
   }
-
-  // async ready() {
-  //   await this.events.emit('onReady');
-  //   return this;
-  // }
-  //
-  // async finish() {
-  //   for (const token of this.injects.keys()) {
-  //     await this.deleteValue(token);
-  //   }
-  //   await this.events.emit('onFinish');
-  //   return this;
-  // }
 }

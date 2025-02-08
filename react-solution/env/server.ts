@@ -1,12 +1,12 @@
 import typedVariables from 'dotenv-parse-variables';
 import mc from 'merge-change';
 import { loadEnv as loadEnvVite } from 'vite';
-import { injectValue } from '../container';
+import { valueProvider } from '../container';
 import { ENV } from './token';
 import type { Patch } from '../types';
 
 export const envServer = (envPatch: Patch<Env> = {}) =>
-  injectValue({
+  valueProvider({
     token: ENV,
     value: mc.merge(
       {

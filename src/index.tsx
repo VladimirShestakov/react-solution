@@ -1,6 +1,6 @@
 import {
   Container,
-  RouterProvider,
+  RouterContextProvider,
   envClient,
   RENDER_COMPONENT,
   RENDER_SERVICE,
@@ -17,12 +17,12 @@ import {
 
 import { configs } from './configs.ts';
 import { App } from '@src/app';
-import { authFeature } from '@src/features/auth/injections.ts';
-import { exampleI18nFeature } from '@src/features/example-i18n/injections.ts';
-import { exampleModalsFeature } from '@src/features/example-modals/injections.ts';
-import { catalogFeature } from '@src/features/catalog/injections.ts';
-import { mainFeature } from '@src/features/main/injections.ts';
-import { navigationFeature } from '@src/features/navigation/injections.ts';
+import { authFeature } from '@src/features/auth/providers.ts';
+import { exampleI18nFeature } from '@src/features/example-i18n/providers.ts';
+import { exampleModalsFeature } from '@src/features/example-modals/providers.ts';
+import { catalogFeature } from '@src/features/catalog/providers.ts';
+import { mainFeature } from '@src/features/main/providers.ts';
+import { navigationFeature } from '@src/features/navigation/providers.ts';
 
 /**
  * Создание DI контейнера для клиентского приложения (с настройками, сервисами, фичами...).
@@ -31,37 +31,37 @@ import { navigationFeature } from '@src/features/navigation/injections.ts';
 async function getSolutions(envPatch: Patch<Env> = {}): Promise<Container> {
   return (
     new Container()
-      .set(envClient(envPatch))
-      .set(configs)
-      .set(renderService)
-      .set(routerService)
-      .set(modalsService)
-      .set(httpClient)
-      .set(i18nService)
-      .set(logService)
-      .set(dumpService)
+      .register(envClient(envPatch))
+      .register(configs)
+      .register(renderService)
+      .register(routerService)
+      .register(modalsService)
+      .register(httpClient)
+      .register(i18nService)
+      .register(logService)
+      .register(dumpService)
       // Фичи проекта
-      .set(authFeature)
-      .set(exampleI18nFeature)
-      .set(exampleModalsFeature)
-      .set(catalogFeature)
-      .set(mainFeature)
-      .set(navigationFeature)
-      // Инъекция React компонента для сервиса рендера
-      .set({
+      .register(authFeature)
+      .register(exampleI18nFeature)
+      .register(exampleModalsFeature)
+      .register(catalogFeature)
+      .register(mainFeature)
+      .register(navigationFeature)
+      // Провайдер React компонента для сервиса рендеринга
+      .register({
         token: RENDER_COMPONENT,
         depends: { router: ROUTER_SERVICE },
         factory: ({ router }) => (
-          <RouterProvider router={router}>
+          <RouterContextProvider router={router}>
             <App />
-          </RouterProvider>
+          </RouterContextProvider>
         ),
       })
   );
 }
 
 /**
- * Запуск рендера в браузере.
+ * Запуск рендеринга приложения в браузере.
  */
 if (!import.meta.env.SSR) {
   (async () => {

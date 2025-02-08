@@ -1,43 +1,49 @@
 import { Token, type TypesFromTokens, type TokenInterface } from '../token';
 
-interface InjectBase<Type, ExtType extends Type> {
+/**
+ * Тип базового провайдера
+ */
+interface BaseProvider<Type, ExtType extends Type> {
   token: TokenInterface<Type>;
   merge?: boolean;
   onDelete?: (value: ExtType) => void | Promise<void>;
 }
 
 /**
- * Инъекция класса.
- * Указывается токен, конструктор и токены зависимости, которые будут переданы в первый аргумент конструктора
+ * Провайдер с классом, экземпляры которого нужно создавать.
+ * Содержит токен, конструктор, токены зависимостей (которые будут переданы в первый аргумент конструктора)
  */
-export interface InjectClass<Type, ExtType extends Type, Deps> extends InjectBase<Type, ExtType> {
+export interface ClassProvider<Type, ExtType extends Type, Deps> extends BaseProvider<Type, ExtType> {
   constructor: ConstructorWithDepends<ExtType, TypesFromTokens<Deps>>;
   depends: Deps;
 }
 
 /**
- * Инъекция функции, которая создаст значение сопоставимое с типом токена.
- * Указывается токен, функция и токены зависимости, которые будут переданы в первый аргумент функции
+ * Провайдер с функцией, которая создаёт значение сопоставимое с типом токена.
+ * Содержит токен, функцию и токены зависимостей, которые будут переданы в первый аргумент функции
  * Функция может быть асинхронной.
  */
-export interface InjectFactory<Type, ExtType extends Type, Deps> extends InjectBase<Type, ExtType> {
+export interface FactoryProvider<Type, ExtType extends Type, Deps> extends BaseProvider<Type, ExtType> {
   factory: FunctionWithDepends<ExtType, TypesFromTokens<Deps>>;
   depends: Deps;
 }
 
 /**
- * Инъекция значения сопоставимого с типом токена.
+ * Провайдер значения сопоставимого с типом токена.
  */
-export interface InjectValue<Type, ExtType extends Type> extends InjectBase<Type, ExtType> {
+export interface ValueProvider<Type, ExtType extends Type> extends BaseProvider<Type, ExtType> {
   value: ExtType;
 }
 
-export type Inject<Type = any, ExtType extends Type = any, Deps = any> =
-  | InjectClass<Type, ExtType, Deps>
-  | InjectFactory<Type, ExtType, Deps>
-  | InjectValue<Type, ExtType>;
+export type Provider<Type = any, ExtType extends Type = any, Deps = any> =
+  | ClassProvider<Type, ExtType, Deps>
+  | FactoryProvider<Type, ExtType, Deps>
+  | ValueProvider<Type, ExtType>;
 
-export type InjectArray = Inject[] | InjectArray[];
+/**
+ * Массив провайдеров любой вложенностью
+ */
+export type Providers = Provider[] | Providers[];
 
 /**
  * Конструктор, в первый аргумент которого передаются зависимости из DI

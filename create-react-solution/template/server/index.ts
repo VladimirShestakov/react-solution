@@ -3,7 +3,7 @@
  */
 import { Container, logService } from 'react-solution';
 import { envServer, cacheStore, ssr, proxy, viteDev } from 'react-solution/server';
-import { app } from './app/inject.ts';
+import { app } from './app/provider.ts';
 import { APP } from './app/token.ts';
 import configs from './config.ts';
 
@@ -11,21 +11,21 @@ try {
   // Подключение используемых сервисов в контейнер управления зависимостями
   const solutions = new Container()
     // Переменные окружения для сервера
-    .set(envServer())
+    .register(envServer())
     // Настройки для всех сервисов
-    .set(configs)
+    .register(configs)
     // Сервис логирования
-    .set(logService)
+    .register(logService)
     // Сервис проксирования к АПИ (для локальной отладки prod сборки)
-    .set(proxy)
+    .register(proxy)
     // Сервис кэширования SSR
-    .set(cacheStore)
+    .register(cacheStore)
     // Сборщик Vite для запуска SSR в dev режиме (без сборки)
-    .set(viteDev)
+    .register(viteDev)
     // Сервис рендера (SSR)
-    .set(ssr)
+    .register(ssr)
     // Приложение, определяющее основной ход работ
-    .set(app);
+    .register(app);
 
   const appInstance = await solutions.get(APP);
   await appInstance.start();

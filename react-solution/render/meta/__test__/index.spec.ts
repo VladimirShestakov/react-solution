@@ -11,8 +11,8 @@ describe('meta-dom', () => {
         <head>
           <script type="module">window.initialData='{}';</script>
           <script type="module">
-            import { inject } from '/@vite-plugin-checker-runtime';
-            inject({
+            import { provider } from '/@vite-plugin-checker-runtime';
+            provider({
               overlayConfig: {},
               base: '/',
             });
@@ -58,8 +58,8 @@ describe('meta-dom', () => {
       '<head>',
       `<script type="module">window.initialData='{}';</script>`,
       '<script type="module">\n' +
-        "            import { inject } from '/@vite-plugin-checker-runtime';\n" +
-        '            inject({\n' +
+        "            import { provider } from '/@vite-plugin-checker-runtime';\n" +
+        '            provider({\n' +
         '              overlayConfig: {},\n' +
         "              base: '/',\n" +
         '            });\n' +

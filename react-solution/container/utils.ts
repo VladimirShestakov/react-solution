@@ -1,58 +1,58 @@
-import type { FunctionWithDepends, InjectClass, InjectFactory, InjectValue } from './types';
+import type { FunctionWithDepends, ClassProvider, FactoryProvider, ValueProvider } from './types';
 
-export function injectClass<Type, ExtType extends Type, Deps>(
-  inject: InjectClass<Type, ExtType, Deps>,
-): InjectClass<Type, ExtType, Deps> {
-  return inject;
+export function classProvider<Type, ExtType extends Type, Deps>(
+  provider: ClassProvider<Type, ExtType, Deps>,
+): ClassProvider<Type, ExtType, Deps> {
+  return provider;
 }
 
-export function injectFactory<Type, ExtType extends Type, Deps>(
-  inject: InjectFactory<Type, ExtType, Deps>,
-): InjectFactory<Type, ExtType, Deps> {
-  return inject;
+export function factoryProvider<Type, ExtType extends Type, Deps>(
+  provider: FactoryProvider<Type, ExtType, Deps>,
+): FactoryProvider<Type, ExtType, Deps> {
+  return provider;
 }
 
-export function injectValue<Type, ExtType extends Type>(
-  inject: InjectValue<Type, ExtType>,
-): InjectValue<Type, ExtType> {
-  return inject;
+export function valueProvider<Type, ExtType extends Type>(
+  provider: ValueProvider<Type, ExtType>,
+): ValueProvider<Type, ExtType> {
+  return provider;
 }
 
-export function isInjectClass<Type, ExtType extends Type, Deps>(
-  inject: InjectClass<Type, ExtType, Deps> | unknown,
-): inject is InjectClass<Type, ExtType, Deps> {
+export function isClassProvider<Type, ExtType extends Type, Deps>(
+  provider: ClassProvider<Type, ExtType, Deps> | unknown,
+): provider is ClassProvider<Type, ExtType, Deps> {
   return Boolean(
-    inject &&
-      typeof inject === 'object' &&
-      'token' in inject &&
-      'depends' in inject &&
-      'constructor' in inject,
+    provider &&
+      typeof provider === 'object' &&
+      'token' in provider &&
+      'depends' in provider &&
+      'constructor' in provider,
   );
 }
 
-export function isInjectFactory<Type, ExtType extends Type, Deps>(
-  inject: InjectFactory<Type, ExtType, Deps> | unknown,
-): inject is InjectFactory<Type, ExtType, Deps> {
+export function isFactoryProvider<Type, ExtType extends Type, Deps>(
+  provider: FactoryProvider<Type, ExtType, Deps> | unknown,
+): provider is FactoryProvider<Type, ExtType, Deps> {
   return Boolean(
-    inject &&
-      typeof inject === 'object' &&
-      'token' in inject &&
-      'depends' in inject &&
-      'factory' in inject &&
-      typeof inject.factory === 'function',
+    provider &&
+      typeof provider === 'object' &&
+      'token' in provider &&
+      'depends' in provider &&
+      'factory' in provider &&
+      typeof provider.factory === 'function',
   );
 }
 
-export function isInjectValue<Type, ExtType extends Type = Type>(
-  inject: InjectValue<Type, ExtType> | unknown,
-): inject is InjectValue<Type, ExtType> {
-  return Boolean(inject && typeof inject === 'object' && 'token' in inject && 'value' in inject);
+export function isValueProvider<Type, ExtType extends Type = Type>(
+  provider: ValueProvider<Type, ExtType> | unknown,
+): provider is ValueProvider<Type, ExtType> {
+  return Boolean(provider && typeof provider === 'object' && 'token' in provider && 'value' in provider);
 }
 
-export function isInject<Type, ExtType extends Type, Deps>(
-  inject: InjectClass<Type, ExtType, Deps> | InjectFactory<Type, ExtType, Deps> | unknown,
-): inject is InjectFactory<Type, ExtType, Deps> | InjectClass<Type, ExtType, Deps> {
-  return isInjectClass(inject) || isInjectFactory(inject) || isInjectValue(inject);
+export function isProvider<Type, ExtType extends Type, Deps>(
+  provider: ClassProvider<Type, ExtType, Deps> | FactoryProvider<Type, ExtType, Deps> | unknown,
+): provider is FactoryProvider<Type, ExtType, Deps> | ClassProvider<Type, ExtType, Deps> {
+  return isClassProvider(provider) || isFactoryProvider(provider) || isValueProvider(provider);
 }
 
 export function isFactory<Type, Deps>(

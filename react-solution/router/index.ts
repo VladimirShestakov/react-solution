@@ -1,4 +1,4 @@
-export * from './inject';
+export * from './context-provider.tsx';
 export * from './navigate-ssr.tsx';
 export * from './provider';
 export * from './service';
