@@ -25,7 +25,7 @@ export type CSSText = {
   'font-variant': string;
   'font-weight': string;
   'line-height': string;
-  'text-decoration': string
+  'text-decoration': string;
   margin: string;
   outline: string;
   padding: string;
@@ -33,7 +33,7 @@ export type CSSText = {
   'word-spacing': string;
   'word-break': string;
   'writing-mode': string;
-}
+};
 
 export function css(style: Partial<CSSText>): string {
   return Object.entries(style)

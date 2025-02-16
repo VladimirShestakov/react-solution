@@ -1,5 +1,5 @@
 import { useEffect, useId } from 'react';
-import { useSolution } from '../../container';
+import { useSolution } from '../../solutions';
 import { RENDER_SERVICE } from '../token.ts';
 import type { VirtualElementProps } from '../meta/types.ts';
 

@@ -20,14 +20,29 @@
     "./react-solution/utils",
     "./react-solution/waiting-store"
   ],
-  "plugin": [
-    "typedoc-plugin-markdown"
-  ],
+  "plugin": ["typedoc-plugin-markdown"],
+  "sortEntryPoints": false,
+  "cleanOutputDir": true,
+  "entryPointStrategy": "resolve",
+  "excludePrivate": false,
+  "readme": "none",
+  "projectDocuments": ["./README.md"],
+
+  "packageOptions": {
+    "includeVersion": false,
+    "excludePrivate": false,
+    "readme": "./react-solution/README.md",
+    "sortEntryPoints": false,
+    "sort": "source-order",
+    "excludeExternals": true,
+    "gitRevision": "master"
+  },
+
   "out": "./dist/docs",
   "disableSources": true,
   "hidePageHeader": true,
   "hideBreadcrumbs": true,
-  "hideGroupHeadings": false,
+  "hideGroupHeadings": true,
   "useCodeBlocks": true,
   "parametersFormat": "table",
   "classPropertiesFormat": "list",
@@ -37,4 +52,12 @@
   "typeDeclarationFormat": "table",
   "typeDeclarationVisibility": "compact",
   "mergeReadme": false,
+
+  "outputFileStrategy": "members",
+  "membersWithOwnFile": ["Variable", "Function", "Class", "Interface", "TypeAlias"],
+  "expandObjects": false,
+  "expandParameters": false,
+  "indexFormat": "table",
+  "tableColumnSettings": { "hideSources": true },
+  "sanitizeComments": true
 }

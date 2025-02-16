@@ -1,4 +1,4 @@
-import { CONTAINER, classProvider } from '../container';
+import { SOLUTIONS, classProvider } from '../solutions';
 import { DUMP_SERVICE } from '../dump';
 import { LOG_SERVICE } from '../log';
 import { optionalToken } from '../token';
@@ -11,7 +11,7 @@ export const renderService = classProvider({
   constructor: RenderService,
   depends: {
     env: ENV,
-    container: CONTAINER,
+    solutions: SOLUTIONS,
     logger: LOG_SERVICE,
     dump: optionalToken(DUMP_SERVICE),
     config: optionalToken(RENDER_CFG),

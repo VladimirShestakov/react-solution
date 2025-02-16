@@ -41,6 +41,6 @@ export default tslint.config(
     },
   },
   {
-    ignores: ['dist/*'],
+    ignores: ['dist/*', 'node_modules/*', 'cache/*', '*.d.ts', '.obsidian/*'],
   },
 );

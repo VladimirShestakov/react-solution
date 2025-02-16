@@ -1,4 +1,3 @@
-import { replaceInner } from '../../../utils';
 import { Meta } from '../index';
 
 describe('meta-dom', () => {

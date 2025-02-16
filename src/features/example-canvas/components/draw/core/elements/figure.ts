@@ -18,6 +18,7 @@ class Figure {
 
   animate(time: number) {
     // Время "жизни" фигуры
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const t = time - this.time;
 
     // Изменение угла без укореняем

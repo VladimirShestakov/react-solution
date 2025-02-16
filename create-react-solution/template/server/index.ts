@@ -1,7 +1,7 @@
 /**
  * HTTP server for render
  */
-import { Container, logService } from 'react-solution';
+import { Solutions, logService } from 'react-solution';
 import { envServer, cacheStore, ssr, proxy, viteDev } from 'react-solution/server';
 import { app } from './app/provider.ts';
 import { APP } from './app/token.ts';
@@ -9,7 +9,7 @@ import configs from './config.ts';
 
 try {
   // Подключение используемых сервисов в контейнер управления зависимостями
-  const solutions = new Container()
+  const solutions = new Solutions()
     // Переменные окружения для сервера
     .register(envServer())
     // Настройки для всех сервисов

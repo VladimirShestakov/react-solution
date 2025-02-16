@@ -1,4 +1,4 @@
-import { classProvider } from '../container';
+import { classProvider } from '../solutions';
 import { ENV } from '../env';
 import { optionalToken } from '../token';
 import { RouterService } from './service';

@@ -30,6 +30,7 @@ export default [
     dir: './cache',
   })),
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   config(SSR_CGF, ({ env }) => ({
     // Если отключить, то будет всегда отдаваться SPA
     enabled: true,

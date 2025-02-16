@@ -1,5 +1,5 @@
 import {
-  Container,
+  Solutions,
   RouterContextProvider,
   envClient,
   RENDER_COMPONENT,
@@ -25,12 +25,13 @@ import { mainFeature } from '@src/features/main/providers.ts';
 import { navigationFeature } from '@src/features/navigation/providers.ts';
 
 /**
- * Создание DI контейнера для клиентского приложения (с настройками, сервисами, фичами...).
+ * Создание DI контейнера с программными решениями (с настройками, сервисами, фичами...).
+ * Подготовленный контейнер используется как для клиентского приложения, так и для рендера на сервере
  * @param envPatch Патч на переменные окружения для возможности подставить параметры запроса при SSR
  */
-async function getSolutions(envPatch: Patch<Env> = {}): Promise<Container> {
+export default async function prepareSolutions(envPatch: Patch<Env> = {}): Promise<Solutions> {
   return (
-    new Container()
+    new Solutions()
       .register(envClient(envPatch))
       .register(configs)
       .register(renderService)
@@ -65,13 +66,8 @@ async function getSolutions(envPatch: Patch<Env> = {}): Promise<Container> {
  */
 if (!import.meta.env.SSR) {
   (async () => {
-    const solutions = await getSolutions();
+    const solutions = await prepareSolutions();
     const render = await solutions.get(RENDER_SERVICE);
     render.start();
   })();
 }
-
-/**
- * Экспорт функции для SSR.
- */
-export default getSolutions;

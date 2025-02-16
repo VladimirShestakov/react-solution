@@ -216,6 +216,7 @@ export abstract class DataParamsState<
    * Необходимо реализовать логику в наследуемом классе
    * @param apiParams
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected async loadData(apiParams: any): Promise<Data> {
     return {} as Data;
   }

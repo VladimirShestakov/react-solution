@@ -1,4 +1,4 @@
-import { useSolution } from '../container';
+import { useSolution } from '../solutions';
 import { HTTP_CLIENT } from './token';
 import type { HttpClient } from './types';
 

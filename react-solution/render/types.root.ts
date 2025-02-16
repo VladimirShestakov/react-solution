@@ -1,3 +1,3 @@
-import type { Container } from '../container';
+import type { Solutions } from '../solutions';
 
-export type SolutionsFactory = (envPartial: Partial<Env>) => Promise<Container>;
+export type SolutionsFactory = (envPartial: Partial<Env>) => Promise<Solutions>;

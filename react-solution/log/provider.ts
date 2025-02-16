@@ -1,4 +1,4 @@
-import { classProvider } from '../container';
+import { classProvider } from '../solutions';
 import { optionalToken } from '../token';
 import { LogService } from './service';
 import { LOG_SERVICE, LOG_CFG } from './token';

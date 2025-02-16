@@ -46,7 +46,9 @@ export function isFactoryProvider<Type, ExtType extends Type, Deps>(
 export function isValueProvider<Type, ExtType extends Type = Type>(
   provider: ValueProvider<Type, ExtType> | unknown,
 ): provider is ValueProvider<Type, ExtType> {
-  return Boolean(provider && typeof provider === 'object' && 'token' in provider && 'value' in provider);
+  return Boolean(
+    provider && typeof provider === 'object' && 'token' in provider && 'value' in provider,
+  );
 }
 
 export function isProvider<Type, ExtType extends Type, Deps>(

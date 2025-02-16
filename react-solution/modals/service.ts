@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react';
-import { codeGenerator } from '../utils';
 import type { Token } from '../token';
+import { codeGenerator } from '../utils';
 import { ModalsStack, ModalState, ModalComponent, ModalProps, ModalResult } from './types';
 
 /**

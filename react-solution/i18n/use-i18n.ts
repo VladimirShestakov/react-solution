@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from 'react';
-import { useSolution } from '../container';
+import { useSolution } from '../solutions';
 import { I18N } from './token';
 import type { I18nPath, I18nTranslateOptions, useI18nReturn } from './types';
 

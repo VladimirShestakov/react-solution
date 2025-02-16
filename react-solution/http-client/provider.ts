@@ -1,4 +1,4 @@
-import { classProvider } from '../container';
+import { classProvider } from '../solutions';
 import { HttpClient } from './service';
 import { HTTP_CLIENT, HTTP_CLIENT_CFG } from './token';
 

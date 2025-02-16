@@ -1,4 +1,4 @@
-import { CONTAINER, classProvider } from '../container';
+import { SOLUTIONS, classProvider } from '../solutions';
 import { optionalToken } from '../token';
 import { ENV } from '../env';
 import { DumpService } from './service';
@@ -9,7 +9,7 @@ export const dumpService = classProvider({
   constructor: DumpService,
   depends: {
     env: ENV,
-    container: CONTAINER,
+    solutions: SOLUTIONS,
     config: optionalToken(DUMP_CFG),
   },
 });

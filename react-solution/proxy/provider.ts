@@ -1,4 +1,4 @@
-import { classProvider } from '../container';
+import { classProvider } from '../solutions';
 import { Proxy } from './service';
 import { PROXY, PROXY_CFG } from './token';
 

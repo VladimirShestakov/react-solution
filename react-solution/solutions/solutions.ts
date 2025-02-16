@@ -3,7 +3,7 @@ import { WaitingStore, type TWaitKey, WaitStatus } from '../waiting-store';
 import mc from 'merge-change';
 import { isClassProvider, isFactoryProvider, isValueProvider } from './utils';
 import {
-  type ContainerEvents,
+  type SolutionsEvents,
   type Provider,
   Providers,
   ClassProvider,
@@ -15,43 +15,16 @@ import { type TokenInterface, type TypesFromTokens, type TokenKey, newToken } fr
 /**
  * Токен на DI контейнер
  */
-export const CONTAINER = newToken<Container>('@react-solution/container');
+export const SOLUTIONS = newToken<Solutions>('@react-solution/solutions');
 
 /**
- * DI контейнер предназначен для управления зависимостями.
- * В контейнере регистрируются зависимости всех программных решений приложения: модулей, компонентов, сервисов, ресурсов — любых объектов.
- * Через контейнер предоставляется доступ ко всем программным решениям приложения.
- * Контейнер берёт на себя обязанность создавать и инициализировать решение по первому требованию.
- * Контейнер запоминает подготовленное решение, чтобы не создавать и не инициализировать его повторно при
- * очередном запросе. Контейнер реализует паттерн "Одиночка".
+ * DI контейнер для управления программными решениями и их зависимостями.
  */
-export class Container {
+export class Solutions {
   /**
    * События контейнера.
-   *
-   * Контейнер отправляет события о создании экземпляра решения onCreate и его удалении `onDelete` (когда вызывается `deleteInstance()`).
-   * На эти события можно подписаться.
-   *
-   * @example
-   * ```ts
-   * container.events.on('onCreate', <Type extends object>({ token, value }: { token: Token<Type>; value: Type }) => {
-   *   // обработка события
-   * }
-   * ```
-   *
-   * ```ts
-   * container.events.on('onDelete', ({ token }: { token: Token }) => {
-   *   // обработка события
-   * }
-   * ```
-   *
-   * Например, сервис `dump` отслеживает событие `onCreate`, чтобы всем инициализируемым программным
-   * решениям сразу передавать их сохраненное состояние (состояние сохраняется после рендере на сервере).
-   *
-   * Для работы с событиями используется класс `Events` из React-Solution.
-   * Для отписки от события применяется метод `events.off()`. Подробнее см. в описании класса `Events`.
    */
-  readonly events: Events<ContainerEvents> = new Events();
+  readonly events: Events<SolutionsEvents> = new Events();
   /**
    * Все зарегистрированные провайдеры
    * Через провайдеры устанавливаются конкретные зависимости и логика их создания
@@ -62,33 +35,44 @@ export class Container {
    */
   protected waiting: WaitingStore = new WaitingStore();
 
-  constructor() {
+  /**
+   * Создание экземпляра DI контейнера.
+   * @param providers Массив провайдеров
+   * @return Пустой экземпляр DI контейнера.
+   */
+  constructor(providers?: Providers) {
     // Регистрация самого себя
-    this.register({ token: CONTAINER, value: this });
+    this.register({ token: SOLUTIONS, value: this });
+    if (providers) {
+      this.register(providers);
+    }
   }
 
   /**
-   * @hidden
+   * Регистрация провайдера с фабричной функцией
    */
   register<Type, ExtType extends Type, Deps>(provider: FactoryProvider<Type, ExtType, Deps>): this;
   /**
-   * @hidden
+   * Регистрация провайдера с конструктором класса
    */
   register<Type, ExtType extends Type, Deps>(provider: ClassProvider<Type, ExtType, Deps>): this;
   /**
-   * @hidden
+   * Регистрация провайдера с подготовленным значением
    */
   register<Type, ExtType extends Type>(provider: ValueProvider<Type, ExtType>): this;
   /**
-   * @hidden
+   * Регистрация массива провайдеров любого типа
    */
-  register(provider: Providers): this;
+  register(providers: Providers): this;
 
   /**
-   * Регистрация зависимостей через установку провайдера в контейнер
+   * Регистрация провайдера программного решения
+   * В метод `register()` передаётся провайдер решения одного из типов `FactoryProvider`, `ClassProvider`, `ValueProvider`. Или массив провайдеров.
    * @param provider Провайдер или массив провайдеров
    */
-  register<Type, ExtType extends Type, Deps>(provider: Providers | Provider<Type, ExtType, Deps>): this {
+  register<Type, ExtType extends Type, Deps>(
+    provider: Providers | Provider<Type, ExtType, Deps>,
+  ): this {
     if (!Array.isArray(provider)) {
       provider = [provider];
     }
@@ -108,10 +92,13 @@ export class Container {
   }
 
   /**
-   * Выбор "решения" по токену.
+   * Выбор программного решения по токену.
    * Если решение ещё не создано, то будет создано и инициализировано.
    * Если решение ещё в процессе создания, то вернётся уже существующий promise, чтобы не дублировалось создание.
    * Иначе возвращается ранее созданное решение.
+   * Решение создаётся с помощью зарегистрированного провайдера.
+   * Если провайдера нет, то выбросится исключение.
+   *
    * @param token
    */
   async get<Type>(token: TokenInterface<Type>): Promise<Type> {
@@ -133,7 +120,7 @@ export class Container {
   }
 
   /**
-   * Исполнение провайдера для подготовки "решения"
+   * Исполнение провайдера для подготовки программного решения.
    * @param token Токен, по которому будет найден провайдер, исполнен и получено решение
    * @protected
    */
@@ -176,8 +163,8 @@ export class Container {
   }
 
   /**
-   * Выбор множества сервисов по указанной карте токенов.
-   * Сервисы будут возвращены под теми же ключами, под которыми указаны токены в depends.
+   * Выбор множества программных решений по карте токенов.
+   * Программные решения будут возвращены под теми же ключами, под которыми указаны токены в depends.
    * @param depends Карта токенов.
    */
   async getMapped<Deps extends Record<string, TokenInterface>>(
@@ -201,10 +188,10 @@ export class Container {
   }
 
   /**
-   * Выбор сервиса с логикой ожидания для <Suspense> (с приостановкой через выброс исключения)
-   * Если сервис ещё не создан, то запоминается обещание (promise) его создания
-   * Если ожидание ещё не завершено, то в исключение кидается обещание создания сервиса
-   * Если ожидание выполнено, то возвращается результат обещания - экземпляр сервиса
+   * Выбор программного решения с логикой ожидания для `<Suspense>` (с приостановкой через выброс исключения).
+   * Если программное решение ещё не создано, то запоминается обещание (promise) на его создание.
+   * Если ожидание ещё не завершено, то в исключение кидается обещание (promise) на создание решения.
+   * Если ожидание выполнено, то возвращается результат обещания - экземпляр программного решения.
    * @param token
    */
   getWithSuspense<Type>(token: TokenInterface<Type>): Type {
@@ -221,10 +208,10 @@ export class Container {
   }
 
   /**
-   * Выбор множества сервисов по карте токенов с логикой ожиданием для <Suspense>
-   * Сервисы будут возвращены под теми же свойствами, под которыми указаны их токены в depends.
-   * Исключение кидается пока не будут выполнены асинхронные выборки всех сервисов.
-   * В исключение кидается последние невыполненное обещание, чтобы попытаться все сервисы выбрать за раз.
+   * Выбор множества программных решений по карте токенов с логикой ожиданием для `<Suspense>`.
+   * Программные решения будут возвращены под теми же ключами, под которыми указаны их токены в depends.
+   * Исключение кидается пока не будут выполнены асинхронные провайдеры всех решений.
+   * В исключение кидается последние невыполненное обещание, чтобы попытаться все программные решения выбрать за раз.
    * @param depends Карта токенов.
    */
   getMappedWithSuspense<Deps extends Record<string, TokenInterface>>(
@@ -247,10 +234,12 @@ export class Container {
   }
 
   /**
-   * Удаление экземпляра программного решения в DI контейнере.
-   * После чего при выборке этого же решения из DI контейнера оно снова будет создаваться и инициироваться.
+   * Сброс созданного программного решения из DI контейнера.
+   * Провайдер решения остаётся зарегистрированным.
+   * При последующей выборке сброшенного решения оно снова будет создано - снова исполнится провайдер решения.
    *
-   * @param token
+   * @param token Токен сбрасываемого решения
+   * @typeParam [Type] Тип в токене
    * @todo Проработать кейсы применения.
    */
   async deleteInstance<Type>(token: TokenInterface<Type>): Promise<void> {

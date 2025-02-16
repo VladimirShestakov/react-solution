@@ -5,21 +5,15 @@ import {
   type FunctionWithDepends,
   type FactoryProvider,
   type ValueProvider,
-} from '../container';
+} from '../solutions';
 import { ENV } from '../env';
 import { type TypesFromTokens, type TokenInterface } from '../token';
 
-/**
- * @hidden
- */
 export function config<T, ExtT extends T>(
   token: TokenInterface<T>,
   value: ExtT,
 ): ValueProvider<T, ExtT>;
 
-/**
- * @hidden
- */
 export function config<T, ExtT extends T, Deps = { env: typeof ENV }>(
   token: TokenInterface<T>,
   value: FunctionWithDepends<ExtT, TypesFromTokens<Deps>>,

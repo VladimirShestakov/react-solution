@@ -1,5 +1,5 @@
 import react, { type ReactElement, type ReactNode, useEffect, useId, useRef } from 'react';
-import { useSolution } from '../../container';
+import { useSolution } from '../../solutions';
 import { RENDER_SERVICE } from '../token.ts';
 import type { VirtualElementPlain, VirtualElementProps } from '../meta/types.ts';
 

@@ -24,6 +24,6 @@ export default {
     example: `Example of displaying a page as a modal window.
       The page will be displayed below since it is positioned according to the normal document flow.
       In contrast, the markup for modal windows uses absolute or fixed positioning.`,
-    openPage: `Open the current page using the modal service.`
+    openPage: `Open the current page using the modal service.`,
   },
 };

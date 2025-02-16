@@ -1,4 +1,4 @@
-import { classProvider } from '../container';
+import { classProvider } from '../solutions';
 import { CacheStore } from './service';
 import { CACHE_STORE, CACHE_STORE_CFG } from './token';
 

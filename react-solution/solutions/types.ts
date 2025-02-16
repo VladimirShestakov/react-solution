@@ -2,18 +2,20 @@ import { Token, type TypesFromTokens, type TokenInterface } from '../token';
 
 /**
  * Тип базового провайдера
+ * @param token XX
  */
-interface BaseProvider<Type, ExtType extends Type> {
+export interface BaseProvider<Type, ExtType extends Type> {
   token: TokenInterface<Type>;
   merge?: boolean;
   onDelete?: (value: ExtType) => void | Promise<void>;
 }
 
 /**
- * Провайдер с классом, экземпляры которого нужно создавать.
+ * Провайдер с конструктором класса, экземпляры которого нужно создавать.
  * Содержит токен, конструктор, токены зависимостей (которые будут переданы в первый аргумент конструктора)
  */
-export interface ClassProvider<Type, ExtType extends Type, Deps> extends BaseProvider<Type, ExtType> {
+export interface ClassProvider<Type, ExtType extends Type, Deps>
+  extends BaseProvider<Type, ExtType> {
   constructor: ConstructorWithDepends<ExtType, TypesFromTokens<Deps>>;
   depends: Deps;
 }
@@ -23,18 +25,22 @@ export interface ClassProvider<Type, ExtType extends Type, Deps> extends BasePro
  * Содержит токен, функцию и токены зависимостей, которые будут переданы в первый аргумент функции
  * Функция может быть асинхронной.
  */
-export interface FactoryProvider<Type, ExtType extends Type, Deps> extends BaseProvider<Type, ExtType> {
+export interface FactoryProvider<Type, ExtType extends Type, Deps>
+  extends BaseProvider<Type, ExtType> {
   factory: FunctionWithDepends<ExtType, TypesFromTokens<Deps>>;
   depends: Deps;
 }
 
 /**
- * Провайдер значения сопоставимого с типом токена.
+ * Провайдер с предопределенным значением сопоставимого с типом токена.
  */
 export interface ValueProvider<Type, ExtType extends Type> extends BaseProvider<Type, ExtType> {
   value: ExtType;
 }
 
+/**
+ * Обобщенный провайдер всех типов
+ */
 export type Provider<Type = any, ExtType extends Type = any, Deps = any> =
   | ClassProvider<Type, ExtType, Deps>
   | FactoryProvider<Type, ExtType, Deps>
@@ -56,11 +62,21 @@ export type ConstructorWithDepends<Type, Deps> = new (depends: Deps) => Type;
  */
 export type FunctionWithDepends<Type, Deps> = (depends: Deps) => Type | Promise<Type>;
 
-export type ContainerEvents = {
+/**
+ * События DI контейнера
+ */
+export type SolutionsEvents = {
+  /**
+   * Событие при создании программного решения (после успешного выполнения провайдера, но перед возвратом решения)
+   */
   onCreate: {
     token: Token<any>;
     value: any;
   };
+  /**
+   * События при сбросе программного решения из контейнера
+   * Можно использовать для деструктуризации решения - освобождения ресурсов.
+   */
   onDelete: {
     token: Token<any>;
   };

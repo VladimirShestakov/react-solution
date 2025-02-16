@@ -1,10 +1,10 @@
 import React from 'react';
-import { type Container } from './container';
+import { type Solutions } from './solutions.ts';
 
 /**
  * Контекст для DI контейнера React-Solution.
  */
-export const SolutionsContext = React.createContext<Container>({} as Container);
+export const SolutionsContext = React.createContext<Solutions>({} as Solutions);
 
 /**
  * React провайдер DI контейнера React-Solution.
@@ -14,7 +14,7 @@ export function SolutionsProvider({
   solutions,
   children,
 }: {
-  solutions: Container;
+  solutions: Solutions;
   children: React.ReactNode;
 }) {
   return <SolutionsContext.Provider value={solutions}>{children}</SolutionsContext.Provider>;

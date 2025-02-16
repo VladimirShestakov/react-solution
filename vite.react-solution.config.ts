@@ -5,6 +5,7 @@ import { defineConfig } from 'vite';
 import { typescriptPaths } from 'rollup-plugin-typescript-paths';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default defineConfig(params => {
   return {
     plugins: [

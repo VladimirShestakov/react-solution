@@ -1,4 +1,4 @@
-export * from './container';
+export * from './solutions.ts';
 export * from './provider';
 export * from './types';
 export * from './use-solution.ts';

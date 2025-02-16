@@ -1,13 +1,12 @@
 import { memo, useSyncExternalStore } from 'react';
-import { CONTAINER, useSolution } from '../container';
+import { SOLUTIONS, useSolution } from '../solutions';
 import { MODALS } from './token';
 
 /**
  * Отображает открытые модальные окна
  */
 function Modals() {
-  const solutions = useSolution(CONTAINER);
-
+  const solutions = useSolution(SOLUTIONS);
   const modals = solutions.getWithSuspense(MODALS);
   const modalsStack = useSyncExternalStore(modals.subscribe, modals.getStack, modals.getStack);
 

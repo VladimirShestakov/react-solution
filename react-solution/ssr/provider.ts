@@ -1,4 +1,4 @@
-import { factoryProvider } from '../container';
+import { factoryProvider } from '../solutions';
 import { CACHE_STORE } from '../cache-store';
 import { ENV } from '../env';
 import { LOG_SERVICE } from '../log';

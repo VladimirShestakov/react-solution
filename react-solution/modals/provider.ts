@@ -1,4 +1,4 @@
-import { classProvider } from '../container';
+import { classProvider } from '../solutions';
 import { Modals } from './service';
 import { MODALS } from './token';
 

@@ -2,7 +2,7 @@ import mc from 'merge-change';
 import { createRoot, hydrateRoot } from 'react-dom/client';
 import { type ReactNode, Suspense } from 'react';
 import { stringify, parse } from 'zipson';
-import { type Container, SolutionsProvider } from '../container';
+import { type Solutions, SolutionsProvider } from '../solutions';
 import { type DumpService } from '../dump';
 import type { LogInterface } from '../log';
 import type { Patch } from '../types';
@@ -44,7 +44,7 @@ export class RenderService {
   /**
    * @param depends Зависимости
    * @param depends.env Переменные окружения
-   * @param depends.container DI контейнер
+   * @param depends.solutions DI контейнер
    * @param depends.dump Сервис для управления дампом данных
    * @param depends.config Патч настроек сервиса
    * @param depends.children React элемент для рендеринга
@@ -53,7 +53,7 @@ export class RenderService {
   constructor(
     protected depends: {
       env: Env;
-      container: Container;
+      solutions: Solutions;
       dump?: DumpService;
       config?: Patch<RenderConfig>;
       children?: ReactNode;
@@ -71,7 +71,7 @@ export class RenderService {
     }
 
     this.children = (
-      <SolutionsProvider solutions={this.depends.container}>
+      <SolutionsProvider solutions={this.depends.solutions}>
         <Suspense>
           {this.depends.children || 'Не установлен React элемент в сервис рендера!'}
         </Suspense>

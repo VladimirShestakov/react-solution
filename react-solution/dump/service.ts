@@ -1,5 +1,5 @@
 import mc from 'merge-change';
-import { type Container } from '../container';
+import { type Solutions } from '../solutions';
 import { type Token } from '../token';
 import type { Patch } from '../types';
 import type { DumpConfig } from './types';
@@ -23,13 +23,13 @@ export class DumpService {
   constructor(
     protected depends: {
       env: Env;
-      container: Container;
+      solutions: Solutions;
       config?: Patch<DumpConfig>;
     },
   ) {
     this.config = mc.merge(this.config, depends.config || {});
     if (this.config.autoSendDump) {
-      this.depends.container.events.on('onCreate', this.send);
+      this.depends.solutions.events.on('onCreate', this.send);
       // @todo Как-то отписываться от события
     }
   }
@@ -74,7 +74,7 @@ export class DumpService {
    */
   collect() {
     const result = new Map();
-    const instances = this.depends.container.getInstances();
+    const instances = this.depends.solutions.getInstances();
     for (const [key, instance] of instances) {
       if (instance && 'getDump' in instance && typeof instance.getDump === 'function') {
         result.set(key, instance.getDump());
@@ -89,7 +89,7 @@ export class DumpService {
    * Раздать дамп всем активным сервисам
    */
   distribute() {
-    const instances = this.depends.container.getInstances();
+    const instances = this.depends.solutions.getInstances();
     for (const [key, instance] of instances) {
       if ('setDump' in instance && typeof instance.setDump === 'function') {
         const dump = this.data.get(key);

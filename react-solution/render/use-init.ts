@@ -1,4 +1,4 @@
-import { useSolutionMap } from '../container';
+import { useSolutionMap } from '../solutions';
 import { ENV } from '../env';
 import { RENDER_SERVICE } from '../render';
 import { useEffect } from 'react';

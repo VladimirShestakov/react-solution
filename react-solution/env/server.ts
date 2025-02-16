@@ -1,7 +1,7 @@
 import typedVariables from 'dotenv-parse-variables';
 import mc from 'merge-change';
 import { loadEnv as loadEnvVite } from 'vite';
-import { valueProvider } from '../container';
+import { valueProvider } from '../solutions';
 import { ENV } from './token';
 import type { Patch } from '../types';
 

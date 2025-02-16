@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import { HttpLocation, HttpStatus } from '../render';
 import type { NavigateSSRProps } from './types';
-import { useSolution } from '../container';
+import { useSolution } from '../solutions';
 import { ENV } from '../env';
 
 /**

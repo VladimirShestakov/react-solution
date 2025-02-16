@@ -1,5 +1,5 @@
 import mc from 'merge-change';
-import { valueProvider } from '../container';
+import { valueProvider } from '../solutions';
 import { ENV } from './token';
 import type { Patch } from '../types';
 

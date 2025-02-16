@@ -1,4 +1,4 @@
-import { factoryProvider } from '../container';
+import { factoryProvider } from '../solutions';
 import { ENV } from '../env';
 import { VITE_DEV } from './token';
 import { ViteDev } from './service';

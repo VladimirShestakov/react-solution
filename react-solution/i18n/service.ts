@@ -273,8 +273,10 @@ export class I18n {
    * Доступные локали для указанного ключа
    * @param key
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getLocalesFor(key: I18nPath) {}
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   setDependencies(locale: string) {
     //this.services.api.setHeader('X-Lang', locale);
   }
