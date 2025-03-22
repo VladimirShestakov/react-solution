@@ -4,7 +4,7 @@ import type { TokenInterface, TokenKey } from './types';
  * Токен
  * @typeParam Type Тип токена
  */
-export class Token<Type = any> implements TokenInterface<Type> {
+export class Token<Type = unknown> implements TokenInterface<Type> {
   readonly key: TokenKey<Type>;
   /**
    * @param name Уникальное название токена, например в формате URI

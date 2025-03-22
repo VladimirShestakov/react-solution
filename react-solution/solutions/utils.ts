@@ -1,64 +1,36 @@
-import type { FunctionWithDepends, ClassProvider, FactoryProvider, ValueProvider } from './types';
+import { FunctionWithDepends, ClassProvider, ValueProvider, Provider } from './types';
+
+export function factoryProvider<Type, ExtType extends Type, Deps>(
+  provider: Provider<Type, ExtType, Deps>,
+): Provider<Type, ExtType, Deps> {
+  return provider;
+}
 
 export function classProvider<Type, ExtType extends Type, Deps>(
   provider: ClassProvider<Type, ExtType, Deps>,
-): ClassProvider<Type, ExtType, Deps> {
-  return provider;
+): Provider<Type, ExtType, Deps> {
+  return {
+    ...provider,
+    factory: depends => {
+      return new provider.constructor(depends);
+    },
+  };
 }
 
-export function factoryProvider<Type, ExtType extends Type, Deps>(
-  provider: FactoryProvider<Type, ExtType, Deps>,
-): FactoryProvider<Type, ExtType, Deps> {
-  return provider;
-}
-
-export function valueProvider<Type, ExtType extends Type>(
+export function valueProvider<Type, ExtType extends Type, Deps>(
   provider: ValueProvider<Type, ExtType>,
-): ValueProvider<Type, ExtType> {
-  return provider;
-}
-
-export function isClassProvider<Type, ExtType extends Type, Deps>(
-  provider: ClassProvider<Type, ExtType, Deps> | unknown,
-): provider is ClassProvider<Type, ExtType, Deps> {
-  return Boolean(
-    provider &&
-      typeof provider === 'object' &&
-      'token' in provider &&
-      'depends' in provider &&
-      'constructor' in provider,
-  );
-}
-
-export function isFactoryProvider<Type, ExtType extends Type, Deps>(
-  provider: FactoryProvider<Type, ExtType, Deps> | unknown,
-): provider is FactoryProvider<Type, ExtType, Deps> {
-  return Boolean(
-    provider &&
-      typeof provider === 'object' &&
-      'token' in provider &&
-      'depends' in provider &&
-      'factory' in provider &&
-      typeof provider.factory === 'function',
-  );
-}
-
-export function isValueProvider<Type, ExtType extends Type = Type>(
-  provider: ValueProvider<Type, ExtType> | unknown,
-): provider is ValueProvider<Type, ExtType> {
-  return Boolean(
-    provider && typeof provider === 'object' && 'token' in provider && 'value' in provider,
-  );
-}
-
-export function isProvider<Type, ExtType extends Type, Deps>(
-  provider: ClassProvider<Type, ExtType, Deps> | FactoryProvider<Type, ExtType, Deps> | unknown,
-): provider is FactoryProvider<Type, ExtType, Deps> | ClassProvider<Type, ExtType, Deps> {
-  return isClassProvider(provider) || isFactoryProvider(provider) || isValueProvider(provider);
+): Provider<Type, ExtType, Deps> {
+  return {
+    ...provider,
+    depends: {} as Deps,
+    factory: () => {
+      return provider.value;
+    },
+  };
 }
 
 export function isFactory<Type, Deps>(
-  value: FunctionWithDepends<Type, Deps> | unknown,
-): value is FunctionWithDepends<Type, Deps> {
-  return Boolean(value && typeof value === 'function');
+  factory: FunctionWithDepends<Type, Deps> | unknown,
+): factory is FunctionWithDepends<Type, Deps> {
+  return Boolean(factory && typeof factory === 'function');
 }

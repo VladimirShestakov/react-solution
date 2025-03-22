@@ -1,22 +1,22 @@
 import { PROXY_CFG } from 'react-solution/server';
 import { CACHE_STORE_CFG } from 'react-solution/server';
 import { SSR_CGF } from 'react-solution/server';
-import { config } from 'react-solution';
+import { configProvider } from 'react-solution';
 import proxyConfig from '../proxy.config';
 import { APP_CFG } from './app/token.ts';
 
 export default [
-  config(APP_CFG, ({ env }) => ({
+  configProvider(APP_CFG, ({ env }) => ({
     host: env.HOST || 'localhost',
     port: env.PORT || 8010,
   })),
 
-  config(PROXY_CFG, ({ env }) => ({
+  configProvider(PROXY_CFG, ({ env }) => ({
     enabled: true, //env.PROD, //В dev режиме работает прокси Vite(в режиме middleware), но у него ошибка на POST запросы, поэтому включен свой прокси
     routes: proxyConfig(env),
   })),
 
-  config(CACHE_STORE_CFG, ({ env }) => ({
+  configProvider(CACHE_STORE_CFG, ({ env }) => ({
     // Подпись для валидации кэша после обновления приложения или запуска в разном режиме
     // При деплое подставляется хэш комита
     signature: `${env.CACHE_SIGNATURE || 'some4'}${env.PROD ? 'P' : 'D'}`,
@@ -31,7 +31,7 @@ export default [
   })),
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  config(SSR_CGF, ({ env }) => ({
+  configProvider(SSR_CGF, ({ env }) => ({
     // Если отключить, то будет всегда отдаваться SPA
     enabled: true,
     // Количество потоков при рендере в prod режиме

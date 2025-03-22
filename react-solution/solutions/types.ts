@@ -1,66 +1,76 @@
 import { Token, type TypesFromTokens, type TokenInterface } from '../token';
 
 /**
- * Тип базового провайдера
- * @param token XX
+ * Массив провайдеров любой вложенности
  */
-export interface BaseProvider<Type, ExtType extends Type> {
+export type Providers = Provider[] | Providers[];
+
+/**
+ * Провайдер с функцией, которая создаёт программное решение сопоставимое с типом токена.
+ */
+export interface Provider<Type = any, ExtType extends Type = any, Deps = any>
+  extends ProviderProps<Type, ExtType> {
+  /**
+   * Функция для подготовки решения и его возврата.
+   * Тип возвращаемого значения должен совпадать с типом в токене.
+   * Может быть асинхронной (возвращать промис)
+   * В первый аргумент (в виде plain объекта) получает все зависимые решения, чьи токены указаны в depends
+   */
+  factory: FunctionWithDepends<ExtType, TypesFromTokens<Deps>>;
+  /**
+   * Токены зависимых решений в виде пар "название: токен".
+   * Названия должны совпадать с названиями свойств первого аргумента функции factory
+   */
+  depends: Deps;
+}
+
+/**
+ * Основные свойства провайдера.
+ * Используется для создания кастомных провайдеров (чтобы передать все свойства в итоговый Provider)
+ */
+export interface ProviderProps<Type, ExtType extends Type> {
+  /**
+   * Токен на предоставляемое решение (ключ, связанный с типом решения)
+   */
   token: TokenInterface<Type>;
+  /**
+   * Признак для слияния предоставленного решение (значения) с уже внедренным в DI контейнер
+   */
   merge?: boolean;
+  /**
+   * Функция обратного вызова при удалении подготовленного решение (не провайдера) из DI контейнера
+   * @param value
+   */
   onDelete?: (value: ExtType) => void | Promise<void>;
 }
 
 /**
- * Провайдер с конструктором класса, экземпляры которого нужно создавать.
- * Содержит токен, конструктор, токены зависимостей (которые будут переданы в первый аргумент конструктора)
+ * Параметры для создания провайдера на основе конструктора класса
  */
 export interface ClassProvider<Type, ExtType extends Type, Deps>
-  extends BaseProvider<Type, ExtType> {
+  extends ProviderProps<Type, ExtType> {
   constructor: ConstructorWithDepends<ExtType, TypesFromTokens<Deps>>;
   depends: Deps;
 }
 
 /**
- * Провайдер с функцией, которая создаёт значение сопоставимое с типом токена.
- * Содержит токен, функцию и токены зависимостей, которые будут переданы в первый аргумент функции
- * Функция может быть асинхронной.
+ * Параметры для создания провайдера на основе предопределенного значения.
  */
-export interface FactoryProvider<Type, ExtType extends Type, Deps>
-  extends BaseProvider<Type, ExtType> {
-  factory: FunctionWithDepends<ExtType, TypesFromTokens<Deps>>;
-  depends: Deps;
-}
-
-/**
- * Провайдер с предопределенным значением сопоставимого с типом токена.
- */
-export interface ValueProvider<Type, ExtType extends Type> extends BaseProvider<Type, ExtType> {
+export interface ValueProvider<Type, ExtType extends Type> extends ProviderProps<Type, ExtType> {
   value: ExtType;
 }
 
 /**
- * Обобщенный провайдер всех типов
+ * Функция для подготовки решения с использованием зависимостей из DI.
+ * Может быть асинхронной (возвращать промис)
+ * В первый аргумент depends (в виде plain объекта) передаются зависимые решения
  */
-export type Provider<Type = any, ExtType extends Type = any, Deps = any> =
-  | ClassProvider<Type, ExtType, Deps>
-  | FactoryProvider<Type, ExtType, Deps>
-  | ValueProvider<Type, ExtType>;
-
-/**
- * Массив провайдеров любой вложенностью
- */
-export type Providers = Provider[] | Providers[];
+export type FunctionWithDepends<Type, Deps> = (depends: Deps) => Type | Promise<Type>;
 
 /**
  * Конструктор, в первый аргумент которого передаются зависимости из DI
  */
 export type ConstructorWithDepends<Type, Deps> = new (depends: Deps) => Type;
-
-/**
- * Функция, в первый аргумент которого передаются зависимости из DI.
- * Должна вернуть Type. Может быть асинхронной.
- */
-export type FunctionWithDepends<Type, Deps> = (depends: Deps) => Type | Promise<Type>;
 
 /**
  * События DI контейнера

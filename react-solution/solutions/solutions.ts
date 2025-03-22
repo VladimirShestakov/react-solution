@@ -1,15 +1,8 @@
 import { Events } from '../events';
 import { WaitingStore, type TWaitKey, WaitStatus } from '../waiting-store';
 import mc from 'merge-change';
-import { isClassProvider, isFactoryProvider, isValueProvider } from './utils';
-import {
-  type SolutionsEvents,
-  type Provider,
-  Providers,
-  ClassProvider,
-  FactoryProvider,
-  ValueProvider,
-} from './types';
+import { valueProvider } from './utils';
+import { SolutionsEvents, Provider, Providers } from './types';
 import { type TokenInterface, type TypesFromTokens, type TokenKey, newToken } from '../token';
 
 /**
@@ -42,28 +35,11 @@ export class Solutions {
    */
   constructor(providers?: Providers) {
     // Регистрация самого себя
-    this.register({ token: SOLUTIONS, value: this });
+    this.register(valueProvider({ token: SOLUTIONS, value: this }));
     if (providers) {
       this.register(providers);
     }
   }
-
-  /**
-   * Регистрация провайдера с фабричной функцией
-   */
-  register<Type, ExtType extends Type, Deps>(provider: FactoryProvider<Type, ExtType, Deps>): this;
-  /**
-   * Регистрация провайдера с конструктором класса
-   */
-  register<Type, ExtType extends Type, Deps>(provider: ClassProvider<Type, ExtType, Deps>): this;
-  /**
-   * Регистрация провайдера с подготовленным значением
-   */
-  register<Type, ExtType extends Type>(provider: ValueProvider<Type, ExtType>): this;
-  /**
-   * Регистрация массива провайдеров любого типа
-   */
-  register(providers: Providers): this;
 
   /**
    * Регистрация провайдера программного решения
@@ -137,23 +113,7 @@ export class Solutions {
     let value = undefined;
     // Создание экземпляра
     for (const provider of providers) {
-      let nextValue;
-      switch (true) {
-        case isValueProvider(provider): {
-          nextValue = provider.value;
-          break;
-        }
-        case isFactoryProvider(provider): {
-          nextValue = await provider.factory(await this.getMapped(provider.depends));
-          break;
-        }
-        case isClassProvider(provider): {
-          nextValue = new provider.constructor(await this.getMapped(provider.depends));
-          break;
-        }
-        default:
-          throw Error(`Provider by token "${token}" is wrong`);
-      }
+      const nextValue = await provider.factory(await this.getMapped(provider.depends));
       value = provider.merge ? mc.update(value, nextValue) : nextValue;
     }
 
