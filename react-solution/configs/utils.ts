@@ -6,7 +6,7 @@ import {
   type Provider,
 } from '../solutions';
 import { ENV } from '../env';
-import { type TypesFromTokens, type TokenInterface } from '../token';
+import { type TokenInterface, type TypesFromTokens } from '../token';
 
 /**
  * Провайдер настроек.
@@ -15,16 +15,16 @@ import { type TypesFromTokens, type TokenInterface } from '../token';
  * окружения - их можно учесть в настройках.
  *
  * @param token Токен
- * @param valueOrFactory Значение сопоставимое с типом токена или функция, возвращающее значение сопоставимое с токеном.
+ * @param config Значение сопоставимое с типом токена или функция, возвращающее значение сопоставимое с токеном.
  */
-export function configProvider<T, ExtT extends T, Deps = { env: typeof ENV }>(
-  token: TokenInterface<T>,
-  valueOrFactory: FunctionWithDepends<ExtT, TypesFromTokens<Deps>> | ExtT,
-): Provider<T, ExtT, Deps> {
-  if (isFactory<ExtT, TypesFromTokens<Deps>>(valueOrFactory)) {
-    return factoryProvider({ token, factory: valueOrFactory, depends: { env: ENV } as Deps });
+export function configProvider<Type, ExtType extends Type, DepsTokens = { env: typeof ENV }>(
+  token: TokenInterface<Type>,
+  config: ExtType | FunctionWithDepends<ExtType, TypesFromTokens<DepsTokens>>,
+): Provider<Type, ExtType, DepsTokens> {
+  if (isFactory<ExtType, TypesFromTokens<DepsTokens>>(config)) {
+    return factoryProvider({ token, factory: config, depends: { env: ENV } as DepsTokens });
   } else {
-    return valueProvider({ token, value: valueOrFactory });
+    return valueProvider({ token, value: config });
   }
 }
 

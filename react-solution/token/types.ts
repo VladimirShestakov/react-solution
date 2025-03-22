@@ -47,3 +47,8 @@ export type TypesFromTokens<T> = {
 export type TokensFromTypes<T> = {
   [P in keyof T]: Token<P>;
 };
+
+/**
+ * Карта токенов
+ */
+export type Tokens = Record<string, TokenInterface>;

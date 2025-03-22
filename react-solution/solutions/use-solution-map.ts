@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { type Token, type TypesFromTokens } from '../token';
+import { type Tokens, type TypesFromTokens } from '../token';
 import { SolutionsContext } from './provider.tsx';
 
 /**
@@ -12,8 +12,8 @@ import { SolutionsContext } from './provider.tsx';
  *  const { i18n, store } = useSolutionMap({i18n: I18N_TOKEN, store: STORE_TOKEN})
  * ```
  */
-export function useSolutionMap<Deps extends Record<string, Token>>(
-  depends: Deps,
-): TypesFromTokens<Deps> {
+export function useSolutionMap<DepsType extends Tokens>(
+  depends: DepsType,
+): TypesFromTokens<DepsType> {
   return useContext(SolutionsContext).getMappedWithSuspense(depends);
 }

@@ -8,7 +8,7 @@ export type Providers = Provider[] | Providers[];
 /**
  * Провайдер с функцией, которая создаёт программное решение сопоставимое с типом токена.
  */
-export interface Provider<Type = any, ExtType extends Type = any, Deps = any>
+export interface Provider<Type = any, ExtType extends Type = any, DepsTokens = any>
   extends ProviderProps<Type, ExtType> {
   /**
    * Функция для подготовки решения и его возврата.
@@ -16,12 +16,12 @@ export interface Provider<Type = any, ExtType extends Type = any, Deps = any>
    * Может быть асинхронной (возвращать промис)
    * В первый аргумент (в виде plain объекта) получает все зависимые решения, чьи токены указаны в depends
    */
-  factory: FunctionWithDepends<ExtType, TypesFromTokens<Deps>>;
+  factory: FunctionWithDepends<ExtType, TypesFromTokens<DepsTokens>>;
   /**
    * Токены зависимых решений в виде пар "название: токен".
    * Названия должны совпадать с названиями свойств первого аргумента функции factory
    */
-  depends: Deps;
+  depends: DepsTokens;
 }
 
 /**
@@ -47,10 +47,10 @@ export interface ProviderProps<Type, ExtType extends Type> {
 /**
  * Параметры для создания провайдера на основе конструктора класса
  */
-export interface ClassProvider<Type, ExtType extends Type, Deps>
+export interface ClassProvider<Type, ExtType extends Type, DepsTokens>
   extends ProviderProps<Type, ExtType> {
-  constructor: ConstructorWithDepends<ExtType, TypesFromTokens<Deps>>;
-  depends: Deps;
+  constructor: ConstructorWithDepends<ExtType, TypesFromTokens<DepsTokens>>;
+  depends: DepsTokens;
 }
 
 /**
@@ -61,16 +61,21 @@ export interface ValueProvider<Type, ExtType extends Type> extends ProviderProps
 }
 
 /**
+ * Карта зависимостей (программных решений)
+ */
+export type Depends = Record<string, any>;
+
+/**
  * Функция для подготовки решения с использованием зависимостей из DI.
  * Может быть асинхронной (возвращать промис)
  * В первый аргумент depends (в виде plain объекта) передаются зависимые решения
  */
-export type FunctionWithDepends<Type, Deps> = (depends: Deps) => Type | Promise<Type>;
+export type FunctionWithDepends<Type, Deps extends Depends> = (depends: Deps) => Type | Promise<Type>;
 
 /**
  * Конструктор, в первый аргумент которого передаются зависимости из DI
  */
-export type ConstructorWithDepends<Type, Deps> = new (depends: Deps) => Type;
+export type ConstructorWithDepends<Type, Deps extends Depends> = new (depends: Deps) => Type;
 
 /**
  * События DI контейнера

@@ -3,7 +3,13 @@ import { WaitingStore, type TWaitKey, WaitStatus } from '../waiting-store';
 import mc from 'merge-change';
 import { valueProvider } from './utils';
 import { SolutionsEvents, Provider, Providers } from './types';
-import { type TokenInterface, type TypesFromTokens, type TokenKey, newToken } from '../token';
+import {
+  type TokenInterface,
+  type TypesFromTokens,
+  type TokenKey,
+  newToken,
+  Tokens,
+} from '../token';
 
 /**
  * Токен на DI контейнер
@@ -46,8 +52,8 @@ export class Solutions {
    * В метод `register()` передаётся провайдер решения одного из типов `FactoryProvider`, `ClassProvider`, `ValueProvider`. Или массив провайдеров.
    * @param provider Провайдер или массив провайдеров
    */
-  register<Type, ExtType extends Type, Deps>(
-    provider: Providers | Provider<Type, ExtType, Deps>,
+  register<Type, ExtType extends Type, DepsType>(
+    provider: Providers | Provider<Type, ExtType, DepsType>,
   ): this {
     if (!Array.isArray(provider)) {
       provider = [provider];
@@ -127,9 +133,9 @@ export class Solutions {
    * Программные решения будут возвращены под теми же ключами, под которыми указаны токены в depends.
    * @param depends Карта токенов.
    */
-  async getMapped<Deps extends Record<string, TokenInterface>>(
-    depends: Deps,
-  ): Promise<TypesFromTokens<Deps>> {
+  async getMapped<DepsType extends Tokens>(
+    depends: DepsType,
+  ): Promise<TypesFromTokens<DepsType>> {
     // Выбор зависимостей из контейнера
     const result: Record<string, any> = {};
     const keys = Object.keys(depends);
@@ -144,7 +150,7 @@ export class Solutions {
     }
     await Promise.all(promises);
 
-    return result as TypesFromTokens<Deps>;
+    return result as TypesFromTokens<DepsType>;
   }
 
   /**
@@ -174,9 +180,9 @@ export class Solutions {
    * В исключение кидается последние невыполненное обещание, чтобы попытаться все программные решения выбрать за раз.
    * @param depends Карта токенов.
    */
-  getMappedWithSuspense<Deps extends Record<string, TokenInterface>>(
-    depends: Deps,
-  ): TypesFromTokens<Deps> {
+  getMappedWithSuspense<DepsType extends Tokens>(
+    depends: DepsType,
+  ): TypesFromTokens<DepsType> {
     let exception;
     // Выбор зависимостей из контейнера
     const result: Record<string, any> = {};
@@ -190,7 +196,7 @@ export class Solutions {
     }
     if (exception) throw exception;
 
-    return result as TypesFromTokens<Deps>;
+    return result as TypesFromTokens<DepsType>;
   }
 
   /**
