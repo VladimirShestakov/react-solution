@@ -28,7 +28,7 @@ export class I18n {
   protected waiting: WaitingStore = new WaitingStore();
   // Настройки
   protected config: I18nConfig = {
-    locale: 'ru-RU', // локаль по умолчанию если не будет определена автоматически
+    locale: 'ru-RU', // локаль по умолчанию, если не будет определена автоматически
     auto: true,
     remember: true,
   };

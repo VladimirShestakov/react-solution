@@ -2,7 +2,7 @@ import { useSyncExternalStore } from 'react';
 import { State } from './state.ts';
 
 /**
- * Хук для выборки состояния и слежением за его изменением
+ * Хук для выборки состояния и слежением за его изменением.
  * Является оберткой над системным хуком useSyncExternalStore, чтобы упростить использование
  * @example
  * ```ts
