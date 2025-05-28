@@ -1,11 +1,15 @@
+import { Operations } from './types.ts';
+import { get } from '../get';
+import { set } from '../set';
+import { unset } from '../unset';
+
 /**
  * Checking if a declarative operation exists
  * @param operation
- * @param [params]
  * @returns {boolean}
  */
-export function isOperation(operation, params) {
-  return Boolean(operation in operations);
+export function isOperation(operation: unknown): operation is Operations {
+  return typeof operation === 'string' && operation in operations;
 }
 
 /**
@@ -13,11 +17,11 @@ export function isOperation(operation, params) {
  * @param object
  * @returns {Object}
  */
-export function extractOperations(object) {
-  let result = {};
-  const keys = Object.keys(object);
+export function extractOperations<T extends Record<string, unknown>>(object: T): Partial<T> {
+  const result: Partial<T> = {};
+  const keys = Object.keys(object) as Array<keyof T>;
   for (const key of keys) {
-    if (this.isOperation(key, object[key])) {
+    if (isOperation(key)) {
       result[key] = object[key];
       delete object[key];
     }
@@ -48,7 +52,7 @@ export const operations = {
   $set(source, params) {
     const fieldNames = Object.keys(params);
     for (const fieldName of fieldNames) {
-      utils.set(source, fieldName, params[fieldName]);
+      set(source, fieldName, params[fieldName]);
     }
     return fieldNames.length > 0;
   },
@@ -64,7 +68,7 @@ export const operations = {
     if (Array.isArray(params)) {
       // Перечень полей для удаления
       for (const fieldName of params) {
-        utils.unset(source, fieldName);
+        unset(source, fieldName);
       }
       return params.length > 0;
     }
@@ -80,9 +84,7 @@ export const operations = {
    */
   $leave(source, params) {
     if (Array.isArray(params)) {
-      if (source && typeof source[methods.toOperation] === 'function') {
-        source = source[methods.toOperation]();
-      } else if (source && typeof source.toJSON === 'function') {
+      if (source && typeof source.toJSON === 'function') {
         source = source.toJSON();
       }
       const names = {};
@@ -99,14 +101,14 @@ export const operations = {
           names[name].push(subPath);
         }
       }
-      const type = utils.type(source);
+      const type = type(source);
       if (type === 'Object') {
         const keys = Object.keys(source);
         for (const key of keys) {
           if (!names[key]) {
             delete source[key];
           } else if (names[key].length > 0) {
-            this.operation$leave(source[key], names[key]);
+            operations.$leave(source[key], names[key]);
           }
         }
       } else if (type === 'Array') {
@@ -129,18 +131,16 @@ export const operations = {
    * @returns {boolean}
    */
   $pull(source, params) {
-    if (source && typeof source[methods.toOperation] === 'function') {
-      source = source[methods.toOperation]();
-    } else if (source && typeof source.toJSON === 'function') {
+    if (source && typeof source.toJSON === 'function') {
       source = source.toJSON();
     }
     const paths = Object.keys(params);
     for (const path of paths) {
       const cond = params[path];
-      const array = utils.get(source, path, []);
+      const array = get(source, path, []);
       if (Array.isArray(array)) {
         for (let i = array.length - 1; i >= 0; i--) {
-          if (utils.equal(cond, array[i])) {
+          if (cond === array[i]) {
             source.splice(i, 1);
           }
         }
@@ -159,18 +159,16 @@ export const operations = {
    * @returns {boolean}
    */
   $push(source, params) {
-    if (source && typeof source[methods.toOperation] === 'function') {
-      source = source[methods.toOperation]();
-    } else if (source && typeof source.toJSON === 'function') {
+    if (source && typeof source.toJSON === 'function') {
       source = source.toJSON();
     }
     const paths = Object.keys(params);
     for (const path of paths) {
       const value = params[path];
-      const array = utils.get(source, path, []);
+      const array = get(source, path, []);
       if (Array.isArray(array)) {
         array.push(value);
-        utils.set(source, path, array);
+        set(source, path, array);
       } else {
         throw new Error('Cannot push on not array');
       }
@@ -186,22 +184,20 @@ export const operations = {
    * @returns {boolean}
    */
   $concat(source, params) {
-    if (source && typeof source[methods.toOperation] === 'function') {
-      source = source[methods.toOperation]();
-    } else if (source && typeof source.toJSON === 'function') {
+    if (source && typeof source.toJSON === 'function') {
       source = source.toJSON();
     }
     const paths = Object.keys(params);
     for (const path of paths) {
       let value = params[path];
-      let array = utils.get(source, path, []);
+      let array = get(source, path, []);
       if (Array.isArray(array)) {
         array = array.concat(value);
-        utils.set(source, path, array);
+        set(source, path, array);
       } else {
         throw new Error('Cannot concat on not array');
       }
     }
     return paths.length > 0;
-  }
-}
+  },
+};

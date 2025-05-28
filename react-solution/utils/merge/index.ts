@@ -1,10 +1,12 @@
 import { Action, MergeChangeKind, Merged, MergedAll, MergeMethods } from './types.ts';
 import { type } from '../type';
+import { operation } from './operations.ts';
 
 const operationsNames = new Set(['$set', '$unset', '$leave', '$pull', '$push', '$concat']);
 
-export function createMergeChange(kind: MergeChangeKind) {
-  const methods: MergeMethods = {
+export function createMergeChange(kind: MergeChangeKind, customMethods: MergeMethods = {}) {
+  // Default methods for handling different type combinations
+  const defaultMethods: MergeMethods = {
     unknown_unknown(first: any, second: any, kind: MergeChangeKind) {
       return mergeChange(undefined, second);
     },
@@ -27,13 +29,7 @@ export function createMergeChange(kind: MergeChangeKind) {
       return kind === MergeChangeKind.MERGE ? methods.Array_Array!([], second, kind) : second;
     },
     undefined_object(first: undefined, second: object, kind: MergeChangeKind) {
-      return methods.Object_Object!(second, {}, kind);
-    },
-    Array_Array(first: any[], second: any[], kind: MergeChangeKind) {
-      if (kind === MergeChangeKind.MERGE) {
-        return second.map((item: unknown) => mergeChange(undefined, item));
-      }
-      return second;
+      return methods.object_object!(second, {}, kind);
     },
     object_object(first: any, second: any, kind: MergeChangeKind) {
       const result = kind === MergeChangeKind.PATCH ? first : {};
@@ -61,13 +57,22 @@ export function createMergeChange(kind: MergeChangeKind) {
           result[key] = resultField;
         }
       }
-      // execute declarative operations
-      // for (const [operation, params] of operations) {
-      //   isChange = this.operation(result, operation, params) || isChange;
+      // Execute declarative operations
+      // for (const [op, params] of operations) {
+      //   isChange = operation(result, op, params) || isChange;
       // }
       return isChange ? result : first;
     },
+    Array_Array(first: any[], second: any[], kind: MergeChangeKind) {
+      if (kind === MergeChangeKind.MERGE) {
+        return second.map((item: unknown) => mergeChange(undefined, item));
+      }
+      return second;
+    },
   };
+
+  // Merge custom methods with default methods
+  const methods: MergeMethods = { ...defaultMethods, ...customMethods };
 
   const mergeChange = <T extends any[]>(...values: T): MergedAll<T> => {
     return values.reduce((first: any, second: any) => {
@@ -89,6 +94,19 @@ export function createMergeChange(kind: MergeChangeKind) {
   };
 
   return mergeChange;
+}
+
+// Factory functions for the three merge types
+export function createMerge(customMethods: MergeMethods = {}) {
+  return createMergeChange(MergeChangeKind.MERGE, customMethods);
+}
+
+export function createUpdate(customMethods: MergeMethods = {}) {
+  return createMergeChange(MergeChangeKind.UPDATE, customMethods);
+}
+
+export function createPatch(customMethods: MergeMethods = {}) {
+  return createMergeChange(MergeChangeKind.PATCH, customMethods);
 }
 
 export default {

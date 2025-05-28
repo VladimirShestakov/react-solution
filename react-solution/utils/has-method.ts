@@ -1,4 +1,4 @@
-export type HasMethod<M extends string | number> = {
+export type HasMethod<M extends string | number | symbol> = {
   [name in M]: (...args: any[]) => unknown;
 };
 
@@ -7,7 +7,7 @@ export type HasMethod<M extends string | number> = {
  * @param value Проверяемый объект
  * @param method Название метода
  */
-export function hasMethod<M extends string | number>(
+export function hasMethod<M extends string | number | symbol>(
   value: HasMethod<M> | unknown,
   method: M,
 ): value is HasMethod<M> {
