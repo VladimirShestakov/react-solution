@@ -1,5 +1,5 @@
 import { newToken } from '../token';
-import type { Patch } from '../types';
+import type { Patch } from 'merge-change';
 import type { Ssr } from './service';
 import type { SsrOptions } from './types';
 

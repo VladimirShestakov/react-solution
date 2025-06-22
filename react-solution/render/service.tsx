@@ -1,11 +1,10 @@
-import mc from 'merge-change';
+import mc, { type Patch } from 'merge-change';
 import { createRoot, hydrateRoot } from 'react-dom/client';
 import { type ReactNode, Suspense } from 'react';
 import { stringify, parse } from 'zipson';
 import { type Solutions, SolutionsProvider } from '../solutions';
 import { type DumpService } from '../dump';
 import type { LogInterface } from '../log';
-import type { Patch } from '../types';
 import { replaceInner } from '../utils';
 import { WaitingStore } from '../waiting-store';
 import { Meta } from './meta';
@@ -60,7 +59,7 @@ export class RenderService {
       logger: LogInterface;
     },
   ) {
-    this.config = mc.merge(this.config, depends.config || {});
+    this.config = mc.merge(this.config, depends.config);
     this.depends.logger = this.depends.logger.named('render-service');
     if (!this.isSSR() && depends.dump && window.initialData) {
       this.hydrate = true;

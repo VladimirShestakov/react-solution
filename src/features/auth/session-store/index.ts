@@ -1,5 +1,5 @@
-import { type HttpClient, ApiError, type LogInterface, State, type Patch } from 'react-solution';
-import mc from 'merge-change';
+import { type HttpClient, ApiError, type LogInterface, State } from 'react-solution';
+import mc, { type Patch } from 'merge-change';
 import type { SignInBody } from '../users-api/types.ts';
 import type { UsersApi } from '../users-api';
 import type { SessionStoreConfig, SessionStoreData } from './types.ts';

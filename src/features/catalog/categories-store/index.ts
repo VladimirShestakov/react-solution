@@ -1,9 +1,8 @@
-import mc from 'merge-change';
+import mc, { type Patch } from 'merge-change';
 import { type LogInterface, State } from 'react-solution';
 import { listToTree } from 'react-solution';
-import type { Patch } from 'react-solution';
 import type { CategoriesApi } from '../categories-api';
-import type { CategoriesStoreConfig, CategoriesStoreData } from './types.ts';
+import { CategoriesStoreConfig, CategoriesStoreData, CategoryItem } from './types.ts';
 
 /**
  * Детальная информация о пользователе
@@ -43,10 +42,13 @@ export class CategoriesStore {
     try {
       const response = await this.depends.categoriesApi.findMany(params);
       const result = response.data.result;
-      this.state.update(
-        mc.patch(result, { roots: listToTree(result.items), wait: false, errors: null }),
-        'Категории загружены',
-      );
+      const items: Array<CategoryItem> = result.items;
+      const patch: Patch<CategoriesStoreData> = {
+        roots: listToTree(items, '_id', 'parent._id'),
+        wait: false,
+        errors: null,
+      };
+      this.state.update(mc.patch(result, patch), 'Категории загружены');
       return result;
     } catch (e: any) {
       if (e.response?.data?.error?.data) {

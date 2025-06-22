@@ -1,6 +1,6 @@
 import { newToken } from '../token';
 import type { ReactNode } from 'react';
-import type { Patch } from '../types';
+import type { Patch } from 'merge-change';
 import type { RenderService } from './service';
 import type { RenderConfig } from './types';
 

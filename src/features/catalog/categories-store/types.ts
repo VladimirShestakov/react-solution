@@ -11,4 +11,7 @@ export type CategoryItem = {
   _id: string;
   title: string;
   children?: CategoryItem[];
+  parent?: {
+    _id: string;
+  };
 };

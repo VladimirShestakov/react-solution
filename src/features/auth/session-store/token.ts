@@ -1,5 +1,5 @@
 import { newToken } from 'react-solution';
-import type { Patch } from 'react-solution';
+import type { Patch } from 'merge-change';
 import type { SessionStore } from './index.ts';
 import type { SessionStoreConfig } from './types.ts';
 

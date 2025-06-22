@@ -1,6 +1,5 @@
-import mc from 'merge-change';
+import mc, { type Patch } from 'merge-change';
 import { type LogInterface, State } from 'react-solution';
-import type { Patch } from 'react-solution';
 import type { UsersApi } from '../users-api';
 import type { ProfileStoreConfig, ProfileStoreData } from './types.ts';
 

@@ -1,7 +1,6 @@
-import mc from 'merge-change';
+import mc, { type Patch } from 'merge-change';
 import { type Solutions } from '../solutions';
 import { type Token } from '../token';
-import type { Patch } from '../types';
 import type { DumpConfig } from './types';
 
 /**
@@ -27,7 +26,7 @@ export class DumpService {
       config?: Patch<DumpConfig>;
     },
   ) {
-    this.config = mc.merge(this.config, depends.config || {});
+    this.config = mc.merge(this.config, depends.config);
     if (this.config.autoSendDump) {
       this.depends.solutions.events.on('onCreate', this.send);
       // @todo Как-то отписываться от события

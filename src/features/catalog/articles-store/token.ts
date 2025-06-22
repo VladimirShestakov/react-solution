@@ -1,5 +1,5 @@
 import { newToken } from 'react-solution';
-import type { Patch } from 'react-solution';
+import type { Patch } from 'merge-change';
 import type { DefaultConfig } from 'react-solution';
 import type { ArticlesStore } from './index.ts';
 

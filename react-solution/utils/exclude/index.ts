@@ -1,5 +1,5 @@
 import { isPlainObject } from '../is-plain-object';
-import type { PartialDeep } from '../../types';
+import type { PartialObject } from 'merge-change';
 /**
  * Возвращает новый объект, в котором не будет совпадений со вторым объектом
  * @param objectSrc {Object} Исходный объект
@@ -7,7 +7,7 @@ import type { PartialDeep } from '../../types';
  * @returns {Object} Новый объект
  */
 
-export function exclude<A, B>(objectSrc: A, objectExc: B): A | PartialDeep<A> {
+export function exclude<A, B>(objectSrc: A, objectExc: B): A | PartialObject<A> {
   if (isPlainObject(objectSrc) && isPlainObject(objectExc)) {
     const result = { ...objectSrc } as Record<string, any>;
     const keys = Object.keys(objectSrc);
@@ -25,7 +25,7 @@ export function exclude<A, B>(objectSrc: A, objectExc: B): A | PartialDeep<A> {
         delete result[key];
       }
     }
-    return result as PartialDeep<A>;
+    return result as PartialObject<A>;
   } else {
     return objectSrc;
   }

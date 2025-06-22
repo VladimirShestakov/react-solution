@@ -1,8 +1,7 @@
 import httpProxy from 'http-proxy';
 import Server from 'http-proxy';
-import mc from 'merge-change';
+import mc, { type Patch } from 'merge-change';
 import * as http from 'node:http';
-import type { Patch } from '../types';
 import type { ProxyOptions } from './types';
 
 export class Proxy {
@@ -26,6 +25,7 @@ export class Proxy {
       res.end(err.toString());
     });
   }
+
   isEnabled(): boolean {
     return this.config.enabled;
   }

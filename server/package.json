@@ -14,7 +14,7 @@
     "react-solution": "*",
     "cookie-parser": "^1.4.6",
     "express": "^4.21.0",
-    "merge-change": "^1.8.1"
+    "merge-change": "^3.0.13"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.7",

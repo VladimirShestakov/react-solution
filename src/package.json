@@ -12,7 +12,7 @@
     "react-solution": "*",
     "@bem-react/classname": "^1.6.0",
     "lodash.debounce": "^4.0.8",
-    "merge-change": "^1.8.1",
+    "merge-change": "^3.0.13",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router": "^6.26.2",

@@ -1,9 +1,8 @@
 import { access, mkdir, readFile, unlink, writeFile } from 'fs/promises';
-import mc from 'merge-change';
+import mc, { type Patch } from 'merge-change';
 import gzip from 'node-gzip';
 import path from 'path';
 import uniqid from 'uniqid';
-import type { Patch } from '../types';
 import type {
   ICacheStore,
   TCache,

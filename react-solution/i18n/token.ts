@@ -1,5 +1,5 @@
 import { newToken } from '../token';
-import type { Patch } from '../types';
+import type { Patch } from 'merge-change';
 import type { I18n } from './service';
 import type { I18nDictionary, I18nConfig, I18nState } from './types';
 

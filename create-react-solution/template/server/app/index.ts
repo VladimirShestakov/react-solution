@@ -1,10 +1,9 @@
 import express from 'express';
-import mc from 'merge-change';
+import mc, { type Patch } from 'merge-change';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import cookieParser from 'cookie-parser';
 import type { Express, Request, Response } from 'express';
-import type { Patch } from 'react-solution';
 import type { Proxy, Ssr, ViteDev } from 'react-solution/server';
 import type { AppConfig } from './types.ts';
 

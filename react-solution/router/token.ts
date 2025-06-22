@@ -1,5 +1,5 @@
 import { newToken } from '../token';
-import type { Patch } from '../types';
+import type { Patch } from 'merge-change';
 import type { RouterConfig } from './types';
 import type { RouterService } from './service';
 

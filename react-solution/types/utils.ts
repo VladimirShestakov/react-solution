@@ -5,15 +5,6 @@ export interface ObjectPrimitive {
 }
 
 /**
- * Partial в глубину для свойств объекта
- */
-export type PartialDeep<T> = T extends (infer U)[]
-  ? PartialDeep<U>[]
-  : T extends object
-    ? { [K in keyof T]?: PartialDeep<T[K]> }
-    : T;
-
-/**
  * Все названия методов из типа
  */
 export type ExtractMethodNames<T, M = (...args: any[]) => any> = {
@@ -32,30 +23,3 @@ export type NestedKeyOf<Obj extends object> = {
       `${Name}`;
 }[keyof Obj & string]; // Вытаскиваем типы всех свойств - это строковые литералы (пути на свойства)
 
-/**
- * Операциями для merge-change
- */
-
-export type Operations = '$set' | '$unset' | '$leave';
-
-export type PatchOperation<T> =
-  | T
-  | {
-      // Переустановить значения без слияния с текущим
-      $set?: T;
-      // Удалить свойства
-      $unset?: (keyof T | string | number | symbol)[];
-      // Оставить только указанные свойства
-      $leave?: (keyof T | string | number | symbol)[];
-    };
-
-/**
- * Объект-патч с необязательными свойствами в глубину и с операциями для merge-change
- */
-export type Patch<T> = PatchOperation<
-  T extends (infer U)[]
-    ? U[]
-    : T extends { [key: string | number | symbol]: any }
-      ? { [K in keyof T]?: Patch<T[K]> }
-      : T
->;

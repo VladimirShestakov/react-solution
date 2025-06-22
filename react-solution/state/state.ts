@@ -1,6 +1,5 @@
-import mc from 'merge-change';
+import mc, { type Patch } from 'merge-change';
 import { css, type LogInterface } from '../log';
-import type { Patch } from '../types';
 
 /**
  * Состояние по паттерну наблюдателя (Observable)
@@ -46,8 +45,8 @@ export class State<StateType> {
    * @param update Изменяемые свойства. Может содержать операторы $set, $unset и др из https://www.npmjs.com/package/merge-change
    * @param [description] Описание действия для логирования
    */
-  update = (update: Partial<StateType> | Patch<StateType>, description = 'Обновление') => {
-    const state = mc.update(this.get(), update);
+  update = (update: Patch<StateType>, description = 'Обновление') => {
+    const state = mc.update(this.get(), update) as StateType;
     if (state !== this.get()) {
       this.set(state, description);
     }
@@ -58,8 +57,8 @@ export class State<StateType> {
    * @param update Изменяемые свойства у начального состояния. Может содержать операторы $set, $unset и др из https://www.npmjs.com/package/merge-change
    * @param description Описание действия для логирования
    */
-  reset = (update: Partial<StateType> | Patch<StateType>, description = 'Сброс') => {
-    this.set(mc.update(this.initState, update), description);
+  reset = (update: Patch<StateType>, description = 'Сброс') => {
+    this.set(mc.update(this.initState, update) as StateType, description);
   };
 
   /**

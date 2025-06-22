@@ -44,33 +44,6 @@ export class Modals {
     });
   };
 
-  /**
-   * Закрытие модалки
-   * Теоретически в функции нет необходимости, так как компонент модалки получает колбэк закрытия через свои свойства
-   * @param result Результат модалки
-   * @param key Ключ модалки. Если не указан, то закрывается последняя открытая.
-   */
-  close = <Component extends ModalComponent>(key: number, result: ModalResult<Component>) => {
-    // Находим модалку в стеке и вызываем её close()
-    let modalState: ModalState<Component> | undefined;
-    if (key) {
-      this.stack = this.stack.filter(stack => {
-        if (stack.key === key) {
-          modalState = stack as ModalState<Component>;
-          return false;
-        }
-        return true;
-      });
-    } else {
-      modalState = this.stack.at(-1) as ModalState<Component>;
-    }
-    if (modalState) {
-      const close = modalState.props.close; // as ModalClose<TModalsResult[Name]>['close'];
-      close(result);
-    }
-    this.notify();
-  };
-
   getStack = () => {
     return this.stack;
   };

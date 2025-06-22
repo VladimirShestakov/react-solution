@@ -1,5 +1,4 @@
-import mc from 'merge-change';
-import type { Patch } from '../../types';
+import mc, { type Patch } from 'merge-change';
 import type { HttpClient } from '../types';
 import type { ApiBaseEndpointConfig, ApiBaseEndpointResponse } from './types';
 
@@ -20,7 +19,7 @@ export abstract class ApiBaseEndpoint<
       config?: Patch<Config>;
     },
   ) {
-    this.config = mc.merge(this.config, depends.config);
+    this.config = mc.merge(this.config, depends.config) as Config;
   }
 
   /**
@@ -31,6 +30,8 @@ export abstract class ApiBaseEndpoint<
     options: ApiBaseEndpointConfig<D>,
   ): Promise<R> {
     // Учитываются опции модуля и переданные в аргументах
-    return this.depends.httpClient.request(mc.merge(this.config, options as Patch<Config>));
+    return this.depends.httpClient.request(
+      mc.merge(this.config, options as Patch<Config>) as Config,
+    );
   }
 }

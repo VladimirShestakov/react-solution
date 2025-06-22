@@ -1,6 +1,6 @@
 import fs from 'fs';
 import gzip from 'node-gzip';
-import mc from 'merge-change';
+import mc, { type Patch } from 'merge-change';
 import path from 'node:path';
 import uniqid from 'uniqid';
 import { fileURLToPath } from 'url';
@@ -10,7 +10,6 @@ import { getHeadersValues, parseAcceptEncoding, parseControls } from './lib/pars
 import { render, type RenderParams } from './lib/render';
 import type { Request, Response } from 'express';
 import type { ICacheStore, TCache } from '../cache-store';
-import type { Patch } from '../types';
 import type { ViteDev } from '../vite-dev';
 import type { SsrOptions, TRenderRule, TSSRResponse } from './types';
 import type { LogInterface } from '../log';

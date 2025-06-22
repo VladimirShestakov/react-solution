@@ -1,7 +1,6 @@
 import { BrowserHistory, createBrowserHistory, createMemoryHistory, MemoryHistory } from 'history';
-import mc from 'merge-change';
+import mc, { type Patch } from 'merge-change';
 import qs from 'qs';
-import type { Patch } from '../types';
 import type { RouterConfig } from './types';
 
 export class RouterService {

@@ -12,8 +12,8 @@ import {
   modalsService,
   renderService,
   routerService,
-  type Patch,
 } from 'react-solution';
+import type { Patch } from 'merge-change';
 
 import { configs } from './configs.ts';
 import { App } from '@src/app';

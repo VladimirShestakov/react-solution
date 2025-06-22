@@ -1,5 +1,4 @@
-import mc from 'merge-change';
-import type { Patch } from '../types';
+import mc, { type Patch } from 'merge-change';
 import { LogConfig, LogInterface } from './types';
 
 export class LogService implements LogInterface {
@@ -13,7 +12,7 @@ export class LogService implements LogInterface {
     protected depends: { config?: Patch<LogConfig> },
     name?: string,
   ) {
-    this.config = mc.merge(this.config, depends.config || {});
+    this.config = mc.merge(this.config, depends.config) as LogConfig;
     this.name = name;
   }
 

@@ -18,7 +18,7 @@
   "dependencies": {
     "picocolors": "^1.1.1",
     "prompts": "^2.4.2",
-    "merge-change": "^1.8.1"
+    "merge-change": "^3.0.13"
   },
   "devDependencies": {
     "@types/node": "^22.5.5"

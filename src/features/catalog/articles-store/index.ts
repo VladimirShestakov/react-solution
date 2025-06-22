@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import mc from 'merge-change';
-import type { FindQuery, LogInterface, Patch } from 'react-solution';
+import mc, { type Patch } from 'merge-change';
+import type { FindQuery, LogInterface } from 'react-solution';
 import { exclude } from 'react-solution';
 import { DataParamsState, type DefaultConfig } from 'react-solution';
 import type { RouterService } from 'react-solution';

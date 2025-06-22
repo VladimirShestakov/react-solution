@@ -1,41 +1,63 @@
-import _get from 'lodash.get';
+import { ExtractPaths, ExtractPathsAny, get } from 'merge-change';
+
+export type Item<
+  RequiredKey extends string = '_id',
+  T extends Record<string, unknown> = Record<string, unknown>,
+> = T & {
+  [key in RequiredKey]: unknown;
+};
+
+// Тип узла дерева с детьми
+export type TreeNode<
+  T extends Record<string, unknown>,
+  Pkey extends string = '_id',
+  CKey extends string = 'children',
+> = T & {
+  [key in Pkey]: unknown;
+} & {
+  [key in CKey]: TreeNode<T, Pkey, CKey>[];
+};
 
 /**
  * Преобразование списка в иерархию
- * @param list {Array} Список объектов с отношеним на родителя
- * @param privateKey {String} Свойство с первичным ключём
- * @param parentKey {String} Свойство с ключем на родителя
- * @param childrenKey {String} Свойство-массив, куда добавить отношения на подчиенные объекты
- * @returns {Array} Корневые узлы
  */
-export function listToTree(
-  list: any[],
-  privateKey = '_id',
-  parentKey = 'parent._id',
-  childrenKey = 'children',
-) {
-  const trees: any = {};
-  const roots: any = {};
+export function listToTree<
+  T extends Record<string, unknown>,
+  Pkey extends string = '_id',
+  CKey extends string = 'children',
+  ParentPath extends string = ExtractPaths<Item<Pkey, T>, '.'>,
+>(
+  list: Array<Item<Pkey, T>>,
+  privateKey: Pkey = '_id' as Pkey,
+  parentKey: ParentPath = 'parent._id' as ParentPath,
+  childrenKey: CKey = 'children' as CKey,
+): TreeNode<T, Pkey, CKey>[] {
+  const trees: Record<string, any> = {};
+  const roots: Record<string, any> = {};
+
   for (const item of list) {
-    // В индекс узлов
-    if (!trees[item[privateKey]]) {
-      trees[item[privateKey]] = item;
-      trees[item[privateKey]][childrenKey] = [];
-      // Ещё никто не ссылался, поэтому пока считаем корнем
-      roots[item[privateKey]] = trees[item[privateKey]];
+    const id = item[privateKey] as string;
+
+    if (!trees[id]) {
+      trees[id] = { ...item, [childrenKey]: [] };
+      roots[id] = trees[id];
     } else {
-      trees[item[privateKey]] = Object.assign(trees[item[privateKey]], item);
+      trees[id] = Object.assign(trees[id], item);
+      trees[id][childrenKey] = trees[id][childrenKey] || [];
+      roots[id] = trees[id];
     }
-    // В подчиненные родительского узла
-    if (_get(item, parentKey)) {
-      if (!trees[_get(item, parentKey)]) {
-        trees[_get(item, parentKey)] = { [childrenKey]: [] };
+
+    const parentId = get(item, parentKey as ExtractPathsAny<Item<Pkey, T>, '.'>) as string | undefined;
+    if (parentId) {
+      if (!trees[parentId]) {
+        trees[parentId] = { [childrenKey]: [] };
       }
-      trees[_get(item, parentKey)][childrenKey].push(trees[item[privateKey]]);
-      if (roots[item[privateKey]]) {
-        delete roots[item[privateKey]];
+      trees[parentId][childrenKey].push(trees[id]);
+      if (roots[id]) {
+        delete roots[id];
       }
     }
   }
+
   return Object.values(roots);
 }

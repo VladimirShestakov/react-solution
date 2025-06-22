@@ -1,10 +1,9 @@
 import acceptLang from 'accept-language-parser';
-import mc from 'merge-change';
+import mc, { type Patch, flat } from 'merge-change';
 import cookie from 'js-cookie';
 import type { LogInterface } from '../log';
 import { State } from '../state';
 import { WaitingStore } from '../waiting-store';
-import type { Patch } from '../types';
 import type {
   I18nDictionary,
   I18nState,
@@ -16,7 +15,6 @@ import type {
   I18nTranslation,
   I18nDump,
 } from './types';
-import { flat } from '../utils';
 
 /**
  * Сервис мультиязычности
@@ -205,12 +203,8 @@ export class I18n {
         typeof dic === 'function' ? ((await dic()).default as I18nTranslation) : dic;
       // Обновление состояния i18n
       this.state.update({
-        dictionary: {
-          [locale]: {
-            $set: {
-              [namespace]: flat(translation),
-            },
-          },
+        $set: {
+          [`dictionary.${locale}.${namespace}}`]: flat(translation),
         },
       });
     }

@@ -1,5 +1,5 @@
 import { newToken } from 'react-solution';
-import type { Patch } from 'react-solution';
+import type { Patch } from 'merge-change';
 import type { App } from './index.ts';
 import type { AppConfig } from './types.ts';
 

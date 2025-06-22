@@ -6,7 +6,7 @@ import { logService } from './log';
 import { modalsService } from './modals';
 import { renderService } from './render';
 import { routerService } from './router';
-import type { Patch } from './types';
+import type { Patch } from 'merge-change';
 
 export const commonSolutions = (envPatch: Patch<Env> = {}) => [
   // Переменные окружения для фронта

@@ -23,7 +23,7 @@ export type TDataParamsState<Data, Params> = {
   // Ожидание выборки списка элементов (из АПИ)
   wait: boolean;
   // Ошибки выборки списка элементов (из АПИ)
-  errors: any;
+  errors: unknown[] | null;
 };
 
 export type SetParamsOptions = {

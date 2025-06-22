@@ -1,10 +1,9 @@
 import { type LogInterface } from '../log';
 import type { RouterService } from '../router';
 import { z } from 'zod';
-import mc from 'merge-change';
+import mc, { type Patch, type PartialObject } from 'merge-change';
 import { exclude } from '../utils';
 import { State } from '../state';
-import type { Patch, PartialDeep } from '../types';
 import type { DefaultConfig, DefaultParams, SetParamsOptions, TDataParamsState } from './types';
 
 export abstract class DataParamsState<
@@ -23,7 +22,7 @@ export abstract class DataParamsState<
       logger: LogInterface;
     },
   ) {
-    this.config = mc.merge(this.defaultConfig(), depends.config ?? {});
+    this.config = mc.merge(this.defaultConfig(), depends.config ?? {}) as Config;
     this.depends.logger = depends.logger.named(this.constructor.name);
     this.state = new State<TDataParamsState<Data, Params>>(
       this.defaultState(),
@@ -101,13 +100,13 @@ export abstract class DataParamsState<
     options = { load: true, push: true, ...options };
     try {
       // Новые параметры (нужно ли учитывать текущие?)
-      const params: Params = mc.merge(this.state.get().params, newParams);
+      const params = mc.merge(this.state.get().params, newParams) as Params;
       if (options.clear) {
         // Сброс текущих данных (списка), установка новых параметров
         // Если данные будут загружаться, то установка состояние ожидания
         this.state.reset(
           {
-            params: { $set: params } as Patch<Params>, // Через $set, чтобы исключить слияние с текущими (оно уже выполнено)
+            $set: { params }, // Через $set, чтобы исключить слияние с текущими (оно уже выполнено)
             wait: options.load,
           },
           'Сброс текущих данных, установка параметров и статус ожидания',
@@ -117,7 +116,7 @@ export abstract class DataParamsState<
         // Если данные будут загружаться, то установка состояние ожидания
         this.state.update(
           {
-            params: { $set: params } as Patch<Params>,
+            $set: { params },
             wait: options.load,
             errors: null,
           },
@@ -137,7 +136,7 @@ export abstract class DataParamsState<
             data: await this.loadData(apiParams),
             wait: false,
             errors: null,
-          },
+          } as Patch<TDataParamsState<Data, Params>>,
           'Список загружен',
         );
       }
@@ -166,7 +165,7 @@ export abstract class DataParamsState<
     if (mergeWithCurrent)
       params = mc.merge(this.state.get().params, params as Patch<Params>) as Params;
     // Исключение параметров, у которых значение по умолчанию
-    const searchParams = exclude(params, this.defaultState().params) as PartialDeep<Params>;
+    const searchParams = exclude(params, this.defaultState().params) as PartialObject<Params>;
     // Параметры группируются под именем модуля
     return this.config.queryParamsGroup
       ? { [this.config.queryParamsGroup]: searchParams }
@@ -185,7 +184,7 @@ export abstract class DataParamsState<
   /**
    * Восстановление параметров из адреса страницы (из search параметра адреса)
    */
-  protected restoreParams(): PartialDeep<Params> {
+  protected restoreParams(): PartialObject<Params> {
     // Распарсенные параметры берутся по названию модуля состояния, так группировались по его имени
     const searchParams = this.config.queryParamsGroup
       ? this.depends.router.getSearchParams()[this.config.queryParamsGroup]
@@ -193,9 +192,9 @@ export abstract class DataParamsState<
     // После успешной валидации в searchParams останутся только допустимые параметры
     const validateParams = this.paramsSchema().safeParse(searchParams);
     if (!validateParams.success) {
-      return {} as PartialDeep<Params>;
+      return {} as PartialObject<Params>;
     } else {
-      return validateParams.data as PartialDeep<Params>;
+      return validateParams.data as PartialObject<Params>;
     }
   }
 
