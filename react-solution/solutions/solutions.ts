@@ -133,9 +133,7 @@ export class Solutions {
    * Программные решения будут возвращены под теми же ключами, под которыми указаны токены в depends.
    * @param depends Карта токенов.
    */
-  async getMapped<DepsType extends Tokens>(
-    depends: DepsType,
-  ): Promise<TypesFromTokens<DepsType>> {
+  async getMapped<DepsType extends Tokens>(depends: DepsType): Promise<TypesFromTokens<DepsType>> {
     // Выбор зависимостей из контейнера
     const result: Record<string, any> = {};
     const keys = Object.keys(depends);
@@ -180,9 +178,7 @@ export class Solutions {
    * В исключение кидается последние невыполненное обещание, чтобы попытаться все программные решения выбрать за раз.
    * @param depends Карта токенов.
    */
-  getMappedWithSuspense<DepsType extends Tokens>(
-    depends: DepsType,
-  ): TypesFromTokens<DepsType> {
+  getMappedWithSuspense<DepsType extends Tokens>(depends: DepsType): TypesFromTokens<DepsType> {
     let exception;
     // Выбор зависимостей из контейнера
     const result: Record<string, any> = {};

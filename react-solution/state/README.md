@@ -24,14 +24,14 @@
 Если новому решению (сервису, модулю, классу) необходимо состояние, то внутри него создаётся поле (свойство)
 класса State. В редких случаях применяется наследование класса State.
 
-Любая структура данных может быть состоянием и храниться в экземпляре State. 
+Любая структура данных может быть состоянием и храниться в экземпляре State.
 Через дженерик указывается тип структуры данных, например `State<MyState>`.
 
-Подписчики уведомляются на любое изменение в структуре данных. 
-Подписка на отельное свойство в структуре данных не предоставляется. 
+Подписчики уведомляются на любое изменение в структуре данных.
+Подписка на отельное свойство в структуре данных не предоставляется.
 За счёт этого обеспечивается простейшая логика класса State, так как не нужно вычислять, что именно
-изменилось и кого конкретно уведомлять. 
-Если нужно следить за изменениями отдельных свойств, то нужно создавать отдельные экземпляры класса 
+изменилось и кого конкретно уведомлять.
+Если нужно следить за изменениями отдельных свойств, то нужно создавать отдельные экземпляры класса
 Sate на каждое свойство — выполнить декомпозицию состояния.
 
 ### Создание экземпляра
@@ -47,11 +47,14 @@ interface MyState {
 }
 
 // Создание экземпляра State с начальным состоянием
-const state = new State<MyState>({
-  data: [],
-  loading: false,
-  error: null
-}, logger); // logger опционален, и им может быть console
+const state = new State<MyState>(
+  {
+    data: [],
+    loading: false,
+    error: null,
+  },
+  logger,
+); // logger опционален, и им может быть console
 ```
 
 ### Основные методы
@@ -70,11 +73,14 @@ console.log(currentState.data);
 Устанавливает новое значение в состояние, полностью заменяя текущее.
 
 ```ts
-state.set({
-  data: ['item1', 'item2'],
-  loading: false,
-  error: null
-}, 'Установка новых данных'); // description опционален для логирования
+state.set(
+  {
+    data: ['item1', 'item2'],
+    loading: false,
+    error: null,
+  },
+  'Установка новых данных',
+); // description опционален для логирования
 ```
 
 #### `update(update, description?)`
@@ -82,10 +88,13 @@ state.set({
 Обновляет часть состояния, используя merge-change для слияния с текущим состоянием.
 
 ```ts
-state.update({
-  data: ['new item'],
-  loading: false
-}, 'Обновление данных'); // description опционален для логирования
+state.update(
+  {
+    data: ['new item'],
+    loading: false,
+  },
+  'Обновление данных',
+); // description опционален для логирования
 ```
 
 #### `reset(update?, description?)`
@@ -93,9 +102,12 @@ state.update({
 Сбрасывает состояние к начальному значению с возможностью применения обновлений.
 
 ```ts
-state.reset({
-  loading: true
-}, 'Сброс состояния'); // description опционален для логирования
+state.reset(
+  {
+    loading: true,
+  },
+  'Сброс состояния',
+); // description опционален для логирования
 ```
 
 #### `subscribe(listener)`
@@ -164,15 +176,14 @@ interface ProfileStoreData {
 export class ProfileStore {
   readonly state;
 
-  constructor(protected depends: {
-    logger: LogInterface;
-    profileApi: ProfileApi
-  }) {
+  constructor(
+    protected depends: {
+      logger: LogInterface;
+      profileApi: ProfileApi;
+    },
+  ) {
     this.depends.logger = this.depends.logger.named(this.constructor.name);
-    this.state = new State<ProfileStoreData>(
-      { data: null, waiting: false },
-      this.depends.logger,
-    );
+    this.state = new State<ProfileStoreData>({ data: null, waiting: false }, this.depends.logger);
   }
 
   async load() {
@@ -187,21 +198,26 @@ export class ProfileStore {
       const data = await this.profileApi.get();
 
       // Обновление состояния
-      this.state.set({
-        data,
-        waiting: false,
-      }, 'Профиль загружен');
+      this.state.set(
+        {
+          data,
+          waiting: false,
+        },
+        'Профиль загружен',
+      );
     } catch (error) {
-      this.state.set({
-        data: null,
-        waiting: false,
-      }, 'Ошибка загрузки профиля');
+      this.state.set(
+        {
+          data: null,
+          waiting: false,
+        },
+        'Ошибка загрузки профиля',
+      );
     }
   }
 }
 
 //... На класс ProfileStore созадётся провайдер с токеном PROFILE_STORE и регистрируется в DI
-
 ```
 
 ### Пример 2: Использование в React-компоненте
@@ -242,27 +258,27 @@ function ProfilePage() {
 state.update({
   user: {
     profile: {
-      name: 'Новое имя'
-    }
-  }
+      name: 'Новое имя',
+    },
+  },
 });
 
 // Использование операторов merge-change
 state.update({
   settings: {
-    $set: { theme: { name: 'dark', mode: 'large' } } // Полная замена объекта theme
-  }
+    $set: { theme: { name: 'dark', mode: 'large' } }, // Полная замена объекта theme
+  },
 });
 
 state.update({
   items: {
-    $push: ['новый элемент'] // Добавление в массив
-  }
+    $push: ['новый элемент'], // Добавление в массив
+  },
 });
 
 state.update({
   users: {
-    $unset: ['admin'] // Удаление свойства
-  }
+    $unset: ['admin'], // Удаление свойства
+  },
 });
 ```

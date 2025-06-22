@@ -81,16 +81,16 @@ export const translations = valueProvider({
     '*': {
       catalogs: {
         head: {
-          title: 'Example catalog'
-        }
-      }
+          title: 'Example catalog',
+        },
+      },
     },
     ru: {
       catalogs: {
         head: {
-          title: 'Пример каталога'
-        }
-      }
+          title: 'Пример каталога',
+        },
+      },
     },
     'en-EN': {},
   },
@@ -107,7 +107,7 @@ import { translations } from './translations/provider';
 solutions.register(translations);
 ```
 
-Ключи второго уровня используются как пространства именования. 
+Ключи второго уровня используются как пространства именования.
 Например, модуль каталога должен все свои переводы указать по ключу `'catalogs'`.
 
 С ключей второго уровня начинается "путь" на перевод. Тот самый путь, который будет указываться в
@@ -134,8 +134,8 @@ export const translations = valueProvider({
 
 #### Динамическая загрузка переводов
 
-Для динамической загрузки переводов по ключу второго уровня указывается функция, которая должна 
-вернуть promise на объект переводов. Исполнение функции и ожидание загрузки выполнится только 
+Для динамической загрузки переводов по ключу второго уровня указывается функция, которая должна
+вернуть promise на объект переводов. Исполнение функции и ожидание загрузки выполнится только
 при попытке перевести фразу с путем, по которому прописана функция.
 
 ```js
@@ -164,9 +164,9 @@ export default {
     description: 'Описание',
     items: {
       one: 'Первый элемент',
-      two: 'Второй элемент'
-    }
-  }
+      two: 'Второй элемент',
+    },
+  },
 };
 
 // Доступ к вложенным ключам
@@ -287,7 +287,7 @@ export const translations = valueProvider({
     'ru-RU': {
       // Динамическая загрузка словаря для пространства имён 'example'
       example: () => import('./translations/ru.json'),
-    }
+    },
   },
   merge: true, // Важно! Позволяет объединять словари с уже существующими
 });
@@ -460,8 +460,8 @@ const message = t('example.cart.summary', {
   plural: items.length,
   values: {
     count: items.length,
-    total: n(totalPrice)
-  }
+    total: n(totalPrice),
+  },
 });
 ```
 
@@ -521,10 +521,7 @@ function LanguageSwitcher() {
   return (
     <div>
       <h2>{t('settings.language')}</h2>
-      <select
-        value={locale}
-        onChange={(e) => setLocale(e.target.value)}
-      >
+      <select value={locale} onChange={e => setLocale(e.target.value)}>
         {locales.map(code => (
           <option key={code} value={code}>
             {t(`locales.${code}`)}

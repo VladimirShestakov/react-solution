@@ -70,7 +70,9 @@ export type Depends = Record<string, any>;
  * Может быть асинхронной (возвращать промис)
  * В первый аргумент depends (в виде plain объекта) передаются зависимые решения
  */
-export type FunctionWithDepends<Type, Deps extends Depends> = (depends: Deps) => Type | Promise<Type>;
+export type FunctionWithDepends<Type, Deps extends Depends> = (
+  depends: Deps,
+) => Type | Promise<Type>;
 
 /**
  * Конструктор, в первый аргумент которого передаются зависимости из DI

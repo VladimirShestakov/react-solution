@@ -47,7 +47,9 @@ export function listToTree<
       roots[id] = trees[id];
     }
 
-    const parentId = get(item, parentKey as ExtractPathsAny<Item<Pkey, T>, '.'>) as string | undefined;
+    const parentId = get(item, parentKey as ExtractPathsAny<Item<Pkey, T>, '.'>) as
+      | string
+      | undefined;
     if (parentId) {
       if (!trees[parentId]) {
         trees[parentId] = { [childrenKey]: [] };
