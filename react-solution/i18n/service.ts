@@ -204,7 +204,7 @@ export class I18n {
       // Обновление состояния i18n
       this.state.update({
         $set: {
-          [`dictionary.${locale}.${namespace}}`]: flat(translation),
+          [`dictionary.${locale}.${namespace}`]: flat(translation),
         },
       });
     }
