@@ -1,6 +1,6 @@
 {
   "name": "create-react-solution",
-  "version": "4.4.2",
+  "version": "4.4.3",
   "description": "Create new project with React-Solution framework",
   "bin": {
     "create-react-solution": "./index.js"
@@ -18,7 +18,7 @@
   "dependencies": {
     "picocolors": "^1.1.1",
     "prompts": "^2.4.2",
-    "merge-change": "^3.0.13"
+    "merge-change": "^3.0.17"
   },
   "devDependencies": {
     "@types/node": "^22.5.5"

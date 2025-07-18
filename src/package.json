@@ -1,7 +1,7 @@
 {
   "name": "@react-solution/client",
   "private": true,
-  "version": "4.4.2",
+  "version": "4.4.3",
   "description": "Example client on React Solution",
   "main": "index.tsx",
   "scripts": {},
@@ -12,7 +12,7 @@
     "react-solution": "*",
     "@bem-react/classname": "^1.6.0",
     "lodash.debounce": "^4.0.8",
-    "merge-change": "^3.0.13",
+    "merge-change": "^3.0.17",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router": "^6.26.2",
